@@ -1,0 +1,260 @@
+id,visitor_team,home_team,time,tv,date
+0,Utah Jazz,Oklahoma City Thunder,8:00 p.m.,NBA LP,03-11-2020
+1,New Orleans Pelicans,Sacramento Kings,10:00 p.m.,ESPN,03-11-2020
+2,Chicago Bulls,Orlando Magic,7:00 p.m.,NBA LP,03-12-2020
+3,Boston Celtics,Milwaukee Bucks,8:00 p.m.,TNT,03-12-2020
+4,Memphis Grizzlies,Portland Trail Blazers,10:00 p.m.,NBA LP,03-12-2020
+5,Brooklyn Nets,Golden State Warriors,10:30 p.m.,NBA LP,03-12-2020
+6,Houston Rockets,Los Angeles Lakers,10:30 p.m.,TNT,03-12-2020
+7,Cleveland Cavaliers,Charlotte Hornets,7:00 p.m.,NBA LP,03-13-2020
+8,Washington Wizards,Boston Celtics,7:30 p.m.,NBA TV,03-13-2020
+9,New York Knicks,Miami Heat,8:00 p.m.,NBA LP,03-13-2020
+10,Minnesota Timberwolves,Oklahoma City Thunder,8:00 p.m.,NBA LP,03-13-2020
+11,Denver Nuggets,San Antonio Spurs,8:30 p.m.,NBA LP,03-13-2020
+12,New Orleans Pelicans,Utah Jazz,9:00 p.m.,NBA LP,03-13-2020
+13,Brooklyn Nets,Los Angeles Clippers,10:30 p.m.,NBA TV,03-13-2020
+14,Phoenix Suns,Dallas Mavericks,2:00 p.m.,NBA LP,03-14-2020
+15,Cleveland Cavaliers,Atlanta Hawks,7:30 p.m.,NBA LP,03-14-2020
+16,Indiana Pacers,Philadelphia 76ers,7:30 p.m.,NBA LP,03-14-2020
+17,Detroit Pistons,Toronto Raptors,7:30 p.m.,NBA LP,03-14-2020
+18,Chicago Bulls,Miami Heat,8:00 p.m.,NBA LP,03-14-2020
+19,Golden State Warriors,Milwaukee Bucks,8:30 p.m.,ABC,03-14-2020
+20,Minnesota Timberwolves,San Antonio Spurs,8:30 p.m.,NBA LP,03-14-2020
+21,Memphis Grizzlies,Utah Jazz,9:00 p.m.,NBA LP,03-14-2020
+22,New Orleans Pelicans,Los Angeles Clippers,10:30 p.m.,NBA LP,03-14-2020
+23,Houston Rockets,Portland Trail Blazers,3:30 p.m.,ABC,03-15-2020
+24,Charlotte Hornets,Orlando Magic,6:00 p.m.,NBA LP,03-15-2020
+25,Oklahoma City Thunder,Washington Wizards,6:00 p.m.,NBA LP,03-15-2020
+26,Boston Celtics,Chicago Bulls,8:00 p.m.,NBA LP,03-15-2020
+27,Denver Nuggets,Los Angeles Lakers,9:00 p.m.,ESPN,03-15-2020
+28,Brooklyn Nets,Sacramento Kings,9:00 p.m.,NBA LP,03-15-2020
+29,Washington Wizards,Philadelphia 76ers,7:00 p.m.,NBA LP,03-16-2020
+30,Golden State Warriors,Toronto Raptors,8:00 p.m.,ESPN,03-16-2020
+31,Miami Heat,Milwaukee Bucks,8:00 p.m.,NBA LP,03-16-2020
+32,Atlanta Hawks,New Orleans Pelicans,8:00 p.m.,NBA LP,03-16-2020
+33,Memphis Grizzlies,San Antonio Spurs,8:30 p.m.,NBA LP,03-16-2020
+34,Los Angeles Lakers,Utah Jazz,9:00 p.m.,NBA LP,03-16-2020
+35,Dallas Mavericks,Los Angeles Clippers,10:30 p.m.,ESPN,03-16-2020
+36,Orlando Magic,Detroit Pistons,7:00 p.m.,NBA TV,03-17-2020
+37,Charlotte Hornets,New York Knicks,7:30 p.m.,NBA LP,03-17-2020
+38,Cleveland Cavaliers,Houston Rockets,8:00 p.m.,NBA LP,03-17-2020
+39,Oklahoma City Thunder,Memphis Grizzlies,8:00 p.m.,NBA LP,03-17-2020
+40,Minnesota Timberwolves,Portland Trail Blazers,10:00 p.m.,NBA LP,03-17-2020
+41,Dallas Mavericks,Sacramento Kings,10:00 p.m.,NBA TV,03-17-2020
+42,Toronto Raptors,Philadelphia 76ers,7:00 p.m.,NBA LP,03-18-2020
+43,Oklahoma City Thunder,Atlanta Hawks,7:30 p.m.,NBA LP,03-18-2020
+44,New York Knicks,Boston Celtics,7:30 p.m.,NBA LP,03-18-2020
+45,Washington Wizards,Brooklyn Nets,7:30 p.m.,NBA LP,03-18-2020
+46,Golden State Warriors,Indiana Pacers,7:30 p.m.,ESPN,03-18-2020
+47,Miami Heat,Chicago Bulls,8:00 p.m.,NBA LP,03-18-2020
+48,San Antonio Spurs,New Orleans Pelicans,8:00 p.m.,NBA LP,03-18-2020
+49,Los Angeles Clippers,Denver Nuggets,9:00 p.m.,NBA LP,03-18-2020
+50,Utah Jazz,Los Angeles Lakers,10:00 p.m.,ESPN,03-18-2020
+51,Minnesota Timberwolves,Phoenix Suns,10:00 p.m.,NBA LP,03-18-2020
+52,Philadelphia 76ers,Charlotte Hornets,7:00 p.m.,NBA LP,03-19-2020
+53,Cleveland Cavaliers,Orlando Magic,7:00 p.m.,NBA LP,03-19-2020
+54,Sacramento Kings,Houston Rockets,8:00 p.m.,NBA TV,03-19-2020
+55,Memphis Grizzlies,Milwaukee Bucks,8:00 p.m.,NBA LP,03-19-2020
+56,Dallas Mavericks,Portland Trail Blazers,10:00 p.m.,NBA LP,03-19-2020
+57,Golden State Warriors,Detroit Pistons,7:00 p.m.,NBA LP,03-20-2020
+58,Miami Heat,Indiana Pacers,7:00 p.m.,NBA LP,03-20-2020
+59,Washington Wizards,Atlanta Hawks,7:30 p.m.,NBA LP,03-20-2020
+60,Boston Celtics,Toronto Raptors,7:30 p.m.,NBA TV,03-20-2020
+61,Denver Nuggets,Oklahoma City Thunder,8:00 p.m.,NBA LP,03-20-2020
+62,Chicago Bulls,San Antonio Spurs,8:30 p.m.,NBA LP,03-20-2020
+63,Minnesota Timberwolves,Utah Jazz,9:00 p.m.,NBA LP,03-20-2020
+64,Phoenix Suns,Los Angeles Clippers,10:30 p.m.,NBA LP,03-20-2020
+65,Boston Celtics,Brooklyn Nets,6:00 p.m.,NBA LP,03-21-2020
+66,Los Angeles Lakers,Charlotte Hornets,7:00 p.m.,NBA LP,03-21-2020
+67,Cleveland Cavaliers,Indiana Pacers,7:00 p.m.,NBA LP,03-21-2020
+68,Sacramento Kings,Orlando Magic,7:00 p.m.,NBA LP,03-21-2020
+69,Atlanta Hawks,Philadelphia 76ers,7:00 p.m.,NBA TV,03-21-2020
+70,Golden State Warriors,New York Knicks,7:30 p.m.,NBA LP,03-21-2020
+71,Milwaukee Bucks,Washington Wizards,8:00 p.m.,NBA LP,03-21-2020
+72,Chicago Bulls,Houston Rockets,8:00 p.m.,NBA LP,03-21-2020
+73,New Orleans Pelicans,Memphis Grizzlies,8:00 p.m.,NBA LP,03-21-2020
+74,Dallas Mavericks,Phoenix Suns,10:00 p.m.,NBA LP,03-21-2020
+75,Los Angeles Lakers,Detroit Pistons,6:00 p.m.,NBA LP,03-22-2020
+76,Denver Nuggets,Toronto Raptors,6:00 p.m.,NBA LP,03-22-2020
+77,Portland Trail Blazers,Minnesota Timberwolves,7:00 p.m.,NBA LP,03-22-2020
+78,Sacramento Kings,New Orleans Pelicans,7:00 p.m.,NBA LP,03-22-2020
+79,Utah Jazz,San Antonio Spurs,7:00 p.m.,NBA TV,03-22-2020
+80,Phoenix Suns,Indiana Pacers,7:00 p.m.,NBA LP,03-23-2020
+81,Los Angeles Clippers,New York Knicks,7:00 p.m.,NBA LP,03-23-2020
+82,Boston Celtics,Washington Wizards,7:00 p.m.,NBA LP,03-23-2020
+83,Orlando Magic,Brooklyn Nets,7:30 p.m.,NBA LP,03-23-2020
+84,Oklahoma City Thunder,Miami Heat,7:30 p.m.,NBA LP,03-23-2020
+85,Denver Nuggets,Chicago Bulls,8:00 p.m.,NBA LP,03-23-2020
+86,Detroit Pistons,Milwaukee Bucks,8:00 p.m.,NBA LP,03-23-2020
+87,Houston Rockets,Dallas Mavericks,8:30 p.m.,NBA TV,03-23-2020
+88,Portland Trail Blazers,Charlotte Hornets,7:00 p.m.,NBA LP,03-24-2020
+89,Sacramento Kings,Cleveland Cavaliers,7:00 p.m.,NBA LP,03-24-2020
+90,Los Angeles Lakers,Toronto Raptors,7:30 p.m.,TNT,03-24-2020
+91,Philadelphia 76ers,Minnesota Timberwolves,8:00 p.m.,NBA LP,03-24-2020
+92,Memphis Grizzlies,New Orleans Pelicans,8:00 p.m.,NBA LP,03-24-2020
+93,San Antonio Spurs,Utah Jazz,10:00 p.m.,TNT,03-24-2020
+94,Los Angeles Clippers,Brooklyn Nets,7:00 p.m.,ESPN,03-25-2020
+95,Portland Trail Blazers,Detroit Pistons,7:00 p.m.,NBA LP,03-25-2020
+96,Indiana Pacers,Orlando Magic,7:00 p.m.,NBA LP,03-25-2020
+97,Phoenix Suns,Washington Wizards,7:00 p.m.,NBA LP,03-25-2020
+98,Denver Nuggets,Miami Heat,7:30 p.m.,NBA LP,03-25-2020
+99,Toronto Raptors,New York Knicks,7:30 p.m.,NBA LP,03-25-2020
+100,Boston Celtics,Memphis Grizzlies,8:00 p.m.,NBA LP,03-25-2020
+101,Houston Rockets,Milwaukee Bucks,9:30 p.m.,ESPN,03-25-2020
+102,Atlanta Hawks,Golden State Warriors,10:30 p.m.,NBA LP,03-25-2020
+103,Los Angeles Lakers,Cleveland Cavaliers,7:00 p.m.,NBA LP,03-26-2020
+104,Philadelphia 76ers,Chicago Bulls,8:00 p.m.,NBA LP,03-26-2020
+105,San Antonio Spurs,Minnesota Timberwolves,8:00 p.m.,NBA LP,03-26-2020
+106,Charlotte Hornets,Oklahoma City Thunder,8:00 p.m.,NBA LP,03-26-2020
+107,Utah Jazz,Dallas Mavericks,8:30 p.m.,NBA TV,03-26-2020
+108,Atlanta Hawks,Sacramento Kings,10:00 p.m.,NBA LP,03-26-2020
+109,Los Angeles Clippers,Detroit Pistons,7:00 p.m.,NBA LP,03-27-2020
+110,Houston Rockets,Indiana Pacers,7:00 p.m.,NBA LP,03-27-2020
+111,Brooklyn Nets,Orlando Magic,7:00 p.m.,NBA LP,03-27-2020
+112,Phoenix Suns,Philadelphia 76ers,7:00 p.m.,NBA LP,03-27-2020
+113,Portland Trail Blazers,Boston Celtics,7:30 p.m.,NBA TV,03-27-2020
+114,New York Knicks,New Orleans Pelicans,8:00 p.m.,NBA LP,03-27-2020
+115,Washington Wizards,Milwaukee Bucks,8:30 p.m.,NBA LP,03-27-2020
+116,San Antonio Spurs,Denver Nuggets,9:00 p.m.,NBA LP,03-27-2020
+117,Cleveland Cavaliers,Brooklyn Nets,6:00 p.m.,NBA LP,03-28-2020
+118,Los Angeles Clippers,Charlotte Hornets,7:00 p.m.,NBA LP,03-28-2020
+119,Phoenix Suns,Miami Heat,8:00 p.m.,NBA LP,03-28-2020
+120,Los Angeles Lakers,Washington Wizards,8:00 p.m.,NBA LP,03-28-2020
+121,New York Knicks,Chicago Bulls,8:00 p.m.,NBA LP,03-28-2020
+122,Toronto Raptors,Memphis Grizzlies,8:00 p.m.,NBA LP,03-28-2020
+123,Oklahoma City Thunder,Golden State Warriors,8:30 p.m.,NBA LP,03-28-2020
+124,Atlanta Hawks,Utah Jazz,9:00 p.m.,NBA LP,03-28-2020
+125,Milwaukee Bucks,Dallas Mavericks,3:00 p.m.,NBA LP,03-29-2020
+126,Houston Rockets,Detroit Pistons,5:00 p.m.,NBA LP,03-29-2020
+127,Minnesota Timberwolves,Boston Celtics,6:00 p.m.,NBA TV,03-29-2020
+128,New Orleans Pelicans,Orlando Magic,6:00 p.m.,NBA LP,03-29-2020
+129,Portland Trail Blazers,Philadelphia 76ers,7:30 p.m.,NBA LP,03-29-2020
+130,San Antonio Spurs,Golden State Warriors,8:30 p.m.,NBA TV,03-29-2020
+131,Indiana Pacers,Sacramento Kings,9:00 p.m.,NBA LP,03-29-2020
+132,Miami Heat,Charlotte Hornets,7:00 p.m.,NBA LP,03-30-2020
+133,Phoenix Suns,Cleveland Cavaliers,7:00 p.m.,NBA LP,03-30-2020
+134,Portland Trail Blazers,Brooklyn Nets,7:30 p.m.,NBA TV,03-30-2020
+135,Memphis Grizzlies,Toronto Raptors,7:30 p.m.,NBA LP,03-30-2020
+136,Los Angeles Lakers,Minnesota Timberwolves,8:00 p.m.,NBA LP,03-30-2020
+137,Oklahoma City Thunder,Denver Nuggets,9:00 p.m.,NBA LP,03-30-2020
+138,Chicago Bulls,Utah Jazz,9:00 p.m.,NBA LP,03-30-2020
+139,Indiana Pacers,Los Angeles Clippers,10:30 p.m.,NBA TV,03-30-2020
+140,New Orleans Pelicans,Atlanta Hawks,7:30 p.m.,NBA LP,03-31-2020
+141,Houston Rockets,Philadelphia 76ers,7:30 p.m.,TNT,03-31-2020
+142,Denver Nuggets,Golden State Warriors,10:00 p.m.,TNT,03-31-2020
+143,San Antonio Spurs,Sacramento Kings,10:00 p.m.,NBA LP,03-31-2020
+144,Charlotte Hornets,Orlando Magic,7:00 p.m.,NBA LP,04-01-2020
+145,New Orleans Pelicans,Washington Wizards,7:00 p.m.,NBA LP,04-01-2020
+146,Miami Heat,Boston Celtics,7:30 p.m.,NBA LP,04-01-2020
+147,Detroit Pistons,Brooklyn Nets,7:30 p.m.,NBA LP,04-01-2020
+148,New York Knicks,Memphis Grizzlies,8:00 p.m.,NBA LP,04-01-2020
+149,Dallas Mavericks,Minnesota Timberwolves,8:00 p.m.,NBA LP,04-01-2020
+150,Phoenix Suns,Oklahoma City Thunder,8:00 p.m.,NBA LP,04-01-2020
+151,Toronto Raptors,Milwaukee Bucks,9:00 p.m.,ESPN,04-01-2020
+152,Cleveland Cavaliers,Utah Jazz,9:00 p.m.,NBA LP,04-01-2020
+153,Indiana Pacers,Los Angeles Lakers,10:30 p.m.,NBA LP,04-01-2020
+154,Golden State Warriors,Houston Rockets,8:00 p.m.,TNT,04-02-2020
+155,Los Angeles Clippers,Sacramento Kings,10:00 p.m.,NBA LP,04-02-2020
+156,Utah Jazz,Portland Trail Blazers,10:30 p.m.,TNT,04-02-2020
+157,Miami Heat,Detroit Pistons,7:00 p.m.,NBA LP,04-03-2020
+158,Brooklyn Nets,Indiana Pacers,7:00 p.m.,NBA LP,04-03-2020
+159,Philadelphia 76ers,Washington Wizards,7:00 p.m.,NBA LP,04-03-2020
+160,Charlotte Hornets,Atlanta Hawks,7:30 p.m.,NBA LP,04-03-2020
+161,Orlando Magic,Boston Celtics,7:30 p.m.,NBA LP,04-03-2020
+162,Minnesota Timberwolves,New York Knicks,7:30 p.m.,NBA LP,04-03-2020
+163,Milwaukee Bucks,Toronto Raptors,7:30 p.m.,NBA LP,04-03-2020
+164,Dallas Mavericks,Memphis Grizzlies,8:00 p.m.,NBA LP,04-03-2020
+165,Golden State Warriors,San Antonio Spurs,8:30 p.m.,NBA TV,04-03-2020
+166,Chicago Bulls,Denver Nuggets,9:00 p.m.,NBA LP,04-03-2020
+167,Cleveland Cavaliers,Phoenix Suns,10:00 p.m.,NBA LP,04-03-2020
+168,Oklahoma City Thunder,Los Angeles Clippers,3:30 p.m.,NBA LP,04-04-2020
+169,Los Angeles Lakers,Sacramento Kings,10:00 p.m.,NBA LP,04-04-2020
+170,Atlanta Hawks,Charlotte Hornets,1:00 p.m.,NBA LP,04-05-2020
+171,Orlando Magic,Philadelphia 76ers,1:00 p.m.,NBA TV,04-05-2020
+172,Milwaukee Bucks,Boston Celtics,3:30 p.m.,ABC,04-05-2020
+173,Washington Wizards,Indiana Pacers,5:00 p.m.,NBA LP,04-05-2020
+174,Miami Heat,New York Knicks,5:00 p.m.,NBA LP,04-05-2020
+175,Dallas Mavericks,Brooklyn Nets,6:00 p.m.,NBA LP,04-05-2020
+176,Utah Jazz,Denver Nuggets,6:00 p.m.,NBA LP,04-05-2020
+177,Chicago Bulls,Phoenix Suns,6:00 p.m.,NBA LP,04-05-2020
+178,Toronto Raptors,Houston Rockets,7:00 p.m.,NBA TV,04-05-2020
+179,Detroit Pistons,Minnesota Timberwolves,7:00 p.m.,NBA LP,04-05-2020
+180,New Orleans Pelicans,San Antonio Spurs,7:00 p.m.,NBA LP,04-05-2020
+181,Memphis Grizzlies,Portland Trail Blazers,9:00 p.m.,NBA LP,04-05-2020
+182,Cleveland Cavaliers,Sacramento Kings,9:00 p.m.,NBA LP,04-05-2020
+183,Oklahoma City Thunder,Los Angeles Lakers,9:30 p.m.,NBA TV,04-05-2020
+184,Chicago Bulls,Los Angeles Clippers,10:30 p.m.,NBA LP,04-06-2020
+185,Toronto Raptors,Washington Wizards,7:00 p.m.,NBA LP,04-07-2020
+186,Detroit Pistons,Atlanta Hawks,7:30 p.m.,NBA LP,04-07-2020
+187,Indiana Pacers,Miami Heat,7:30 p.m.,NBA LP,04-07-2020
+188,Milwaukee Bucks,Philadelphia 76ers,7:30 p.m.,TNT,04-07-2020
+189,Phoenix Suns,Minnesota Timberwolves,8:00 p.m.,NBA LP,04-07-2020
+190,Charlotte Hornets,New Orleans Pelicans,8:00 p.m.,NBA LP,04-07-2020
+191,Brooklyn Nets,Oklahoma City Thunder,8:00 p.m.,NBA LP,04-07-2020
+192,Houston Rockets,Dallas Mavericks,8:30 p.m.,NBA LP,04-07-2020
+193,Sacramento Kings,San Antonio Spurs,8:30 p.m.,NBA LP,04-07-2020
+194,Memphis Grizzlies,Denver Nuggets,9:00 p.m.,NBA LP,04-07-2020
+195,Los Angeles Clippers,Utah Jazz,10:00 p.m.,TNT,04-07-2020
+196,Cleveland Cavaliers,Portland Trail Blazers,10:00 p.m.,NBA LP,04-07-2020
+197,Golden State Warriors,Los Angeles Lakers,10:30 p.m.,TNT,04-07-2020
+198,Chicago Bulls,Los Angeles Lakers,10:30 p.m.,NBA LP,04-08-2020
+199,Indiana Pacers,Boston Celtics,7:00 p.m.,ESPN,04-08-2020
+200,Toronto Raptors,Charlotte Hornets,7:00 p.m.,NBA LP,04-08-2020
+201,Orlando Magic,New York Knicks,7:30 p.m.,NBA LP,04-08-2020
+202,San Antonio Spurs,Houston Rockets,9:30 p.m.,ESPN,04-08-2020
+203,Cleveland Cavaliers,Golden State Warriors,10:30 p.m.,NBA LP,04-08-2020
+204,Los Angeles Clippers,Los Angeles Lakers,10:00 p.m.,TNT,04-09-2020
+205,Detroit Pistons,Miami Heat,7:30 p.m.,NBA LP,04-09-2020
+206,Brooklyn Nets,Milwaukee Bucks,8:00 p.m.,TNT,04-09-2020
+207,Sacramento Kings,Minnesota Timberwolves,8:00 p.m.,NBA LP,04-09-2020
+208,Phoenix Suns,New Orleans Pelicans,8:00 p.m.,NBA LP,04-09-2020
+209,Denver Nuggets,Portland Trail Blazers,10:00 p.m.,NBA LP,04-09-2020
+210,Boston Celtics,Orlando Magic,7:00 p.m.,NBA LP,04-10-2020
+211,Atlanta Hawks,Toronto Raptors,7:30 p.m.,NBA LP,04-10-2020
+212,Washington Wizards,Houston Rockets,8:00 p.m.,NBA LP,04-10-2020
+213,New York Knicks,Oklahoma City Thunder,8:00 p.m.,NBA LP,04-10-2020
+214,Philadelphia 76ers,San Antonio Spurs,8:30 p.m.,NBA TV,04-10-2020
+215,Detroit Pistons,Dallas Mavericks,3:00 p.m.,NBA LP,04-11-2020
+216,Washington Wizards,Charlotte Hornets,7:00 p.m.,NBA LP,04-11-2020
+217,Orlando Magic,Indiana Pacers,7:00 p.m.,NBA LP,04-11-2020
+218,Philadelphia 76ers,New Orleans Pelicans,7:00 p.m.,NBA LP,04-11-2020
+219,Milwaukee Bucks,Cleveland Cavaliers,7:30 p.m.,NBA LP,04-11-2020
+220,Boston Celtics,Miami Heat,8:00 p.m.,NBA LP,04-11-2020
+221,Brooklyn Nets,Chicago Bulls,8:00 p.m.,NBA LP,04-11-2020
+222,Oklahoma City Thunder,Memphis Grizzlies,8:00 p.m.,NBA LP,04-11-2020
+223,Golden State Warriors,Los Angeles Clippers,8:30 p.m.,ABC,04-11-2020
+224,Sacramento Kings,Denver Nuggets,9:00 p.m.,NBA LP,04-11-2020
+225,Utah Jazz,Phoenix Suns,10:00 p.m.,NBA LP,04-11-2020
+226,Houston Rockets,San Antonio Spurs,3:30 p.m.,NBA TV,04-12-2020
+227,New York Knicks,Toronto Raptors,6:00 p.m.,NBA LP,04-12-2020
+228,Atlanta Hawks,Milwaukee Bucks,7:00 p.m.,NBA TV,04-12-2020
+229,Minnesota Timberwolves,Los Angeles Lakers,9:30 p.m.,NBA TV,04-12-2020
+230,Miami Heat,Charlotte Hornets,7:00 p.m.,NBA LP,04-13-2020
+231,Brooklyn Nets,Cleveland Cavaliers,7:00 p.m.,NBA LP,04-13-2020
+232,Boston Celtics,Detroit Pistons,7:00 p.m.,NBA TV,04-13-2020
+233,San Antonio Spurs,Indiana Pacers,7:00 p.m.,NBA LP,04-13-2020
+234,Orlando Magic,Chicago Bulls,8:00 p.m.,NBA LP,04-13-2020
+235,Phoenix Suns,Houston Rockets,8:00 p.m.,NBA LP,04-13-2020
+236,Philadelphia 76ers,Memphis Grizzlies,8:00 p.m.,NBA LP,04-13-2020
+237,Washington Wizards,New Orleans Pelicans,8:00 p.m.,NBA LP,04-13-2020
+238,Utah Jazz,Oklahoma City Thunder,8:00 p.m.,NBA LP,04-13-2020
+239,Dallas Mavericks,Denver Nuggets,9:00 p.m.,NBA LP,04-13-2020
+240,Portland Trail Blazers,Golden State Warriors,10:30 p.m.,NBA TV,04-13-2020
+241,Minnesota Timberwolves,Los Angeles Clippers,10:30 p.m.,NBA LP,04-13-2020
+242,Toronto Raptors,Miami Heat,7:30 p.m.,TNT,04-14-2020
+243,Detroit Pistons,New York Knicks,7:30 p.m.,NBA LP,04-14-2020
+244,Denver Nuggets,Utah Jazz,10:00 p.m.,TNT,04-14-2020
+245,Sacramento Kings,Los Angeles Lakers,10:30 p.m.,NBA LP,04-14-2020
+246,Cleveland Cavaliers,Atlanta Hawks,7:30 p.m.,NBA LP,04-15-2020
+247,Chicago Bulls,Boston Celtics,7:30 p.m.,NBA LP,04-15-2020
+248,Milwaukee Bucks,Brooklyn Nets,7:30 p.m.,NBA LP,04-15-2020
+249,Toronto Raptors,Orlando Magic,7:30 p.m.,NBA LP,04-15-2020
+250,Charlotte Hornets,Philadelphia 76ers,7:30 p.m.,NBA LP,04-15-2020
+251,Indiana Pacers,Washington Wizards,7:30 p.m.,NBA LP,04-15-2020
+252,Oklahoma City Thunder,Dallas Mavericks,7:30 p.m.,NBA LP,04-15-2020
+253,Memphis Grizzlies,Houston Rockets,7:30 p.m.,NBA LP,04-15-2020
+254,New York Knicks,Minnesota Timberwolves,7:30 p.m.,NBA LP,04-15-2020
+255,New Orleans Pelicans,San Antonio Spurs,7:30 p.m.,NBA LP,04-15-2020
+256,Los Angeles Lakers,Phoenix Suns,10:00 p.m.,NBA LP,04-15-2020
+257,Los Angeles Clippers,Portland Trail Blazers,10:00 p.m.,NBA LP,04-15-2020
+258,Golden State Warriors,Sacramento Kings,10:00 p.m.,NBA LP,04-15-2020
