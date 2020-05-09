@@ -10,8 +10,8 @@ library(foreach)
 library(rvest)
 library(lubridate)
 
-getwd()
-setwd('/Users/howardyong/Documents/College/School/Spring2020/SDS323_Spring2020')
+#getwd()
+#setwd('/Users/howardyong/Documents/College/School/Spring2020/SDS323_Spring2020')
 
 
 yearList <- c('2020')
@@ -78,7 +78,7 @@ df$home_team_wins <- with(df, ifelse(home_pts > visitor_pts, 1, 0))
 df
 head(df)
 tail(df)
-write.csv(df, 'nba-scrape-data-2019-2020.csv')
+write.csv(df, './data/nba-scrape-data-2019-2020.csv')
 
 
 
@@ -90,10 +90,10 @@ nbateams
 historical_elo <- data.frame(team = nbateams$team)
 historical_elo <- historical_elo %>% mutate(elo=1500)
 
-season2016_2017 = read.csv('nba-scrape-data-2016-2017.csv')
-season2017_2018 = read.csv('nba-scrape-data-2017-2018.csv')
-season2018_2019 = read.csv('nba-scrape-data-2018-2019.csv')
-season2019_2020 = read.csv('nba-scrape-data-2019-2020.csv')
+season2016_2017 = read.csv('./data/nba-scrape-data-2016-2017.csv')
+season2017_2018 = read.csv('./data/nba-scrape-data-2017-2018.csv')
+season2018_2019 = read.csv('./data/nba-scrape-data-2018-2019.csv')
+season2019_2020 = read.csv('./data/nba-scrape-data-2019-2020.csv')
 head(season2019_2020)
 season2019_2020$home_team_wins
 
@@ -123,11 +123,16 @@ for (i in seq(nrow(season2019_2020))) {
     mutate(elo = if_else(team==match$home_team_name, teamA_new_elo,
                          if_else(team==match$visitor_team_name, teamB_new_elo, elo)))
 }
+
 options(digits=8)
+
 nbateams %>%
   arrange(-elo)
+
 avg_season_elo = 1505
+
 nbateams <- nbateams %>% mutate(elo=0.75*elo+.25*avg_season_elo)
+
 nbateams %>%
   arrange(-elo)
 

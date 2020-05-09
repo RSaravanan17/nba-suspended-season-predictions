@@ -8,6 +8,7 @@ K = 20.
 # Amount of points designated for the homecourt advantage
 HOME_ADVANTAGE = 100
 
+Season.19.20 <- read.csv('./data/Basketball-Reference-19-20/Games/Season-19-20.csv', header=TRUE)
 head(Season.19.20)
 
 games <- Season.19.20
@@ -15,7 +16,7 @@ games <- Season.19.20
 # Create a dictionary for each team with team name and intitialized with elo scores
 
 # # Elo updates will be scaled based on the margin of victory
-games['margin'] = games.PTS - games.PTS1
+games['margin'] = games$PTS - games$PTS1
 
 # Three Functions for calculating
 elo_pred <- function(elo1, elo2) {
@@ -51,18 +52,20 @@ for (row in games.itertuples()) { # itertuples?
   wloc = row.WLoc # create column for home or neutral games['WLoc]
   
   # Does either team get a home-court advantage?
-  w_ad, l_ad, = 0., 0.
-  if wloc == "H":
-    w_ad += HOME_ADVANTAGE
-  elif wloc == "A":
-    l_ad += HOME_ADVANTAGE
+  w_ad = 0.
+  l_ad = 0.
+  if (wloc == "H") {
+    w_ad = w_ad + HOME_ADVANTAGE
+  } else if (wloc == "A") {
+    l_ad = l_ad + HOME_ADVANTAGE
+  }
   
   # Get elo updates as a result of the game
   pred, update = elo_update(elo_dict[w] + w_ad,
                             elo_dict[l] + l_ad, 
                             margin)
-  elo_dict[w] += update
-  elo_dict[l] -= update
+  elo_dict[w] = elo_dict[w] + update
+  elo_dict[l] = elo_dict[l] - update
   
   # Save prediction and new Elos for each round
   preds.append(pred)

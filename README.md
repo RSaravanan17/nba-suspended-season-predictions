@@ -1,6 +1,6 @@
 # Predicting data for the suspended 2019-20 NBA season
 
-Due to the widespread impact of COVID-19 throughout the world, almost every company, organization, and public event has canceled or suspended any activities that involve interpersonal contact for the forseeable future. Many of these activities are moving to a virtual format if possible, but several others have been forced to shut down.
+Due to the widespread impact of the COVID-19 pandemic throughout the world, almost every company, organization, and public event has canceled or suspended any activities that involve interpersonal contact for the forseeable future. Many of these activities are moving to a virtual format if possible, but several others have been forced to shut down.
 
 As avid sports fans, the absence of the major sporting events during this time has hit us and many others around the world especially hard. A full list of all sporting events canceled around the world during the coronavirus pandemic can be found [here](https://www.espn.com/olympics/story/_/id/28824781/list-sporting-events-canceled-coronavirus). Some of the events that we particularly were looking forward to include the NBA, NCAA March Madness tournament, MLB, and the 2020 Summer Olympics.
 
