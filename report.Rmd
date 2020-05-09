@@ -6,6 +6,7 @@ author:
     - Howard Yong
 date: "May 11, 2020"
 output: pdf_document
+indent: true
 ---
 
 ```{r setup, include=FALSE}
@@ -30,7 +31,7 @@ Remaining.Games.19.20 <- read.csv('./data/nba-remaining-games-2019-2020.csv', he
 
 # Abstract
 
-
+The COVID-19 pandemic has affected our society in various ways and has changed numerous events on schedule for 2020. One such event that we were looking forward to was the end of the 2019-20 NBA season as well as the 2020 NBA Playoffs. Since a large portion of the 2019-20 NBA regular season games have already been played, we utilized the data collected from these games to calculate Elo ratings for each team in order to predict the standings at the end of the regular season as well as the matchups and results of the Playoffs. From our analysis, we found that ... **[NEED TO ADD MORE HERE]**.
 
 
 # Introduction
@@ -44,14 +45,19 @@ In our curiosity, we decided to utilize this opportunity to exercise our data sc
 In this analysis, we will examine data from the 2019-20 NBA season as well as some data from previous NBA seasons in order to draw some meaningful conclusions about the remainder of the 2019-20 NBA season.
 
 
-# Predicting the 2019-20 NBA Season
+
+# Methods
+
+
+
+## Predicting the 2019-20 NBA Season
 
 Since we missed one of the most exciting times of the year (the NBA Playoffs & Finals), we made some predictions on how the rest of the season might have played out using a popular methodology referred to as the Elo ratings system [2]. This tool, created by Hungarian-American physics professor Arpad Elo, was orginally designed to rate chess players, but is now used for all sorts of competitions ranging anywhere from sports to video games. This is a methodology that FiveThirtyEight and many other popular sports analysts take advantage of due to its simplicity and effectiveness [3].
 
 These ratings depend only on the final score of each game as well as where it was played (home-court advantage). In other words, this system is built on a Win/Loss basis. We will be analyzing the 2018-19 NBA Season in its entirety to validate its performance, then we will apply it to the 2019-20 regular season in order to predict the matchups for the Playoffs and the Finals and ultimately the NBA Champions. For this project, we retrieved several types of data sources including game-by-game scores and schedules for several seasons from Basketball-Reference.com [4].
 
 
-## How does Elo work?
+### How does Elo work?
 
 The long-run average for an Elo score in the NBA sits around 1500. An Elo of 1500 means that the teams performance would be normally distrubuted around an average of 1500 with the chance of performing better or worse. The formula for Elo below shows how the probability of one team beating another is calculated using the ratings.
 
@@ -97,11 +103,20 @@ This is an example of a logistic function:
 knitr::include_graphics('./logistic2.png')
 ```
 
-## The 2018-19 NBA Season
+### The 2018-19 NBA Season
 
 
 
 
+
+# Results
+
+
+
+
+
+
+# Conclusion
 
 
 
