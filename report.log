@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2020.3.11)  9 MAY 2020 18:29
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2020.3.11)  9 MAY 2020 18:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -298,6 +298,42 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 \Gm@layouthoffset=\dimen154
 \Gm@layoutvoffset=\dimen155
 \Gm@dimlist=\toks24
+) (/Users/rsaravanan/Library/TinyTeX/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2020/01/07 v4.13 Multi-page Table package (DPC)
+\LTleft=\skip53
+\LTright=\skip54
+\LTpre=\skip55
+\LTpost=\skip56
+\LTchunksize=\count267
+\LTcapwidth=\dimen156
+\LT@head=\box47
+\LT@firsthead=\box48
+\LT@foot=\box49
+\LT@lastfoot=\box50
+\LT@cols=\count268
+\LT@rows=\count269
+\c@LT@tables=\count270
+\c@LT@chunks=\count271
+\LT@p@ftn=\toks25
+) (/Users/rsaravanan/Library/TinyTeX/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen157
+\lightrulewidth=\dimen158
+\cmidrulewidth=\dimen159
+\belowrulesep=\dimen160
+\belowbottomsep=\dimen161
+\aboverulesep=\dimen162
+\abovetopsep=\dimen163
+\cmidrulesep=\dimen164
+\cmidrulekern=\dimen165
+\defaultaddspace=\dimen166
+\@cmidla=\count272
+\@cmidlb=\count273
+\@aboverulesep=\dimen167
+\@belowrulesep=\dimen168
+\@thisruleclass=\count274
+\@lastruleclass=\count275
+\@thisrulewidth=\dimen169
 ) (/Users/rsaravanan/Library/TinyTeX/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 2019/11/30 v1.2a Enhanced LaTeX Graphics (DPC,SPQR)
 (/Users/rsaravanan/Library/TinyTeX/texmf-dist/tex/latex/graphics/graphics.sty
@@ -314,8 +350,8 @@ Package graphics Info: Driver file: pdftex.def on input line 105.
 (/Users/rsaravanan/Library/TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def
 File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
 ))
-\Gin@req@height=\dimen156
-\Gin@req@width=\dimen157
+\Gin@req@height=\dimen170
+\Gin@req@width=\dimen171
 ) (/Users/rsaravanan/Library/TinyTeX/texmf-dist/tex/latex/grffile/grffile.sty
 Package: grffile 2019/11/11 v2.1 Extended file name support for graphics (legac
 y)
@@ -325,8 +361,8 @@ line 40.
 (/Users/rsaravanan/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdf
 mode.def
 File: l3backend-pdfmode.def 2020-02-23 L3 backend support: PDF mode
-\l__kernel_color_stack_int=\count267
-\l__pdf_internal_box=\box47
+\l__kernel_color_stack_int=\count276
+\l__pdf_internal_box=\box51
 ) (./report.aux
 
 LaTeX Warning: Label `fig:logit2' multiply defined.
@@ -334,26 +370,26 @@ LaTeX Warning: Label `fig:logit2' multiply defined.
 )
 \openout1 = `report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-\AtBeginShipoutBox=\box48
-Package hyperref Info: Link coloring OFF on input line 65.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+\AtBeginShipoutBox=\box52
+Package hyperref Info: Link coloring OFF on input line 68.
 (/Users/rsaravanan/Library/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
 (/Users/rsaravanan/Library/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty
@@ -363,11 +399,11 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 lestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count268
+\c@section@level=\count277
 )
-LaTeX Info: Redefining \ref on input line 65.
-LaTeX Info: Redefining \pageref on input line 65.
-LaTeX Info: Redefining \nameref on input line 65.
+LaTeX Info: Redefining \ref on input line 68.
+LaTeX Info: Redefining \pageref on input line 68.
+LaTeX Info: Redefining \nameref on input line 68.
 (./report.out) (./report.out)
 \@outlinefile=\write3
 \openout3 = `report.out'.
@@ -418,38 +454,38 @@ s.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 6
-7.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 7
+0.
 (/Users/rsaravanan/Library/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 6
-7.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 7
+0.
 (/Users/rsaravanan/Library/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-67.
+70.
 (/Users/rsaravanan/Library/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-67.
+70.
 (/Users/rsaravanan/Library/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 67.
+(Font)              <12> on input line 70.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 67.
+(Font)              <8> on input line 70.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 67.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 67.
+(Font)              <6> on input line 70.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 70.
 
 (/Users/rsaravanan/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 67.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 70.
 
 (/Users/rsaravanan/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -458,38 +494,39 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 {/Users/rsaravanan/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map
 }]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 145.
+(Font)              <10> on input line 148.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 145.
+(Font)              <7> on input line 148.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 145.
+(Font)              <5> on input line 148.
 [2]
 <./logistic2.png, id=67, 426.09187pt x 310.91156pt>
 File: ./logistic2.png Graphic file (type png)
 <use ./logistic2.png>
-Package pdftex.def Info: ./logistic2.png  used on input line 235.
+Package pdftex.def Info: ./logistic2.png  used on input line 238.
 (pdftex.def)             Requested size: 230.1837pt x 167.96089pt.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 285.
 [3 <./logistic2.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 285.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 336.
+[4]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 336.
 (./report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 285.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 285.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 336.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 336.
 Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: FF398DF01F51AEDE7AF1887CFFDEABB4;1091.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 285.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 336.
  ) 
 Here is how much of TeX's memory you used:
- 10006 strings out of 482913
- 144222 string characters out of 5958134
- 384281 words of memory out of 5000000
- 25090 multiletter control sequences out of 15000+600000
+ 10153 strings out of 482913
+ 146141 string characters out of 5958134
+ 386940 words of memory out of 5000000
+ 25227 multiletter control sequences out of 15000+600000
  577623 words of font info for 62 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 34i,6n,34p,273b,318s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 34i,6n,34p,273b,419s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/Users/rsaravanan/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.en
 c}{/Users/rsaravanan/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.en
 c}{/Users/rsaravanan/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/
@@ -506,10 +543,10 @@ ravanan/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb></Users/rsara
 vanan/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/rsara
 vanan/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy5.pfb></Users/rsarav
 anan/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb>
-Output written on report.pdf (3 pages, 251397 bytes).
+Output written on report.pdf (4 pages, 253894 bytes).
 PDF statistics:
- 137 PDF objects out of 1000 (max. 8388607)
- 116 compressed objects within 2 object streams
- 23 named destinations out of 1000 (max. 500000)
+ 143 PDF objects out of 1000 (max. 8388607)
+ 121 compressed objects within 2 object streams
+ 25 named destinations out of 1000 (max. 500000)
  78 words of extra memory for PDF output out of 10000 (max. 10000000)
 

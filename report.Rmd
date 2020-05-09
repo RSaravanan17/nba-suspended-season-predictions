@@ -15,19 +15,31 @@ indent: true
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r include=FALSE}
+```{r libraries, include=FALSE}
 # Libraries
 library(elo)
 library(tidyverse)
 library(mosaic)
 library(ggplot2)
 library(foreach)
+library(data.table)
+library(magrittr)
+library(dplyr)
+library(stringr)
+library(elo)
+library(rvest)
+library(lubridate)
+library(knitr)
 ```
 
-```{r include=FALSE}
+```{r data, include=FALSE}
 # Data
+season2016_2017 = read.csv('./data/nba-scrape-data-2016-2017.csv', header=TRUE)
+season2017_2018 = read.csv('./data/nba-scrape-data-2017-2018.csv', header=TRUE)
+season2018_2019 = read.csv('./data/nba-scrape-data-2018-2019.csv', header=TRUE)
+season2019_2020 = read.csv('./data/nba-scrape-data-2019-2020.csv', header=TRUE)
 Season.19.20 <- read.csv('./data/Basketball-Reference-19-20/Games/Season-19-20.csv', header=TRUE)
-Remaining.Games.19.20 <- read.csv('./data/nba-remaining-games-2019-2020.csv', header=TRUE)
+remaining_games_19_20 <- read.csv('./data/nba-remaining-games-2019-2020.csv', header=TRUE)
 ```
 
 
@@ -99,7 +111,7 @@ P(\mbox{Home team wins}) = \frac{1}{1 + 10^{-\frac{(H-R+A)}{400}}}
 $$
 
 ```{r logit2, echo=FALSE, out.width='100%', fig.width = 8, fig.height = 5, fig.align='center', out.width='.49\\linewidth', fig.cap="\\label{fig:logit2}Logistic Function of Win Probability by Elo Rating Difference", comment=NA, warning=FALSE}
-knitr::include_graphics('./logistic2.png')
+include_graphics('./logistic2.png')
 ```
 
 In Figure \ref{fig:logit2}, we see an example of a logistic function for win probability by Elo rating difference.
@@ -116,6 +128,68 @@ In Figure \ref{fig:logit2}, we see an example of a logistic function for win pro
 
 
 **[Tables, figures, and text that illustrate your findings. Keep the focus on the numbers here. You will interpret your results in the next section.]**
+
+
+
+First, we calculated the Elo ratings for each team for the games played so far in the 2019-20 season. As explained earlier, we incorporated 25% of the previous seasons Elo ratings with 75% of this season's current Elo ratings. Below are the Elo ratings we derived for each team.
+
+```{r calculate_elo, include=FALSE}
+nbateams <- data.frame(team=union(season2019_2020$home_team_name, season2019_2020$visitor_team_name))
+nbateams <- nbateams %>% mutate(elo=1500)
+nbateams
+
+historical_elo <- data.frame(team = nbateams$team)
+historical_elo <- historical_elo %>% mutate(elo=1500)
+
+head(season2019_2020)
+season2019_2020$home_team_wins
+
+#Copy and paste season data.frame into loop (seq and match) to update elo for consecutive seasons
+for (i in seq(nrow(season2019_2020))) {
+  match <- season2019_2020[i, ]
+  
+  #Pre-match ratings
+  teamA_elo <- subset(nbateams, team==match$home_team_name)$elo
+  teamB_elo <- subset(nbateams, team==match$visitor_team_name)$elo
+  
+  #Update our ratings
+  new_elo <- elo.calc(wins.A = match$home_team_wins,
+                      elo.A = teamA_elo,
+                      elo.B = teamB_elo,
+                      k = 20)
+  
+  #Results reported as data.frame
+  #Team A's new rating in row1/column1
+  #Team B's new rating in row1/column2
+  new_elo
+  teamA_new_elo <- new_elo[1,1]
+  teamB_new_elo <- new_elo[1,2]
+  
+  #Update the ratings for Teams A and B and leave other teams as they were
+  nbateams <- nbateams %>%
+    mutate(elo = if_else(team==match$home_team_name, teamA_new_elo,
+                         if_else(team==match$visitor_team_name, teamB_new_elo, elo)))
+}
+
+options(digits=8)
+
+nbateams %>%
+  arrange(-elo)
+
+avg_season_elo = 1505
+
+nbateams <- nbateams %>% mutate(elo=0.75*elo+.25*avg_season_elo)
+
+nbateams <- nbateams %>%
+  arrange(-elo)
+
+names(nbateams)[names(nbateams) == "team"] <- "Team"
+names(nbateams)[names(nbateams) == "elo"] <- "Elo Rating"
+```
+
+```{r echo=FALSE, comment=NA}
+kable(nbateams, caption = "Elo Ratings for Every NBA Team (Descending)")
+```
 
 
 

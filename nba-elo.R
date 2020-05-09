@@ -82,18 +82,20 @@ write.csv(df, './data/nba-scrape-data-2019-2020.csv')
 
 
 
+season2016_2017 = read.csv('./data/nba-scrape-data-2016-2017.csv', header=TRUE)
+season2017_2018 = read.csv('./data/nba-scrape-data-2017-2018.csv', header=TRUE)
+season2018_2019 = read.csv('./data/nba-scrape-data-2018-2019.csv', header=TRUE)
+season2019_2020 = read.csv('./data/nba-scrape-data-2019-2020.csv', header=TRUE)
 
-nbateams <- data.frame(team = unique(c(df$home_team_name, df$visitor_team_name)))
+
+
+nbateams <- data.frame(team=union(season2019_2020$home_team_name, season2019_2020$visitor_team_name))
 nbateams <- nbateams %>% mutate(elo=1500)
 nbateams
 
 historical_elo <- data.frame(team = nbateams$team)
 historical_elo <- historical_elo %>% mutate(elo=1500)
 
-season2016_2017 = read.csv('./data/nba-scrape-data-2016-2017.csv')
-season2017_2018 = read.csv('./data/nba-scrape-data-2017-2018.csv')
-season2018_2019 = read.csv('./data/nba-scrape-data-2018-2019.csv')
-season2019_2020 = read.csv('./data/nba-scrape-data-2019-2020.csv')
 head(season2019_2020)
 season2019_2020$home_team_wins
 
@@ -133,6 +135,8 @@ avg_season_elo = 1505
 
 nbateams <- nbateams %>% mutate(elo=0.75*elo+.25*avg_season_elo)
 
-nbateams %>%
+nbateams <- nbateams %>%
   arrange(-elo)
 
+names(nbateams)[names(nbateams) == "team"] <- "Team"
+names(nbateams)[names(nbateams) == "elo"] <- "Elo Rating"
