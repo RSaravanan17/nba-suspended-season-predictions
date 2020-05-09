@@ -1,5 +1,5 @@
 ---
-title: "SDS 323 Final Project: NBA Analytics"
+title: "The 2019-2020 NBA Season: What Could Have Been"
 author:
     - Ryan Kohanski
     - Rithvik Saravanan
@@ -30,11 +30,18 @@ Remaining.Games.19.20 <- read.csv('./data/nba-remaining-games-2019-2020.csv', he
 
 ## Introduction
 
-As a result of the COVID-19 virus, many events are being cancelled or postponed with uncertainty. Many businesses are also closing or shutting down. Unfortunately, this means the precious American tradition of sports is consequently impacted by this situation. As you probably know, pretty much all major sports seasons have been cancelled including the MLB, NBA, NCAA, and even the 2020 Little League World Series, this year being the first time it has not been held since it began in 1947. This is the case for many athletic events as we continue through these unprecedented times. Being the huge basketball fans we are (Go Rockets!), we decided to take matters into our own hands. As much as we will miss the NCAA MArch Madness Tournament (incuding Texas' chance in making it) as well as the NBA playoffs, it does not mean we cannot get an idea as to how some of these games might have played out. With that said, for our final project we will be performing some data analysis on some NBA data to draw some conclusions about the 2019-2020 NBA season, including how it might have possibly ended.
+Due to the widespread impact of COVID-19 throughout the world, almost every company, organization, and public event has canceled or suspended any activities that involve interpersonal contact for the forseeable future. Many of these activities are moving to a virtual format if possible, but several others have been forced to shut down.
+
+As avid sports fans, the absence of the major sporting events during this time has hit us and many others around the world especially hard. A full list of all sporting events canceled around the world during the coronavirus can be found [here](https://www.espn.com/olympics/story/_/id/28824781/list-sporting-events-canceled-coronavirus). Some of the events that we particularly were looking forward to include the NBA, NCAA March Madness tournament, MLB, and the 2020 Summer Olympics.
+
+In our curiosity, we decided to utilize this opportunity to exercise some data science and modeling skills we have picked up in order to predict what could have been. Specifically, we focused on the NBA and the NBA Playoffs. Since the 2019-2020 NBA season was suspended approximately one month prior to the end of the regular season (and beginning of the playoffs), we used the 2019-2020 season data accumulated from the games played before the suspension to predict how the season and the playoffs would have ended had everything gone according to schedule.
+
+In this analysis, we will examine data from the 2019-2020 NBA season as well as some data from previous NBA seasons in order to draw some meaningful conclusions about the remainder of the 2019-2020 NBA season.
+
 
 ## Predicting the 2019-2020 NBA Season
 
-Since we missed one of the most exciting times of the year (NBA Playoffs & Finals), we will attempt to make some predictions on how the rest of the season might have played out using a popular system referred to as Elo Ratings. This tool, created by Arpad Elo (a Hungarian-American physics professor), was orginally created to rate chess players, but is now used for all sorts of competitions ranging anywhere from sports to video games. This is a methodology that FiveThirtyEight, and many other sports analysts take advantage of due to its simplicity and effectiveness. 
+Since we missed one of the most exciting times of the year (NBA Playoffs & Finals), we will attempt to make some predictions on how the rest of the season might have played out using a popular system referred to as the [Elo ratings system](https://en.wikipedia.org/wiki/Elo_rating_system). This tool, created by Hungarian-American physics professor Arpad Elo, was orginally designed to rate chess players, but is now used for all sorts of competitions ranging anywhere from sports to video games. This is a methodology that FiveThirtyEight, and many other popular sports analysts take advantage of due to its simplicity and effectiveness.
 
 These ratings depend only on the final score of each game and where it was played (home-court advantage). In other words, this system is built on a Win/Loss basis. We will be analyzing the 2018-2019 NBA Season in its entirety to validate its performance, then we will apply it to the 2019-2020 regular season in order to predict the matchups for the playoffs, finals, and ultimately the NBA Champions. For this project, we pulled a lot of data, including game-by-game scores, from Basketball-Reference.com. 
 
