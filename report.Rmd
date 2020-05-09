@@ -1,22 +1,30 @@
 ---
 title: "SDS 323 Final Project: NBA Analytics"
-output: github_document
+author:
+    - Ryan Kohanski
+    - Rithvik Saravanan
+    - Howard Yong
+date: "May 11, 2020"
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
+```{r include=FALSE}
 # Libraries
 library(elo)
 library(tidyverse)
 library(mosaic)
+library(ggplot2)
+library(foreach)
 ```
 
-```{r}
+```{r include=FALSE}
 # Data
-Season.19.20 <- read.csv('C:/Users/Ryan/Desktop/SDSFinalProject/Final Project/Basketball-Reference-19-20/Games/Season-19-20.csv', header=TRUE)
+Season.19.20 <- read.csv('./data/Basketball-Reference-19-20/Games/Season-19-20.csv', header=TRUE)
+Remaining.Games.19.20 <- read.csv('./data/nba-remaining-games-2019-2020.csv', header=TRUE)
 ```
 
 
