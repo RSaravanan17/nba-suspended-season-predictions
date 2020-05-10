@@ -197,6 +197,7 @@ kable(nbateams, caption = "Elo Ratings for Every NBA Team (Descending)")
 
 **[Interpret what you found. What are the main lessons we should take away from your report?]**
 
+# Shortcomings/Drawbacks (maybe pros vs cons)
 
 
 # References
@@ -211,3 +212,6 @@ kable(nbateams, caption = "Elo Ratings for Every NBA Team (Descending)")
 
 
 > [4] Compilation of in-depth NBA statistics (https://www.basketball-reference.com/)
+
+
+> [5] Elo Ratings for NBA Teams (http://practicallypredictable.com/2018/04/15/elo-ratings-for-nba-teams/#more-1019)
