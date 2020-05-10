@@ -29,6 +29,9 @@ library(stringr)
 library(elo)
 library(rvest)
 library(lubridate)
+library(cluster)
+library(FNN)
+library(glmnet)
 library(knitr)
 ```
 
@@ -62,7 +65,7 @@ In this analysis, we will examine data from the 2019-20 NBA season as well as so
 # Methods
 
 
-## Predicting the 2019-20 NBA Season
+## Predicting the 2019-20 NBA Season Standings
 
 Since we missed one of the most exciting times of the year (the NBA Playoffs & Finals), we made some predictions on how the rest of the season might have played out using a popular methodology referred to as the Elo ratings system [2]. This tool, created by Hungarian-American physics professor Arpad Elo, was orginally designed to rate chess players, but is now used for all sorts of competitions ranging anywhere from sports to video games. This is a methodology that FiveThirtyEight and many other popular sports analysts take advantage of due to its simplicity and effectiveness [3].
 
@@ -126,7 +129,9 @@ In Figure \ref{fig:logit}, we see an example of a logistic function for win prob
 ### The 2018-19 NBA Season
 
 
+## Predicting the 2019-20 NBA Season Award Winners
 
+Another interesting part of any NBA season is the awards given to the players and teams based on their regular season performances. Some key awards that catch headlines every year include Most Valuable Player, Defensive Player of the Year, and Rookie of the Year. In addition to predicting the end-of-season standings, we decided that any analysis of the remainder of the 2019-20 NBA season would not be complete unless it discussed predicted award winners.
 
 
 # Results
