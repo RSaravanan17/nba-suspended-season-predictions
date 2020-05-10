@@ -110,11 +110,11 @@ $$
 P(\mbox{Home team wins}) = \frac{1}{1 + 10^{-\frac{(H-R+A)}{400}}}
 $$
 
-```{r logit2, echo=FALSE, out.width='100%', fig.width = 8, fig.height = 5, fig.align='center', out.width='.49\\linewidth', fig.cap="\\label{fig:logit2}Logistic Function of Win Probability by Elo Rating Difference", comment=NA, warning=FALSE}
-include_graphics('./logistic2.png')
+```{r logit2, echo=FALSE, out.width='100%', fig.width = 8, fig.height = 5, fig.align='center', out.width='.49\\linewidth', fig.cap="\\label{fig:logit}Logistic Function of Win Probability by Elo Rating Difference", comment=NA, warning=FALSE}
+include_graphics('./logistic.png')
 ```
 
-In Figure \ref{fig:logit2}, we see an example of a logistic function for win probability by Elo rating difference.
+In Figure \ref{fig:logit}, we see an example of a logistic function for win probability by Elo rating difference.
 
 
 
