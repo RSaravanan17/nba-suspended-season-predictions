@@ -20,8 +20,8 @@ rmse = function(y, yhat) {
 }
 
 # variables that control how long the program takes to run
-num_splits = 50
-k_limit = 20
+num_splits = 200
+#k_limit = 20
 
 #model 1: linear regression model (RMSE)
 #80% training data, 20% test data
@@ -49,6 +49,7 @@ lm_vals = do(num_splits)*{
 }
 lm_avg = unname(colMeans(lm_vals))
 lm_avg
+
 
 "
 #model 2: knn (RMSE)
@@ -131,6 +132,7 @@ lr_model_avg = min(vals_lr_rr[,1])
 rr_model_avg = min(vals_lr_rr[,2])
 lr_model_avg
 rr_model_avg
+
 
 #model 4: logistic regression
 vals_logm = do(num_splits)*{
