@@ -176,79 +176,81 @@ cat("5) LOGISTIC REGRESSION (with interactions) - RMSE:", logm_vals[2])
 
 # Update player stats for end-of-season 2019-20
 
-player_stats$AST.[player_stats$Pos=="PG"] <- player_stats$AST.[player_stats$Pos=="PG"] + 0.5
-player_stats$AST.[player_stats$Pos=="SG"] <- player_stats$AST.[player_stats$Pos=="SG"] + 0.1
-player_stats$AST.[player_stats$Pos=="SF"] <- player_stats$AST.[player_stats$Pos=="SF"] - 0.1
-player_stats$AST.[player_stats$Pos=="PF"] <- player_stats$AST.[player_stats$Pos=="PF"] + 0.2
-player_stats$AST.[player_stats$Pos=="C"] <- player_stats$AST.[player_stats$Pos=="C"] - 0.2
+player_stats_update <- data.frame(player_stats)
 
-player_stats$ORB.[player_stats$Pos=="PG"] <- player_stats$ORB.[player_stats$Pos=="PG"] - 0.1
-player_stats$ORB.[player_stats$Pos=="SG"] <- player_stats$ORB.[player_stats$Pos=="SG"] - 0.1
-player_stats$ORB.[player_stats$Pos=="SF"] <- player_stats$ORB.[player_stats$Pos=="SF"] + 0.3
-player_stats$ORB.[player_stats$Pos=="PF"] <- player_stats$ORB.[player_stats$Pos=="PF"] + 0.5
-player_stats$ORB.[player_stats$Pos=="C"] <- player_stats$ORB.[player_stats$Pos=="C"] + 0.7
+player_stats_update$AST.[player_stats_update$Pos=="PG"] <- player_stats_update$AST.[player_stats_update$Pos=="PG"] + 0.5
+player_stats_update$AST.[player_stats_update$Pos=="SG"] <- player_stats_update$AST.[player_stats_update$Pos=="SG"] + 0.1
+player_stats_update$AST.[player_stats_update$Pos=="SF"] <- player_stats_update$AST.[player_stats_update$Pos=="SF"] - 0.1
+player_stats_update$AST.[player_stats_update$Pos=="PF"] <- player_stats_update$AST.[player_stats_update$Pos=="PF"] + 0.2
+player_stats_update$AST.[player_stats_update$Pos=="C"] <- player_stats_update$AST.[player_stats_update$Pos=="C"] - 0.2
 
-player_stats$DRB.[player_stats$Pos=="PG"] <- player_stats$DRB.[player_stats$Pos=="PG"] - 0.1
-player_stats$DRB.[player_stats$Pos=="SG"] <- player_stats$DRB.[player_stats$Pos=="SG"] - 0.1
-player_stats$DRB.[player_stats$Pos=="SF"] <- player_stats$DRB.[player_stats$Pos=="SF"] + 0.3
-player_stats$DRB.[player_stats$Pos=="PF"] <- player_stats$DRB.[player_stats$Pos=="PF"] + 0.5
-player_stats$DRB.[player_stats$Pos=="C"] <- player_stats$DRB.[player_stats$Pos=="C"] + 0.7
+player_stats_update$ORB.[player_stats_update$Pos=="PG"] <- player_stats_update$ORB.[player_stats_update$Pos=="PG"] - 0.1
+player_stats_update$ORB.[player_stats_update$Pos=="SG"] <- player_stats_update$ORB.[player_stats_update$Pos=="SG"] - 0.1
+player_stats_update$ORB.[player_stats_update$Pos=="SF"] <- player_stats_update$ORB.[player_stats_update$Pos=="SF"] + 0.3
+player_stats_update$ORB.[player_stats_update$Pos=="PF"] <- player_stats_update$ORB.[player_stats_update$Pos=="PF"] + 0.5
+player_stats_update$ORB.[player_stats_update$Pos=="C"] <- player_stats_update$ORB.[player_stats_update$Pos=="C"] + 0.7
 
-player_stats$TRB.[player_stats$Pos=="PG"] <- player_stats$TRB.[player_stats$Pos=="PG"] - 0.2
-player_stats$TRB.[player_stats$Pos=="SG"] <- player_stats$TRB.[player_stats$Pos=="SG"] - 0.2
-player_stats$TRB.[player_stats$Pos=="SF"] <- player_stats$TRB.[player_stats$Pos=="SF"] + 0.4
-player_stats$TRB.[player_stats$Pos=="PF"] <- player_stats$TRB.[player_stats$Pos=="PF"] + 0.6
-player_stats$TRB.[player_stats$Pos=="C"] <- player_stats$TRB.[player_stats$Pos=="C"] + 0.8
+player_stats_update$DRB.[player_stats_update$Pos=="PG"] <- player_stats_update$DRB.[player_stats_update$Pos=="PG"] - 0.1
+player_stats_update$DRB.[player_stats_update$Pos=="SG"] <- player_stats_update$DRB.[player_stats_update$Pos=="SG"] - 0.1
+player_stats_update$DRB.[player_stats_update$Pos=="SF"] <- player_stats_update$DRB.[player_stats_update$Pos=="SF"] + 0.3
+player_stats_update$DRB.[player_stats_update$Pos=="PF"] <- player_stats_update$DRB.[player_stats_update$Pos=="PF"] + 0.5
+player_stats_update$DRB.[player_stats_update$Pos=="C"] <- player_stats_update$DRB.[player_stats_update$Pos=="C"] + 0.7
 
-player_stats$BLK.[player_stats$Pos=="PG"] <- player_stats$BLK.[player_stats$Pos=="PG"] - 0.2
-player_stats$BLK.[player_stats$Pos=="SG"] <- player_stats$BLK.[player_stats$Pos=="SG"] - 0.2
-player_stats$BLK.[player_stats$Pos=="SF"] <- player_stats$BLK.[player_stats$Pos=="SF"] + 0.2
-player_stats$BLK.[player_stats$Pos=="PF"] <- player_stats$BLK.[player_stats$Pos=="PF"] + 0.3
-player_stats$BLK.[player_stats$Pos=="C"] <- player_stats$BLK.[player_stats$Pos=="C"] + 0.5
+player_stats_update$TRB.[player_stats_update$Pos=="PG"] <- player_stats_update$TRB.[player_stats_update$Pos=="PG"] - 0.2
+player_stats_update$TRB.[player_stats_update$Pos=="SG"] <- player_stats_update$TRB.[player_stats_update$Pos=="SG"] - 0.2
+player_stats_update$TRB.[player_stats_update$Pos=="SF"] <- player_stats_update$TRB.[player_stats_update$Pos=="SF"] + 0.4
+player_stats_update$TRB.[player_stats_update$Pos=="PF"] <- player_stats_update$TRB.[player_stats_update$Pos=="PF"] + 0.6
+player_stats_update$TRB.[player_stats_update$Pos=="C"] <- player_stats_update$TRB.[player_stats_update$Pos=="C"] + 0.8
 
-player_stats$TS.[player_stats$Pos=="PG"] <- player_stats$TS.[player_stats$Pos=="PG"] + 0.01
-player_stats$TS.[player_stats$Pos=="SG"] <- player_stats$TS.[player_stats$Pos=="SG"] + 0.02
-player_stats$TS.[player_stats$Pos=="SF"] <- player_stats$TS.[player_stats$Pos=="SF"] + 0.02
-player_stats$TS.[player_stats$Pos=="PF"] <- player_stats$TS.[player_stats$Pos=="PF"] + 0.01
-player_stats$TS.[player_stats$Pos=="C"] <- player_stats$TS.[player_stats$Pos=="C"] + 0.02
+player_stats_update$BLK.[player_stats_update$Pos=="PG"] <- player_stats_update$BLK.[player_stats_update$Pos=="PG"] - 0.2
+player_stats_update$BLK.[player_stats_update$Pos=="SG"] <- player_stats_update$BLK.[player_stats_update$Pos=="SG"] - 0.2
+player_stats_update$BLK.[player_stats_update$Pos=="SF"] <- player_stats_update$BLK.[player_stats_update$Pos=="SF"] + 0.2
+player_stats_update$BLK.[player_stats_update$Pos=="PF"] <- player_stats_update$BLK.[player_stats_update$Pos=="PF"] + 0.3
+player_stats_update$BLK.[player_stats_update$Pos=="C"] <- player_stats_update$BLK.[player_stats_update$Pos=="C"] + 0.5
 
-
-player_stats$WS[player_stats$Tm=="MIL"] <- player_stats$WS[player_stats$Tm=="MIL"] + 0.4
-player_stats$WS[player_stats$Tm=="LAL"] <- player_stats$WS[player_stats$Tm=="LAL"] + 0.4
-player_stats$WS[player_stats$Tm=="TOR"] <- player_stats$WS[player_stats$Tm=="TOR"] + 0.3
-player_stats$WS[player_stats$Tm=="LAC"] <- player_stats$WS[player_stats$Tm=="LAC"] + 0.25
-player_stats$WS[player_stats$Tm=="OKC"] <- player_stats$WS[player_stats$Tm=="OKC"] + 0.2
+player_stats_update$TS.[player_stats_update$Pos=="PG"] <- player_stats_update$TS.[player_stats_update$Pos=="PG"] + 0.01
+player_stats_update$TS.[player_stats_update$Pos=="SG"] <- player_stats_update$TS.[player_stats_update$Pos=="SG"] + 0.02
+player_stats_update$TS.[player_stats_update$Pos=="SF"] <- player_stats_update$TS.[player_stats_update$Pos=="SF"] + 0.02
+player_stats_update$TS.[player_stats_update$Pos=="PF"] <- player_stats_update$TS.[player_stats_update$Pos=="PF"] + 0.01
+player_stats_update$TS.[player_stats_update$Pos=="C"] <- player_stats_update$TS.[player_stats_update$Pos=="C"] + 0.02
 
 
-player_stats$WS[player_stats$USG.>=25.0] <- player_stats$WS[player_stats$USG.>=25.0] + 1.5
-player_stats$WS.48[player_stats$USG.>=25.0] <- player_stats$WS.48[player_stats$USG.>=25.0] + 0.015
+player_stats_update$WS[player_stats_update$Tm=="MIL"] <- player_stats_update$WS[player_stats_update$Tm=="MIL"] + 0.4
+player_stats_update$WS[player_stats_update$Tm=="LAL"] <- player_stats_update$WS[player_stats_update$Tm=="LAL"] + 0.4
+player_stats_update$WS[player_stats_update$Tm=="TOR"] <- player_stats_update$WS[player_stats_update$Tm=="TOR"] + 0.3
+player_stats_update$WS[player_stats_update$Tm=="LAC"] <- player_stats_update$WS[player_stats_update$Tm=="LAC"] + 0.25
+player_stats_update$WS[player_stats_update$Tm=="OKC"] <- player_stats_update$WS[player_stats_update$Tm=="OKC"] + 0.2
+
+
+player_stats_update$WS[player_stats_update$USG.>=25.0] <- player_stats_update$WS[player_stats_update$USG.>=25.0] + 1.5
+player_stats_update$WS.48[player_stats_update$USG.>=25.0] <- player_stats_update$WS.48[player_stats_update$USG.>=25.0] + 0.015
 
 
 
 # Re-sample train/test splits
 train_cases = sample.int(n, n_train, replace=FALSE)
 test_cases = setdiff(1:n, train_cases)
-on_train = player_stats[train_cases, 6:27]
-on_test = player_stats[test_cases, 6:27]
+on_train = player_stats_update[train_cases, 6:27]
+on_test = player_stats_update[test_cases, 6:27]
 
 
 
 logitModelWS = glm(WS ~ (. - WS.48 - OWS - DWS), data=on_train, family=gaussian, maxit = 100)
 
-predicted_WS = predict(logitModelWS, player_stats[,6:27])
+predicted_WS = predict(logitModelWS, player_stats_update[,6:27])
 
-predictions_WS <- data.frame(player_stats$Player, predicted_WS)
+predictions_WS <- data.frame(player_stats_update$Player, predicted_WS)
 predictions_WS <- predictions_WS %>%
   arrange(-predicted_WS)
 head(predictions_WS)
 
-names(predictions_WS)[names(predictions_WS) == "player_stats.Player"] <- "Player"
+names(predictions_WS)[names(predictions_WS) == "player_stats_update.Player"] <- "Player"
 names(predictions_WS)[names(predictions_WS) == "predicted_WS"] <- "Predicted WS"
 
 knitr::kable(predictions_WS[1:5,], caption = "Predicted WS Leaders at the End of the Regular Season")
 
 ggplot() +
-  geom_point(data=player_stats[,6:27],aes(x = WS, y = predicted_WS ), color="black") + 
+  geom_point(data=player_stats_update[,6:27],aes(x = WS, y = predicted_WS ), color="black") + 
   geom_line(data=player_stats[,6:27],aes(x = WS, y = WS ), color="red") + 
   xlab("Actual WS") + 
   ylab("Predicted WS") + 
@@ -259,20 +261,20 @@ ggplot() +
 
 logitModelVORP = glm(VORP ~ (. - WS - WS.48 - OWS - DWS), data=on_train, family=gaussian, maxit = 100)
 
-predicted_VORP = predict(logitModelVORP, player_stats[,6:27])
+predicted_VORP = predict(logitModelVORP, player_stats_update[,6:27])
 
-predictions_VORP <- data.frame(player_stats$Player, predicted_VORP)
+predictions_VORP <- data.frame(player_stats_update$Player, predicted_VORP)
 predictions_VORP <- predictions_VORP %>%
   arrange(-predicted_VORP)
 head(predictions_VORP)
 
-names(predictions_VORP)[names(predictions_VORP) == "player_stats.Player"] <- "Player"
+names(predictions_VORP)[names(predictions_VORP) == "player_stats_update.Player"] <- "Player"
 names(predictions_VORP)[names(predictions_VORP) == "predicted_VORP"] <- "Predicted VORP"
 
 knitr::kable(predictions_VORP[1:5,], caption = "Predicted VORP Leaders at the End of the Regular Season")
 
 ggplot() +
-  geom_point(data=player_stats[,6:27],aes(x = VORP, y = predicted_VORP ), color="black") + 
+  geom_point(data=player_stats_update[,6:27],aes(x = VORP, y = predicted_VORP ), color="black") + 
   geom_line(data=player_stats[,6:27],aes(x = VORP, y = VORP ), color="red") + 
   xlab("Actual VORP") + 
   ylab("Predicted VORP") + 
@@ -283,20 +285,20 @@ ggplot() +
 
 logitModelPER = glm(PER ~ (. - WS - WS.48 - OWS - DWS), data=on_train, family=gaussian, maxit = 100)
 
-predicted_PER = predict(logitModelPER, player_stats[,6:27])
+predicted_PER = predict(logitModelPER, player_stats_update[,6:27])
 
-predictions_PER <- data.frame(player_stats$Player, predicted_PER)
+predictions_PER <- data.frame(player_stats_update$Player, predicted_PER)
 predictions_PER <- predictions_PER %>%
   arrange(-predicted_PER)
 head(predictions_PER)
 
-names(predictions_PER)[names(predictions_PER) == "player_stats.Player"] <- "Player"
+names(predictions_PER)[names(predictions_PER) == "player_stats_update.Player"] <- "Player"
 names(predictions_PER)[names(predictions_PER) == "predicted_PER"] <- "Predicted PER"
 
 knitr::kable(predictions_PER[1:5,], caption = "Predicted PER Leaders at the End of the Regular Season")
 
 ggplot() +
-  geom_point(data=player_stats[,6:27],aes(x = PER, y = predicted_PER ), color="black") + 
+  geom_point(data=player_stats_update[,6:27],aes(x = PER, y = predicted_PER ), color="black") + 
   geom_line(data=player_stats[,6:27],aes(x = PER, y = PER ), color="red") + 
   xlab("Actual PER") + 
   ylab("Predicted PER") + 
@@ -308,20 +310,20 @@ ggplot() +
 
 logitModelUSG = glm(USG. ~ (. - WS - WS.48 - OWS - DWS), data=on_train, family=gaussian, maxit = 100)
 
-predicted_USG = predict(logitModelUSG, player_stats[,6:27])
+predicted_USG = predict(logitModelUSG, player_stats_update[,6:27])
 
-predictions_USG <- data.frame(player_stats$Player, predicted_USG)
+predictions_USG <- data.frame(player_stats_update$Player, predicted_USG)
 predictions_USG <- predictions_USG %>%
   arrange(-predicted_USG)
 head(predictions_USG)
 
-names(predictions_USG)[names(predictions_USG) == "player_stats.Player"] <- "Player"
+names(predictions_USG)[names(predictions_USG) == "player_stats_update.Player"] <- "Player"
 names(predictions_USG)[names(predictions_USG) == "predicted_USG"] <- "Predicted USG%"
 
 knitr::kable(predictions_USG[1:5,], caption = "Predicted USG% Leaders at the End of the Regular Season")
 
 ggplot() +
-  geom_point(data=player_stats[,6:27],aes(x = USG., y = predicted_USG ), color="black") + 
+  geom_point(data=player_stats_update[,6:27],aes(x = USG., y = predicted_USG ), color="black") + 
   geom_line(data=player_stats[,6:27],aes(x = USG., y = USG. ), color="red") + 
   xlab("Actual USG%") + 
   ylab("Predicted USG%") + 
@@ -333,20 +335,20 @@ ggplot() +
 
 logitModelOBPM = glm(OBPM ~ (. - WS - WS.48 - OWS - DWS - BPM), data=on_train, family=gaussian, maxit = 100)
 
-predicted_OBPM = predict(logitModelOBPM, player_stats[,6:27])
+predicted_OBPM = predict(logitModelOBPM, player_stats_update[,6:27])
 
-predictions_OBPM <- data.frame(player_stats$Player, predicted_OBPM)
+predictions_OBPM <- data.frame(player_stats_update$Player, predicted_OBPM)
 predictions_OBPM <- predictions_OBPM %>%
   arrange(-predicted_OBPM)
 head(predictions_OBPM)
 
-names(predictions_OBPM)[names(predictions_OBPM) == "player_stats.Player"] <- "Player"
+names(predictions_OBPM)[names(predictions_OBPM) == "player_stats_update.Player"] <- "Player"
 names(predictions_OBPM)[names(predictions_OBPM) == "predicted_OBPM"] <- "Predicted OBPM"
 
 knitr::kable(predictions_OBPM[1:5,], caption = "Predicted OBPM Leaders at the End of the Regular Season")
 
 ggplot() +
-  geom_point(data=player_stats[,6:27],aes(x = OBPM, y = predicted_OBPM ), color="black") + 
+  geom_point(data=player_stats_update[,6:27],aes(x = OBPM, y = predicted_OBPM ), color="black") + 
   geom_line(data=player_stats[,6:27],aes(x = OBPM, y = OBPM ), color="red") + 
   xlab("Actual OBPM") + 
   ylab("Predicted OBPM") + 
@@ -358,20 +360,20 @@ ggplot() +
 
 logitModelDBPM = glm(DBPM ~ (. - WS - WS.48 - OWS - DWS - BPM), data=on_train, family=gaussian, maxit = 100)
 
-predicted_DBPM = predict(logitModelDBPM, player_stats[,6:27])
+predicted_DBPM = predict(logitModelDBPM, player_stats_update[,6:27])
 
-predictions_DBPM <- data.frame(player_stats$Player, predicted_DBPM)
+predictions_DBPM <- data.frame(player_stats_update$Player, predicted_DBPM)
 predictions_DBPM <- predictions_DBPM %>%
   arrange(-predicted_DBPM)
 head(predictions_DBPM)
 
-names(predictions_DBPM)[names(predictions_DBPM) == "player_stats.Player"] <- "Player"
+names(predictions_DBPM)[names(predictions_DBPM) == "player_stats_update.Player"] <- "Player"
 names(predictions_DBPM)[names(predictions_DBPM) == "predicted_DBPM"] <- "Predicted DBPM"
 
 knitr::kable(predictions_DBPM[1:5,], caption = "Predicted DBPM Leaders at the End of the Regular Season")
 
 ggplot() +
-  geom_point(data=player_stats[,6:27],aes(x = DBPM, y = predicted_DBPM ), color="black") + 
+  geom_point(data=player_stats_update[,6:27],aes(x = DBPM, y = predicted_DBPM ), color="black") + 
   geom_line(data=player_stats[,6:27],aes(x = DBPM, y = DBPM ), color="red") + 
   xlab("Actual DBPM") + 
   ylab("Predicted DBPM") + 
