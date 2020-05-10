@@ -253,6 +253,31 @@ ggplot() +
 
 
 
+logitModelUSG = glm(USG. ~ (. - WS - WS.48 - OWS - DWS), data=on_train, family=gaussian, maxit = 100)
+
+predicted_USG = predict(logitModelUSG, player_stats[,6:27])
+
+predictions_USG <- data.frame(player_stats$Player, predicted_USG)
+predictions_USG <- predictions_USG %>%
+  arrange(-predicted_USG)
+head(predictions_USG)
+
+names(predictions_USG)[names(predictions_USG) == "player_stats.Player"] <- "Player"
+names(predictions_USG)[names(predictions_USG) == "predicted_USG"] <- "Predicted USG%"
+
+knitr::kable(predictions_USG[1:5,], caption = "Predicted USG% Leaders at the End of the Regular Season")
+
+ggplot() +
+  geom_point(data=player_stats[,6:27],aes(x = USG., y = predicted_USG ), color="black") + 
+  geom_line(data=player_stats[,6:27],aes(x = USG., y = USG. ), color="red") + 
+  xlab("Actual USG%") + 
+  ylab("Predicted USG%") + 
+  ggtitle("Actual USG% vs. Predicted USG%")
+
+
+
+
+
 logitModelOBPM = glm(OBPM ~ (. - WS - WS.48 - OWS - DWS - BPM), data=on_train, family=gaussian, maxit = 100)
 
 predicted_OBPM = predict(logitModelOBPM, player_stats[,6:27])
@@ -299,3 +324,30 @@ ggplot() +
   ylab("Predicted DBPM") + 
   ggtitle("Actual DBPM vs. Predicted DBPM")
 
+
+
+recorded_stats <- data.frame(colnames(player_stats[,6:27]))
+names(recorded_stats)[1] <- "Statistics"
+recorded_stats["Meaning"] <- c("Num. games played", 
+                               "Num. minutes played", 
+                               "Measure of per-minute production", 
+                               "Overall shooting efficiency", 
+                               "% of field goal attempts from 3-point range", 
+                               "Num. free throw attempts per field goal attempt", 
+                               "% of available offensive rebounds that a player grabbed", 
+                               "% of available defensive rebounds that a player grabbed", 
+                               "% of available total rebounds that a player grabbed", 
+                               "% of teammate field goals that a player assisted", 
+                               "% of opponent possessions that were stolen by a player", 
+                               "% of opponent field goals attempts that were blocked by a player", 
+                               "Num. turnovers committed per 100 plays", 
+                               "% of team plays used by a player", 
+                               "Num. wins contributed by a player from his offense", 
+                               "Num. wins contributed by a player from his defense", 
+                               "Num. wins contributed by a player", 
+                               "Num. wins contributed by a player per 48 minutes", 
+                               "Offensive points per 100 possessions above a league-average player", 
+                               "Defensive points per 100 possessions above a league-average player", 
+                               "Total points per 100 possessions above a league-average player", 
+                               "Points per 100 team possessions contributed by a player above a replacement-level player")
+knitr::kable(recorded_stats)

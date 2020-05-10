@@ -130,7 +130,7 @@ In Figure \ref{fig:logit}, we see an example of a logistic function for win prob
 
 Another interesting part of any NBA season is the awards given to the players and teams based on their regular season performances. Some key awards that catch headlines every year include Most Valuable Player (MVP), Defensive Player of the Year (DPOY), and Rookie of the Year (ROY). In addition to predicting the end-of-season standings, we decided that any analysis of the remainder of the 2019-20 NBA season would be incomplete unless it discussed award winners in the major categories. In particular, we sought to predict the MVP and 
 
-In order to predict award winners at the end of the season, we needed to predict the leaders of some of the crucial statistical categories at the end of the season. To predict these players, we analyzed some significant statistics and identified the optimal regression model to predict these statistics. Some of the statistics we utilized in building this model include true shooting percentage (TS), total rebound percentage (TRB), usage percentage (USG), and assist percentage (AST) among 22 total recorded categories.
+In order to predict award winners at the end of the season, we needed to predict the leaders of some of the crucial statistical categories at the end of the season. To predict these players, we analyzed some significant statistics and identified the optimal regression model to predict these statistics. Some of the statistics we utilized in building this model include true shooting percentage (TS%), total rebound percentage (TRB%), assist percentage (AST%), and block percentage (BLK%) among 22 total recorded categories. For additional information on the exact statistics that were used in these predictions, refer to Table 3 (Appendix).
 
 Accordingly, we examined different types of regression models in order to identify which type of model best predicted some of the major statistics. These include win shares (WS), value over replacement player (VORP), player efficiency rating (PER), offensive box plus/minus (OBPM), and defensive box plus/minus (DBPM).
 
@@ -309,7 +309,7 @@ cat("4) LOGISTIC REGRESSION (without interactions) - RMSE:", logm_vals[1])
 cat("4) LOGISTIC REGRESSION (with interactions) - RMSE:", logm_vals[2])
 ```
 
-```{r pred_stat_leaders, echo=FALSE, fig.width = 3, fig.height = 2, fig.align='center', out.width='.49\\linewidth', fig.show='hold', fig.cap="\\label{fig:pred_stat_leaders}End-of-Season Predicted Stat Leaders with Logistic Regression Model", comment=NA, warning=FALSE}
+```{r pred_stat_leaders, echo=FALSE, fig.align='center', fig.cap="\\label{fig:pred_stat_leaders}End-of-Season Predicted Stat Leaders with Logistic Regression Model", fig.height=2, fig.show='hold', fig.width=3, warning=FALSE, comment=NA, out.width='.49\\linewidth'}
 train_cases = sample.int(n, n_train, replace=FALSE)
 test_cases = setdiff(1:n, train_cases)
 on_train = player_stats[train_cases, 6:27]
@@ -367,6 +367,23 @@ names(predictions_PER)[names(predictions_PER) == "predicted_PER"] <- "Predicted 
 
 
 
+logitModelUSG = glm(USG. ~ (. - WS - WS.48 - OWS - DWS), data=on_train, family=gaussian, maxit = 100)
+
+predicted_USG = predict(logitModelUSG, player_stats[,6:27])
+
+predictions_USG <- data.frame(player_stats$Player, predicted_USG)
+predictions_USG <- predictions_USG %>%
+  arrange(-predicted_USG)
+#head(predictions_USG)
+
+names(predictions_USG)[names(predictions_USG) == "player_stats.Player"] <- "Player"
+names(predictions_USG)[names(predictions_USG) == "predicted_USG"] <- "Predicted USG%"
+
+#kable(predictions_USG[1:5,], caption = "Predicted USG% Leaders at the End of the Regular Season")
+
+
+
+
 logitModelOBPM = glm(OBPM ~ (. - WS - WS.48 - OWS - DWS - BPM), data=on_train, family=gaussian, maxit = 100)
 
 predicted_OBPM = predict(logitModelOBPM, player_stats[,6:27])
@@ -399,7 +416,7 @@ names(predictions_DBPM)[names(predictions_DBPM) == "predicted_DBPM"] <- "Predict
 #kable(predictions_DBPM[1:5,], caption = "Predicted DBPM Leaders for 2019-20")
 
 
-kable(list(predictions_WS[1:5,], predictions_VORP[1:5,], predictions_PER[1:5,], predictions_OBPM[1:5,], predictions_DBPM[1:5,]), caption = "End-of-Season 2019-20 Predicted Stat Leaders with Logistic Regression Model")
+kable(list(predictions_WS[1:5,], predictions_VORP[1:5,], predictions_PER[1:5,], predictions_USG[1:5,], predictions_OBPM[1:5,], predictions_DBPM[1:5,]), caption = "End-of-Season 2019-20 Predicted Stat Leaders with Logistic Regression Model")
 ```
 
 # Results
@@ -417,7 +434,7 @@ Then, we predicted the season leaders for the various principal categories of WS
 
 Using these accumulated season statistics, we determined the end-of-season statistics by updating each player's stats based on their team, schedule matchups, and usage percentage. We updated the statistics to arrive at the end-of-season statistics using these factors because a player's team and schedule can heavily influence their output and their usage percentage indicates how heavily their team relies on that specific player (which correlates to more playing time).
 
-The final season stat leaders for each of the categories is shown in Table 2. We verified these predictions by limiting the qualifiers for each category and comparing with each player's previous performance history. We narrowed the pool of players down by only considering players with more than 25 games played and 1200 minutes played because this reflects the criteria that the NBA Season Awards use to nominate qualifying players. By inspecting the top five players in each category, we notice several household names and early season favorites for MVP and DPOY including Giannis Antetokounmpo, James Harden, LeBron James, and Anthony Davis.
+The final season stat leaders for each of the categories is shown in Table 2. We verified these predictions by limiting the qualifiers for each category and comparing with each player's previous performance history. We narrowed the pool of players down by only considering players with more than 25 games played and 1200 minutes played because this reflects the criteria that the NBA Season Awards use to nominate qualifying players. By inspecting the top five players in each category, we noticed several household names and early season favorites for MVP and DPOY including Giannis Antetokounmpo, James Harden, LeBron James, and Anthony Davis.
 
 ```{r echo=FALSE, fig.width = 5, fig.height = 3, fig.align='center', out.width='.49\\linewidth', fig.show='hold', fig.cap="\\label{fig:pred_stat_plots}End-of-Season Predictions of Key Statistics with Logistic Regression Model", fig.pos = "H", comment=NA, warning=FALSE}
 ggplot() +
@@ -440,6 +457,13 @@ ggplot() +
   xlab("Actual PER") + 
   ylab("Predicted PER") + 
   ggtitle("Actual PER vs. Predicted PER")
+
+ggplot() +
+  geom_point(data=player_stats[,6:27],aes(x = USG., y = predicted_USG ), color="black") + 
+  geom_line(data=player_stats[,6:27],aes(x = USG., y = USG. ), color="red") + 
+  xlab("Actual USG%") + 
+  ylab("Predicted USG%") + 
+  ggtitle("Actual USG% vs. Predicted USG%")
 
 ggplot() +
   geom_point(data=player_stats[,6:27],aes(x = OBPM, y = predicted_OBPM ), color="black") + 
@@ -479,7 +503,33 @@ ggplot() +
 include_graphics('./EloChart.png')
 ```
 
-
+```{r echo=FALSE, out.width='100%', fig.width = 8, fig.height = 5, fig.align='center', out.width='.49\\linewidth', fig.cap="\\label{fig:stat_chart}Statistics Recorded by NBA", comment=NA, warning=FALSE}
+recorded_stats <- data.frame(colnames(player_stats[,6:27]))
+names(recorded_stats)[1] <- "Statistics"
+recorded_stats["Meaning"] <- c("Num. games played", 
+                               "Num. minutes played", 
+                               "Measure of per-minute production", 
+                               "Overall shooting efficiency", 
+                               "% of field goal attempts from 3-point range", 
+                               "Num. free throw attempts per field goal attempt", 
+                               "% of available offensive rebounds that a player grabbed", 
+                               "% of available defensive rebounds that a player grabbed", 
+                               "% of available total rebounds that a player grabbed", 
+                               "% of teammate field goals that a player assisted", 
+                               "% of opponent possessions that were stolen by a player", 
+                               "% of opponent field goals attempts that were blocked by a player", 
+                               "Num. turnovers committed per 100 plays", 
+                               "% of team plays used by a player", 
+                               "Num. wins contributed by a player from his offense", 
+                               "Num. wins contributed by a player from his defense", 
+                               "Num. wins contributed by a player", 
+                               "Num. wins contributed by a player per 48 minutes", 
+                               "Offensive points per 100 possessions above a league-average player", 
+                               "Defensive points per 100 possessions above a league-average player", 
+                               "Total points per 100 possessions above a league-average player", 
+                               "Points per 100 team possessions contributed by a player above a replacement-level player")
+kable(recorded_stats)
+```
 
 # References
 
