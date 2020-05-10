@@ -172,11 +172,64 @@ cat("5) LOGISTIC REGRESSION (with interactions) - RMSE:", logm_vals[2])
 
 
 
+
+
+# Update player stats for end-of-season 2019-20
+
+player_stats$AST.[player_stats$Pos=="PG"] <- player_stats$AST.[player_stats$Pos=="PG"] + 0.5
+player_stats$AST.[player_stats$Pos=="SG"] <- player_stats$AST.[player_stats$Pos=="SG"] + 0.1
+player_stats$AST.[player_stats$Pos=="SF"] <- player_stats$AST.[player_stats$Pos=="SF"] - 0.1
+player_stats$AST.[player_stats$Pos=="PF"] <- player_stats$AST.[player_stats$Pos=="PF"] + 0.2
+player_stats$AST.[player_stats$Pos=="C"] <- player_stats$AST.[player_stats$Pos=="C"] - 0.2
+
+player_stats$ORB.[player_stats$Pos=="PG"] <- player_stats$ORB.[player_stats$Pos=="PG"] - 0.1
+player_stats$ORB.[player_stats$Pos=="SG"] <- player_stats$ORB.[player_stats$Pos=="SG"] - 0.1
+player_stats$ORB.[player_stats$Pos=="SF"] <- player_stats$ORB.[player_stats$Pos=="SF"] + 0.3
+player_stats$ORB.[player_stats$Pos=="PF"] <- player_stats$ORB.[player_stats$Pos=="PF"] + 0.5
+player_stats$ORB.[player_stats$Pos=="C"] <- player_stats$ORB.[player_stats$Pos=="C"] + 0.7
+
+player_stats$DRB.[player_stats$Pos=="PG"] <- player_stats$DRB.[player_stats$Pos=="PG"] - 0.1
+player_stats$DRB.[player_stats$Pos=="SG"] <- player_stats$DRB.[player_stats$Pos=="SG"] - 0.1
+player_stats$DRB.[player_stats$Pos=="SF"] <- player_stats$DRB.[player_stats$Pos=="SF"] + 0.3
+player_stats$DRB.[player_stats$Pos=="PF"] <- player_stats$DRB.[player_stats$Pos=="PF"] + 0.5
+player_stats$DRB.[player_stats$Pos=="C"] <- player_stats$DRB.[player_stats$Pos=="C"] + 0.7
+
+player_stats$TRB.[player_stats$Pos=="PG"] <- player_stats$TRB.[player_stats$Pos=="PG"] - 0.2
+player_stats$TRB.[player_stats$Pos=="SG"] <- player_stats$TRB.[player_stats$Pos=="SG"] - 0.2
+player_stats$TRB.[player_stats$Pos=="SF"] <- player_stats$TRB.[player_stats$Pos=="SF"] + 0.4
+player_stats$TRB.[player_stats$Pos=="PF"] <- player_stats$TRB.[player_stats$Pos=="PF"] + 0.6
+player_stats$TRB.[player_stats$Pos=="C"] <- player_stats$TRB.[player_stats$Pos=="C"] + 0.8
+
+player_stats$BLK.[player_stats$Pos=="PG"] <- player_stats$BLK.[player_stats$Pos=="PG"] - 0.2
+player_stats$BLK.[player_stats$Pos=="SG"] <- player_stats$BLK.[player_stats$Pos=="SG"] - 0.2
+player_stats$BLK.[player_stats$Pos=="SF"] <- player_stats$BLK.[player_stats$Pos=="SF"] + 0.2
+player_stats$BLK.[player_stats$Pos=="PF"] <- player_stats$BLK.[player_stats$Pos=="PF"] + 0.3
+player_stats$BLK.[player_stats$Pos=="C"] <- player_stats$BLK.[player_stats$Pos=="C"] + 0.5
+
+player_stats$TS.[player_stats$Pos=="PG"] <- player_stats$TS.[player_stats$Pos=="PG"] + 0.01
+player_stats$TS.[player_stats$Pos=="SG"] <- player_stats$TS.[player_stats$Pos=="SG"] + 0.02
+player_stats$TS.[player_stats$Pos=="SF"] <- player_stats$TS.[player_stats$Pos=="SF"] + 0.02
+player_stats$TS.[player_stats$Pos=="PF"] <- player_stats$TS.[player_stats$Pos=="PF"] + 0.01
+player_stats$TS.[player_stats$Pos=="C"] <- player_stats$TS.[player_stats$Pos=="C"] + 0.02
+
+
+player_stats$WS[player_stats$Tm=="MIL"] <- player_stats$WS[player_stats$Tm=="MIL"] + 0.4
+player_stats$WS[player_stats$Tm=="LAL"] <- player_stats$WS[player_stats$Tm=="LAL"] + 0.4
+player_stats$WS[player_stats$Tm=="TOR"] <- player_stats$WS[player_stats$Tm=="TOR"] + 0.3
+player_stats$WS[player_stats$Tm=="LAC"] <- player_stats$WS[player_stats$Tm=="LAC"] + 0.25
+player_stats$WS[player_stats$Tm=="OKC"] <- player_stats$WS[player_stats$Tm=="OKC"] + 0.2
+
+
+player_stats$WS[player_stats$USG.>=25.0] <- player_stats$WS[player_stats$USG.>=25.0] + 1.5
+player_stats$WS.48[player_stats$USG.>=25.0] <- player_stats$WS.48[player_stats$USG.>=25.0] + 0.015
+
+
+
+# Re-sample train/test splits
 train_cases = sample.int(n, n_train, replace=FALSE)
 test_cases = setdiff(1:n, train_cases)
 on_train = player_stats[train_cases, 6:27]
 on_test = player_stats[test_cases, 6:27]
-
 
 
 
@@ -351,3 +404,4 @@ recorded_stats["Meaning"] <- c("Num. games played",
                                "Total points per 100 possessions above a league-average player", 
                                "Points per 100 team possessions contributed by a player above a replacement-level player")
 knitr::kable(recorded_stats)
+

@@ -132,11 +132,11 @@ Another interesting part of any NBA season is the awards given to the players an
 
 In order to predict award winners at the end of the season, we needed to predict the leaders of some of the crucial statistical categories at the end of the season. To predict these players, we analyzed some significant statistics and identified the optimal regression model to predict these statistics. Some of the statistics we utilized in building this model include true shooting percentage (TS%), total rebound percentage (TRB%), assist percentage (AST%), and block percentage (BLK%) among 22 total recorded categories. For additional information on the exact statistics that were used in these predictions, refer to Table 3 (Appendix).
 
-Accordingly, we examined different types of regression models in order to identify which type of model best predicted some of the major statistics. These include win shares (WS), value over replacement player (VORP), player efficiency rating (PER), offensive box plus/minus (OBPM), and defensive box plus/minus (DBPM).
+Accordingly, we examined different types of regression models in order to identify which type of model best predicted some of the major statistics. These include win shares (WS), value over replacement player (VORP), player efficiency rating (PER), usage percentage (USG%), offensive box plus/minus (OBPM), and defensive box plus/minus (DBPM).
 
 To identify the best prediction model, we first predicted WS from the current 2019-20 season statistics using 4 different regression models: linear, lasso, ridge, and logistic. We measured the performance of every model with the actual WS values for each player using RMSE (root mean squared error) to determine which had the least error with smaller RMSE values indicating higher accuracy. In order to reduce Monte Carlo variability, we used 200 repeated random samples of the data for each model to find the true RMSE values.
 
-We then used this to predict the MVP and DPOY by looking at the leaders at the end of the season in WS, VORP, PER, OBPM, and DBPM because these categories carried significant weighting in determing the respective awards.
+We then used this to predict the MVP and DPOY by looking at the leaders at the end of the season in WS, VORP, PER, OBPM, and DBPM because these categories carried significant weighting in determing the respective awards. In order to produce statistics that would reflect the end-of-season data, we updated each player's stats based on their team, schedule matchups, and usage percentage. We weighted each of these features by category and used the current player statistics to simulate the expected statistics for every player at the end of the 2019-20 season. We chose these specific features because a player's team and schedule can heavily influence their output and their usage percentage indicates how heavily their team relies on that specific player (which correlates to more playing time).
 
 
 ```{r calculate_elo, include=FALSE}
@@ -310,6 +310,57 @@ cat("4) LOGISTIC REGRESSION (with interactions) - RMSE:", logm_vals[2])
 ```
 
 ```{r pred_stat_leaders, echo=FALSE, fig.align='center', fig.cap="\\label{fig:pred_stat_leaders}End-of-Season Predicted Stat Leaders with Logistic Regression Model", fig.height=2, fig.show='hold', fig.width=3, warning=FALSE, comment=NA, out.width='.49\\linewidth'}
+# Update player stats for end-of-season 2019-20
+
+player_stats$AST.[player_stats$Pos=="PG"] <- player_stats$AST.[player_stats$Pos=="PG"] + 0.5
+player_stats$AST.[player_stats$Pos=="SG"] <- player_stats$AST.[player_stats$Pos=="SG"] + 0.1
+player_stats$AST.[player_stats$Pos=="SF"] <- player_stats$AST.[player_stats$Pos=="SF"] - 0.1
+player_stats$AST.[player_stats$Pos=="PF"] <- player_stats$AST.[player_stats$Pos=="PF"] + 0.2
+player_stats$AST.[player_stats$Pos=="C"] <- player_stats$AST.[player_stats$Pos=="C"] - 0.2
+
+player_stats$ORB.[player_stats$Pos=="PG"] <- player_stats$ORB.[player_stats$Pos=="PG"] - 0.1
+player_stats$ORB.[player_stats$Pos=="SG"] <- player_stats$ORB.[player_stats$Pos=="SG"] - 0.1
+player_stats$ORB.[player_stats$Pos=="SF"] <- player_stats$ORB.[player_stats$Pos=="SF"] + 0.3
+player_stats$ORB.[player_stats$Pos=="PF"] <- player_stats$ORB.[player_stats$Pos=="PF"] + 0.5
+player_stats$ORB.[player_stats$Pos=="C"] <- player_stats$ORB.[player_stats$Pos=="C"] + 0.7
+
+player_stats$DRB.[player_stats$Pos=="PG"] <- player_stats$DRB.[player_stats$Pos=="PG"] - 0.1
+player_stats$DRB.[player_stats$Pos=="SG"] <- player_stats$DRB.[player_stats$Pos=="SG"] - 0.1
+player_stats$DRB.[player_stats$Pos=="SF"] <- player_stats$DRB.[player_stats$Pos=="SF"] + 0.3
+player_stats$DRB.[player_stats$Pos=="PF"] <- player_stats$DRB.[player_stats$Pos=="PF"] + 0.5
+player_stats$DRB.[player_stats$Pos=="C"] <- player_stats$DRB.[player_stats$Pos=="C"] + 0.7
+
+player_stats$TRB.[player_stats$Pos=="PG"] <- player_stats$TRB.[player_stats$Pos=="PG"] - 0.2
+player_stats$TRB.[player_stats$Pos=="SG"] <- player_stats$TRB.[player_stats$Pos=="SG"] - 0.2
+player_stats$TRB.[player_stats$Pos=="SF"] <- player_stats$TRB.[player_stats$Pos=="SF"] + 0.4
+player_stats$TRB.[player_stats$Pos=="PF"] <- player_stats$TRB.[player_stats$Pos=="PF"] + 0.6
+player_stats$TRB.[player_stats$Pos=="C"] <- player_stats$TRB.[player_stats$Pos=="C"] + 0.8
+
+player_stats$BLK.[player_stats$Pos=="PG"] <- player_stats$BLK.[player_stats$Pos=="PG"] - 0.2
+player_stats$BLK.[player_stats$Pos=="SG"] <- player_stats$BLK.[player_stats$Pos=="SG"] - 0.2
+player_stats$BLK.[player_stats$Pos=="SF"] <- player_stats$BLK.[player_stats$Pos=="SF"] + 0.2
+player_stats$BLK.[player_stats$Pos=="PF"] <- player_stats$BLK.[player_stats$Pos=="PF"] + 0.3
+player_stats$BLK.[player_stats$Pos=="C"] <- player_stats$BLK.[player_stats$Pos=="C"] + 0.5
+
+player_stats$TS.[player_stats$Pos=="PG"] <- player_stats$TS.[player_stats$Pos=="PG"] + 0.01
+player_stats$TS.[player_stats$Pos=="SG"] <- player_stats$TS.[player_stats$Pos=="SG"] + 0.02
+player_stats$TS.[player_stats$Pos=="SF"] <- player_stats$TS.[player_stats$Pos=="SF"] + 0.02
+player_stats$TS.[player_stats$Pos=="PF"] <- player_stats$TS.[player_stats$Pos=="PF"] + 0.01
+player_stats$TS.[player_stats$Pos=="C"] <- player_stats$TS.[player_stats$Pos=="C"] + 0.02
+
+
+player_stats$WS[player_stats$Tm=="MIL"] <- player_stats$WS[player_stats$Tm=="MIL"] + 0.4
+player_stats$WS[player_stats$Tm=="LAL"] <- player_stats$WS[player_stats$Tm=="LAL"] + 0.4
+player_stats$WS[player_stats$Tm=="TOR"] <- player_stats$WS[player_stats$Tm=="TOR"] + 0.3
+player_stats$WS[player_stats$Tm=="LAC"] <- player_stats$WS[player_stats$Tm=="LAC"] + 0.25
+player_stats$WS[player_stats$Tm=="OKC"] <- player_stats$WS[player_stats$Tm=="OKC"] + 0.2
+
+
+player_stats$WS[player_stats$USG.>=25.0] <- player_stats$WS[player_stats$USG.>=25.0] + 1.5
+player_stats$WS.48[player_stats$USG.>=25.0] <- player_stats$WS.48[player_stats$USG.>=25.0] + 0.015
+
+
+# Re-sample train/test splits
 train_cases = sample.int(n, n_train, replace=FALSE)
 test_cases = setdiff(1:n, train_cases)
 on_train = player_stats[train_cases, 6:27]
