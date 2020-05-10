@@ -43,17 +43,18 @@ library(elo)
 # k: this is called the K-factor. This is basically how many Elo points are up for grabs in each match.(20)
 # The idea is to loop over each game in matches, get the pre-match ratings for both teams, and update them based on the result. 
 # We'll get two new ratings, which we'll use to update our data in teams.
+i = 2
 for (i in seq_len(nrow(matches))) {
-  match <- matches[i, ]
+  match <- matches[i, ] # Clippers beat Lakers
   
   # Pre-match ratings
-  teamA_elo <- subset(teams, team == match$Home.Neutral)$elo
-  teamB_elo <- subset(teams, team == match$Visitor.Neutral)$elo
+  teamA_elo <- subset(teams, team == match$Home.Neutral)$elo # 1500
+  teamB_elo <- subset(teams, team == match$Visitor.Neutral)$elo #1500
   
   # Let's update our ratings
   new_elo <- elo.calc(wins.A = match$result,
-                      elo.A = teamA_elo,
-                      elo.B = teamB_elo,
+                      elo.A = teamA_elo, # elo.A = 1510
+                      elo.B = teamB_elo, # elo.B = 1490
                       k = 20)
   
   # The results come back as a data.frame
@@ -66,7 +67,7 @@ for (i in seq_len(nrow(matches))) {
   # and leave the other teams as they were
   teams <- teams %>%
     mutate(elo = if_else(team == match$Home.Neutral, teamA_new_elo,
-                         if_else(team == match$Visitor.Neutral, teamB_new_elo, elo)))
+                         if_else(team == match$Visitor.Neutral, teamB_new_elo, elo))) # updates in data frame
 }
 
 # After a few minutes, you should get a nice teams data.frame, with the most up-to-date international Elo ratings for June 2018
@@ -125,6 +126,8 @@ Vectors of team names are denoted team.A or team.B.
 # To calculate the probability team.A beats team.B, use elo.prob()
 elo.A <- c(1500, 1500)
 elo.B <- c(1500, 1600)
+elo.A <- c(1623.81)
+elo.B <- c(1596.096)
 elo.prob(elo.A, elo.B)
 # To calculate the score update after the two teams play, use elo.update()
 wins.A <- c(1, 0)
