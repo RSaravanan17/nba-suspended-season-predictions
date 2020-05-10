@@ -33,12 +33,11 @@ library(knitr)
 ```
 
 ```{r data, include=FALSE}
-# Data
+print(get)
 season2016_2017 = read.csv('./data/nba-scrape-data-2016-2017.csv', header=TRUE)
 season2017_2018 = read.csv('./data/nba-scrape-data-2017-2018.csv', header=TRUE)
 season2018_2019 = read.csv('./data/nba-scrape-data-2018-2019.csv', header=TRUE)
 season2019_2020 = read.csv('./data/nba-scrape-data-2019-2020.csv', header=TRUE)
-Season.19.20 <- read.csv('./data/Basketball-Reference-19-20/Games/Season-19-20.csv', header=TRUE)
 remaining_games_19_20 <- read.csv('./data/nba-remaining-games-2019-2020.csv', header=TRUE)
 ```
 
@@ -72,9 +71,15 @@ These ratings depend only on the final score of each game as well as where it wa
 
 ### How does Elo work?
 
-The long-run average for an Elo score in the NBA sits around 1500. An Elo of 1500 means that the teams performance would be normally distrubuted around an average of 1500 with the chance of performing better or worse. The formula for Elo below shows how the probability of one team beating another is calculated using the ratings.
+The long-run average for an Elo score in the NBA sits around 1500. An Elo of 1500 means that the teams performance would be normally distrubuted around an average of 1500 with the chance of performing better or worse.
 
-When Player $A$ competes in a match against Player $B$, Player $A$ has an expected outcome (probability or score) for Team $A$ ($E[A]$) where $R_A$ is the rating for Team $A$ and $R_B$ is the rating for Team $B$. The expected outcome for Team $A$ ($E[A]$) can be calculated by the formula below:
+```{r elo_chart, echo=FALSE, out.width='100%', fig.width = 8, fig.height = 5, fig.align='center', out.width='.49\\linewidth', fig.cap="\\label{fig:elo_chart}Breakdown of Elo Rating", comment=NA, warning=FALSE}
+include_graphics('./EloChart.png')
+```
+
+Figure \ref{fig:elo_chart} shows what an Elo rating tells us about a team. A higher Elo rating indicates that the team is more likely to play deeper into the season.
+
+The formula for Elo below shows how the probability of one team beating another is calculated using the ratings. When Player $A$ competes in a match against Player $B$, Player $A$ has an expected outcome (probability or score) for Team $A$ ($E[A]$) where $R_A$ is the rating for Team $A$ and $R_B$ is the rating for Team $B$. The expected outcome for Team $A$ ($E[A]$) can be calculated by the formula below:
 
 $$
 E[A] = \frac{1}{1 + 10^{\frac{(R_B-R_A)}{400}}}
@@ -131,7 +136,7 @@ In Figure \ref{fig:logit}, we see an example of a logistic function for win prob
 
 
 
-First, we calculated the Elo ratings for each team for the games played so far in the 2019-20 season. As explained earlier, we incorporated 25% of the previous seasons Elo ratings with 75% of this season's current Elo ratings. Below are the Elo ratings we derived for each team.
+First, we calculated the Elo ratings for each team for the games played so far in the 2019-20 season. As explained earlier, we incorporated 25% of the previous season's Elo ratings with 75% of this season's current Elo ratings. Below are the Elo ratings we derived for each team.
 
 ```{r calculate_elo, include=FALSE}
 nbateams <- data.frame(team=union(season2019_2020$home_team_name, season2019_2020$visitor_team_name))
