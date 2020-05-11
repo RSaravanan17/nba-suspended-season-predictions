@@ -119,13 +119,620 @@ include_graphics('./logistic.png')
 
 In Figure \ref{fig:logit}, we see an example of a logistic function for win probability by Elo rating difference.
 
+### Calculating Historic Elos
+
+### Simulations
+
+After calculating the elo ratings for each NBA team up until the last game they played (before the season was cancelled), we used these ratings to then perform simulations matching up teams based on the rest of the season that was supposed to happen, as well as the post-season tournaments based on the top performers of the regular season.
+
+```{r, results='hide', echo=FALSE, warning=FALSE, error=FALSE, message=FALSE}
+# Running simulations on the remaining regular season schedule, then for playoffs, then for finals
+library(elo)
+library(dplyr)
+
+# Remainder of regular season
+reg_season <- nba.remaining.games.2019.2020
+str(reg_season)
+head(reg_season)
+
+reg_season$home_team <- as.character(reg_season$home_team)
+reg_season$visitor_team <- as.character(reg_season$visitor_team)
+
+elos <- nba.elo.current.2019.2020
+head(elos, 30)
+
+elos$team <- as.character(elos$team)
+str(elos)
+
+# DF to store elos after each game for plotting
+elo_history = data.frame(teams = as.character(elos$team))
+elo_history$elo = elos$elo
+
+# List of winners
+winners <- c()
+
+matchups <- reg_season[2:3]
+head(matchups)
+str(matchups)
 
 
+#row = 1 # For test purposes
+for (row in 1:nrow(matchups)) {
+  
+  # Home Team and Away Team
+  home <- matchups[row, "home_team"]
+  away  <- matchups[row, "visitor_team"]
+  
+  # Pre-match ratings
+  x = subset(elos, team == home)
+  elo.A <- (as.integer(c(x[3])) + as.integer(10)) # plus 10/100 represents HCA
+  
+  y = subset(elos, team == away)
+  elo.B <- as.integer(c(y[3]))
+  
+  # Probability of winning
+  prob.A <- elo.prob(elo.A, elo.B)
+  prob.B <- elo.prob(elo.B, elo.A)
+  
+  # Sample from distribution of size 1 because if repeated the team with higher score is obviously expected to win. this makes it more "random"
+  winner <- sample(c(home, away), size=1, prob=c(prob.A, prob.B))
+  
+  # Add winner to list of winners for each matchup
+  winners <- c(winners, winner)
+  
+  if (winner == home) {
+    result = c(1)
+  } else if (winner == away) {
+    result = c(0)
+  }
+  
+  # Let's update our ratings
+  new_elo <- elo.calc(wins.A = result,
+                      elo.A = elo.A, 
+                      elo.B = elo.B, 
+                      k = 20)
+  
+  # The results come back as a data.frame
+  # with team A's new rating in row 1 / column 1
+  # and team B's new rating in row 1 / column 2
+  teamA_new_elo <- new_elo[1, 1]
+  teamB_new_elo <- new_elo[1, 2]
+  
+  # We then update the ratings for teams A and B
+  # and leave the other teams as they were
+  elos <- elos %>%
+    mutate(elo = if_else(team == home, teamA_new_elo,
+                         if_else(team == away, teamB_new_elo, elo)))
+  
+  # Add updated elos to elo history (FIX THIS)
+  elo_history[, paste(as.character("game"), as.character(row), sep="")] <- elos$elo
+  
+}
+
+# After a few minutes, you should get a nice teams data.frame, with the most up-to-date international Elo ratings for June 2018
+elos %>%
+  arrange(-elo) %>%
+  head(30)
+
+# Add winners list to the schedule
+reg_season$winners = winners
+head(reg_season)
+
+# Show Elo History
+head(elo_history)
+
+# Playoffs
+# The top eight teams in each conference (East and West), ranked in order by win-loss records, qualify for the playoffs.
+# Eastern Conference
+'
+EC <- c("Milwaukee Bucks", "Toronto Raptors", "Boston Celtics", "Miami Heat", "Indiana Pacers", "Philadelphia 76ers", "Brooklyn Nets", "Orlando Magic", 
+        "Washington Wizards", "Charlotte Hornets", "Chicago Bulls", "New York Knicks", "Detroit Pistons", "Atlanta HAwks", "Cleveland Cavaliers")
+# Western Conference
+WC <- c("Los Angeles Lakers", "Los Angeles Clippers", "Denver Nuggets", "Utah Jazz", "Oklahoma City Thunder", "Houston Rockets", "Dallas Mavericks", "Memphis Grizzlies", 
+        "Portland Trail Blazers", "New Orleans Pelicans", "Sacramento Kings", "San Antonio Spurs", "Phoenix Suns", "Minnesota Timberwolves", "Golden State Warriors")
+
+eastern_conference = data.frame(team = EC, elo=0, stringsAsFactors = FALSE)
+western_conference = data.frame(team = WC, elo=0, stringsAsFactors = FALSE)
 
 
+for (row in 1:nrow(eastern_conference)) {
+  team <- eastern_conference[row, "team"]
+  elo  <- eastern_conference[row, "elo"]
+  
+  team_elo = subset(elos, team == team)
+  elo = team_elo
+}
+
+for (row in 1:nrow(western_conference)) {
+  team <- western_conference[row, "team"]
+  elo  <- western_conference[row, "elo"]
+  
+  team_elo = subset(elos, team == team)
+  elo = team_elo
+}
+
+# Top 8 in EC
+eastern_conference %>%
+  arrange(-elo) %>%
+  head(8)
+
+# Top 8 in WC
+western_conference %>%
+  arrange(-elo) %>%
+  head(8)
+'
+
+# Different Way (TOP 8 TEAMS FROM EACH CONFERENCE)
+WC_teams <- elos %>%
+  filter(team %in% c("Los Angeles Lakers", "Los Angeles Clippers", "Denver Nuggets", "Utah Jazz", "Oklahoma City Thunder", "Houston Rockets", "Dallas Mavericks", "Memphis Grizzlies", 
+                     "Portland Trail Blazers", "New Orleans Pelicans", "Sacramento Kings", "San Antonio Spurs", "Phoenix Suns", "Minnesota Timberwolves", "Golden State Warriors")) %>%
+  arrange(-elo) %>%
+  head(8)
 
 
+EC_teams <- elos %>%
+  filter(team %in% c("Milwaukee Bucks", "Toronto Raptors", "Boston Celtics", "Miami Heat", "Indiana Pacers", "Philadelphia 76ers", "Brooklyn Nets", "Orlando Magic", 
+                     "Washington Wizards", "Charlotte Hornets", "Chicago Bulls", "New York Knicks", "Detroit Pistons", "Atlanta HAwks", "Cleveland Cavaliers")) %>%
+  arrange(-elo) %>%
+  head(8)
 
+# Each team earns a spot on the playoff bracket, known as a “seed,” which will determine what team they will face off against.
+# Seeding is based off of win/loss with ties becomign a bit more complicated through further evaluation
+# For this project we will seeed based off of elo scores (very low probability of ties in scores). This also makes sense because elos are based on W/L.
+# The conference DFs are already ordered by elo, so we can just put 1-8 as seed
+WC_teams$seed <- c(1:8)
+
+EC_teams$seed <- c(1:8)
+
+# Technically there is a system in place designed for HCA in playoffs given to the team with the better record/higher seed
+# Each NBA playoff series is composed of 4 to 7 games that are played in a 2-2-1-1-1 format. 
+# This means that the team with the home-court advantage hosts games 1, 2, 5, and 7 while its opponent hosts games 3, 4, and 6, with games 5-7 only being played if necessary.
+# However, because this complicates our implementation, we will ignore HCA for the playoffs and finals (although it does sometimes have an impact on the result)
+
+# 1st Round - Playoffs (16 teams): Best-of-7 Series
+# 1 vs 8, 2 vs 7, 3 vs 6, 4 vs 5
+# Make dataframe for matchups
+playoffs = data.frame(matrix(ncol = 2, nrow = 8))
+colnames(playoffs) <- c("team1", "team2")
+
+# Playoff Schedule
+playoffs$team1 <- c(WC_teams[1,2], WC_teams[2,2], WC_teams[3,2], WC_teams[4,2], EC_teams[1,2], EC_teams[2,2], EC_teams[3,2], EC_teams[4,2])
+playoffs$team2 <- c(WC_teams[8,2], WC_teams[7,2], WC_teams[6,2], WC_teams[5,2], EC_teams[8,2], EC_teams[7,2], EC_teams[6,2], EC_teams[5,2])
+
+first_round <- c()
+#row = 1 # For test purposes
+#i = 1 # For test purposes
+for (row in 1:nrow(playoffs)) {
+  
+  # Home Team and Away Team
+  team1 <- playoffs[row, "team1"]
+  team2  <- playoffs[row, "team2"]
+  
+  # For loop here? for i in 1:7
+  series <- c()
+  for (i in 1:7) {
+    # Pre-match ratings
+    x = subset(elos, team == team1)
+    elo.A <- (as.integer(c(x[3])))
+    
+    y = subset(elos, team == team2)
+    elo.B <- as.integer(c(y[3]))
+    
+    # Probability of winning
+    prob.A <- elo.prob(elo.A, elo.B)
+    prob.B <- elo.prob(elo.B, elo.A)
+    
+    # Best of 7 series sampling
+    winner <- sample(c(team1, team2), size=1, prob=c(prob.A, prob.B), replace=TRUE) # size = 7?
+    series <- c(series, winner)
+    
+    # Add winner to list of winners for each matchup
+    #first_round <- c(first_round, winner)
+    
+    if (winner == team1) {
+      result = c(1)
+    } else if (winner == team2) {
+      result = c(0)
+    }
+    
+    # Let's update our ratings
+    new_elo <- elo.calc(wins.A = result,
+                        elo.A = elo.A, 
+                        elo.B = elo.B, 
+                        k = 20)
+    
+    # The results come back as a data.frame
+    # with team A's new rating in row 1 / column 1
+    # and team B's new rating in row 1 / column 2
+    teamA_new_elo <- new_elo[1, 1]
+    teamB_new_elo <- new_elo[1, 2]
+    
+    # We then update the ratings for teams A and B
+    # and leave the other teams as they were
+    elos <- elos %>%
+      mutate(elo = if_else(team == team1, teamA_new_elo,
+                           if_else(team == team2, teamB_new_elo, elo)))
+    
+    # Add updated elos to elo history
+    elo_history[, paste(as.character("game"), as.character(row), sep="")] <- elos$elo
+    
+    # Check for best of 7
+    team1_wins <- length(which(series == team1))
+    team2_wins <- length(which(series == team2))
+    if (team1_wins == 4) {
+      first_round <- c(first_round, team1)
+      break
+    } else if (team2_wins == 4) {
+      first_round <- c(first_round, team2)
+      break
+    }
+  }
+}
+
+#elo_history
+first_round
+
+
+# 2nd Round - Conference Semifinals (8 Teams): Best-of-7 Series
+semi = data.frame(matrix(ncol = 2, nrow = 4))
+colnames(semi) <- c("team1", "team2")
+
+# Playoff Schedule
+# Western Conference ---- Eastern Conference
+semi$team1 <- c(first_round[1], first_round[3], first_round[5], first_round[7])
+semi$team2 <- c(first_round[2], first_round[4], first_round[6], first_round[8]) 
+
+second_round <- c()
+#row = 1 # For test purposes
+#i = 1 # For test purposes
+for (row in 1:nrow(semi)) {
+  
+  # Home Team and Away Team
+  team1 <- semi[row, "team1"]
+  team2  <- semi[row, "team2"]
+  
+  # For loop here? for i in 1:7
+  series <- c()
+  for (i in 1:7) {
+    # Pre-match ratings
+    x = subset(elos, team == team1)
+    elo.A <- (as.integer(c(x[3])))
+    
+    y = subset(elos, team == team2)
+    elo.B <- as.integer(c(y[3]))
+    
+    # Probability of winning
+    prob.A <- elo.prob(elo.A, elo.B)
+    prob.B <- elo.prob(elo.B, elo.A)
+    
+    # Best of 7 series sampling
+    winner <- sample(c(team1, team2), size=1, prob=c(prob.A, prob.B), replace=TRUE) # size = 7?
+    series <- c(series, winner)
+    
+    # Add winner to list of winners for each matchup
+    #first_round <- c(first_round, winner)
+    
+    if (winner == team1) {
+      result = c(1)
+    } else if (winner == team2) {
+      result = c(0)
+    }
+    
+    # Let's update our ratings
+    new_elo <- elo.calc(wins.A = result,
+                        elo.A = elo.A, 
+                        elo.B = elo.B, 
+                        k = 20)
+    
+    # The results come back as a data.frame
+    # with team A's new rating in row 1 / column 1
+    # and team B's new rating in row 1 / column 2
+    teamA_new_elo <- new_elo[1, 1]
+    teamB_new_elo <- new_elo[1, 2]
+    
+    # We then update the ratings for teams A and B
+    # and leave the other teams as they were
+    elos <- elos %>%
+      mutate(elo = if_else(team == team1, teamA_new_elo,
+                           if_else(team == team2, teamB_new_elo, elo)))
+    
+    # Add updated elos to elo history
+    elo_history[, paste(as.character("game"), as.character(row), sep="")] <- elos$elo
+    
+    # Check for best of 7
+    team1_wins <- length(which(series == team1))
+    team2_wins <- length(which(series == team2))
+    if (team1_wins == 4) {
+      second_round <- c(second_round, team1)
+      break
+    } else if (team2_wins == 4) {
+      second_round <- c(second_round, team2)
+      break
+    }
+  }
+}
+
+#elo_history
+second_round
+
+# 3rd Round - Conference Championships (4 Teams): Best-of-7 Series
+# At the end of the playoffs, the top two teams play each other in the Conference Finals, to determine the Conference Champions from each side, who then proceed to play in the NBA Finals.
+conference = data.frame(matrix(ncol = 2, nrow = 2))
+colnames(conference) <- c("team1", "team2")
+
+# Playoff Schedule
+# Western Conference ---- Eastern Conference
+conference$team1 <- c(second_round[1], second_round[3])
+conference$team2 <- c(second_round[2], second_round[4]) 
+
+third_round <- c()
+#row = 1 # For test purposes
+#i = 1 # For test purposes
+for (row in 1:nrow(conference)) {
+  
+  # Home Team and Away Team
+  team1 <- conference[row, "team1"]
+  team2  <- conference[row, "team2"]
+  
+  # For loop here? for i in 1:7
+  series <- c()
+  for (i in 1:7) {
+    # Pre-match ratings
+    x = subset(elos, team == team1)
+    elo.A <- (as.integer(c(x[3])))
+    
+    y = subset(elos, team == team2)
+    elo.B <- as.integer(c(y[3]))
+    
+    # Probability of winning
+    prob.A <- elo.prob(elo.A, elo.B)
+    prob.B <- elo.prob(elo.B, elo.A)
+    
+    # Best of 7 series sampling
+    winner <- sample(c(team1, team2), size=1, prob=c(prob.A, prob.B), replace=TRUE) # size = 7?
+    series <- c(series, winner)
+    
+    # Add winner to list of winners for each matchup
+    #first_round <- c(first_round, winner)
+    
+    if (winner == team1) {
+      result = c(1)
+    } else if (winner == team2) {
+      result = c(0)
+    }
+    
+    # Let's update our ratings
+    new_elo <- elo.calc(wins.A = result,
+                        elo.A = elo.A, 
+                        elo.B = elo.B, 
+                        k = 20)
+    
+    # The results come back as a data.frame
+    # with team A's new rating in row 1 / column 1
+    # and team B's new rating in row 1 / column 2
+    teamA_new_elo <- new_elo[1, 1]
+    teamB_new_elo <- new_elo[1, 2]
+    
+    # We then update the ratings for teams A and B
+    # and leave the other teams as they were
+    elos <- elos %>%
+      mutate(elo = if_else(team == team1, teamA_new_elo,
+                           if_else(team == team2, teamB_new_elo, elo)))
+    
+    # Add updated elos to elo history
+    elo_history[, paste(as.character("game"), as.character(row), sep="")] <- elos$elo
+    
+    # Check for best of 7
+    team1_wins <- length(which(series == team1))
+    team2_wins <- length(which(series == team2))
+    if (team1_wins == 4) {
+      third_round <- c(third_round, team1)
+      break
+    } else if (team2_wins == 4) {
+      third_round <- c(third_round, team2)
+      break
+    }
+  }
+}
+
+#elo_history
+third_round
+
+# NBA Finals (7-Game Series)
+finals = data.frame(matrix(ncol = 2, nrow = 1))
+colnames(finals) <- c("team1", "team2")
+
+# Playoff Schedule
+# Western Conference ---- Eastern Conference
+finals$team1 <- c(third_round[1])
+finals$team2 <- c(third_round[2]) 
+
+champion <- c()
+#row = 1 # For test purposes
+#i = 1 # For test purposes
+for (row in 1:nrow(finals)) {
+  
+  # Home Team and Away Team
+  team1 <- semi[row, "team1"]
+  team2  <- semi[row, "team2"]
+  
+  # For loop here? for i in 1:7
+  series <- c()
+  for (i in 1:7) {
+    # Pre-match ratings
+    x = subset(elos, team == team1)
+    elo.A <- (as.integer(c(x[3])))
+    
+    y = subset(elos, team == team2)
+    elo.B <- as.integer(c(y[3]))
+    
+    # Probability of winning
+    prob.A <- elo.prob(elo.A, elo.B)
+    prob.B <- elo.prob(elo.B, elo.A)
+    
+    # Best of 7 series sampling
+    winner <- sample(c(team1, team2), size=1, prob=c(prob.A, prob.B), replace=TRUE) # size = 7?
+    series <- c(series, winner)
+    
+    # Add winner to list of winners for each matchup
+    #first_round <- c(first_round, winner)
+    
+    if (winner == team1) {
+      result = c(1)
+    } else if (winner == team2) {
+      result = c(0)
+    }
+    
+    # Let's update our ratings
+    new_elo <- elo.calc(wins.A = result,
+                        elo.A = elo.A, 
+                        elo.B = elo.B, 
+                        k = 20)
+    
+    # The results come back as a data.frame
+    # with team A's new rating in row 1 / column 1
+    # and team B's new rating in row 1 / column 2
+    teamA_new_elo <- new_elo[1, 1]
+    teamB_new_elo <- new_elo[1, 2]
+    
+    # We then update the ratings for teams A and B
+    # and leave the other teams as they were
+    elos <- elos %>%
+      mutate(elo = if_else(team == team1, teamA_new_elo,
+                           if_else(team == team2, teamB_new_elo, elo)))
+    
+    # Add updated elos to elo history
+    elo_history[, paste(as.character("game"), as.character(row), sep="")] <- elos$elo
+    
+    # Check for best of 7
+    team1_wins <- length(which(series == team1))
+    team2_wins <- length(which(series == team2))
+    if (team1_wins == 4) {
+      champion <- c(champion, team1)
+      break
+    } else if (team2_wins == 4) {
+      champion <- c(champion, team2)
+      break
+    }
+  }
+}
+
+#elo_history
+# CHAMPION
+champion
+
+# All stages
+first_round
+second_round
+third_round
+champion
+
+# Plot elo_history
+library(reshape2)
+library(ggplot2)
+
+matplot(t(elo_history[,-c(1)]), type="l")
+
+df_melted = melt(elo_history, id.vars='teams')
+
+ggplot(df_melted, aes(x = variable, y = value)) + 
+  geom_line(aes(color = teams, group = teams)) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) +
+  ggtitle("End of Regular Season, Playoffs, & Finals") +
+  xlab("Games") + ylab("Elo Rating")
+
+
+# Drawbacks
+# Best of 7 series do not account for HCA, too complicated to incorporate
+# Simulation is random and you could get different outcomes (create a list and find most common answer?)
+# Elo is based only off win/loss, HCA, margin, does not account for roster changes, injuries, and other factors
+```
+
+##### The Remaining 2019-2020 Regular Season
+
+Since the 2019-2020 season was cancelled before the end of the regular season, there were still more games to be played. Fortunately, we were able to scrape the remaining schedule that includes all the games that were supposed to happen for the rest of the regular season. The schedule looked something like so:
+
+```{r, echo=FALSE}
+head(reg_season[1:6])
+```
+
+The regular season would have lasted all the way through April. Since we have all the matchups, we can run these teams through a simulation to compete based on probability using their elo ratings. This involved looping through the dataset, pulling each teams elo rating to calculate their probability of winning or losing, and then pulling a random sample as the winner. After the winner is found, the elo ratings are then updated to reflect this outcome.
+
+To get an understanding of these results, we added the winners of each match to the dataframe next to each game.
+
+```{r, echo=FALSE}
+head(reg_season)
+```
+
+This finalized the regular season, resulting in the updated elo scores going into the playoffs.
+
+```{r, echo=FALSE}
+elos %>%
+  arrange(-elo) %>%
+  head(30)
+```
+
+
+##### The 2019-2020 NBA Playoffs
+
+For the NBA playoffs, the top 8 teams in terms of win/loss record from each conference (Eastern Conference & Western Conference) advance to the playoffs. The teams are then seeded (ranked) based on these win/loss records, and matched accordingly for the playoffs. This means the #1 seed plays the #8 seed, the #2 seed plays the #7 seed, the the #3 seed plays the #6 seed, and the #4 seed plays the #5 seed, in each conference. Since the seedings are based on win/loss, we found it appropriate to seed the teams based on elo ratings (which is an outcome of win/loss). This also helps to avoid the complicated process should two teams have the same win loss record (there is a significantly lower probability two teams in this case have the exact same elo score). This is how the first round playoff matchups turned out:
+
+```{r, echo=FALSE}
+playoffs
+```
+
+The same process for the regular season was applied to these matchups with a couple of tweaks. For starters, this simulation was a best-of-7 tournament (as are all playoffs and finals matches). This means we had to simulate the games until a team reached 4 wins. The teams who won the right to advance to the second round are as follows:
+
+```{r, echo=FALSE}
+first_round
+```
+
+The second round is the same process as the first round, except this time, the top 4 teams of each conference advance, meaning that the other 4 finish their season early. The second round is also known as the conference semifinals, that is, the winners of these games advance to their respective conference finals to compete for the conference title. The second round matchups are shown below:
+
+```{r, echo=FALSE}
+semi
+```
+
+with the winners being:
+
+```{r, echo=FALSE}
+second_round
+```
+
+The last round of the playoffs is the third round, also referred to as the conference finals. The top two teams from both the western and eastern conference compete for the top spot in their respective conference. The winners that advanced from the second round are:
+
+```{r. echo=FALSE}
+conference
+```
+
+Again, these teams were put through a best-of-7 simulation, in whcih the following winners emerged:
+
+```{r, echo=FALSE}
+third_round
+```
+
+Finally, the NBA Finals. This is where the top winning teams from each conference (also the conference champions), compete head-to-head for the season. For our simu;ation, this turned out to be:
+
+```{r, echo=FALSE}
+finals
+```
+
+with the 2019-2020 NBA Champions being... *drum roll*...
+
+```{r, echo=FALSE}
+champion
+```
+
+##### End of Season Elo Ratings
+
+After all is settled, the final elo ratings after the 2019-2020 NBA season turned out to be:
+
+```{r, echo=FALSE}
+elos
+```
+
+You can find visuals of how these elo ratings changed throughout this process in the results section of this report.
 
 ## Predicting the 2019-20 NBA Season Award Winners
 
@@ -487,6 +1094,43 @@ kable(list(predictions_WS[1:5,], predictions_VORP[1:5,], predictions_PER[1:5,], 
 
 First, we calculated the Elo ratings for each team for the games played so far in the 2019-20 season. As explained earlier, we incorporated 25% of the previous season's Elo ratings with 75% of this season's current Elo ratings. Table 1 shows the Elo ratings we derived for each team when the NBA season was suspended. To better visualize how each team's Elo rating is updated throughout the season, Figure ... shows the Elo rating of every team since the opening of the 2019-20 season for all games that have been played (prior to the suspension). ... **[NEED TO WRITE ABOUT ELO PREDICTIONS AND PLAYOFFS/FINALS HERE]**
 
+A summary of the results of the simulation can be found below in the order of First Round Playoffs (top 8 teams from both conferences), Second Round Playoffs (top 4 teams from each conference), Third Round Playoffs (The conference finals), then the NBA Finals which produces the Seasons Champion. This will show who played, then who, out of those teams, won the right to move forward.
+
+```{r, echo=FALSE}
+# First Round
+playoffs
+first_round
+# Second Round
+semi
+second_round
+# Third Round
+conference
+third_round
+# NBA Finals
+finals
+champion
+```
+
+The plot below shows how the Elo Ratings for each NBA team changed throughout the end of the regular season, as well as both the playoffs and finals. A line that remains flat for a short period of time represetns the Elo Rating reamining constant due to the fact of not playing at that instance. The changes come after they have played a game.
+
+```{r, echo=FALSE}
+# Plot elo_history
+library(reshape2)
+library(ggplot2)
+
+#matplot(t(elo_history[,-c(1)]), type="l")
+
+df_melted = melt(elo_history, id.vars='teams')
+
+ggplot(df_melted, aes(x = variable, y = value)) + 
+  geom_line(aes(color = teams, group = teams)) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) +
+  ggtitle("End of Regular Season, Playoffs, & Finals") +
+  xlab("Games") + ylab("Elo Rating")
+```
+
+
 In addition to simulating how the 2019-20 NBA season and Playoffs would have ended, we tested several regression models to determine the best model to predict end-of-season WS. By testing linear, lasso, ridge, and logistic regression models, found that the lasso model provided the lowest RMSE value (`r lr_model_avg[1]`) with the linear model (`r lm_avg[1]`) and logistic models (`r logm_vals[1]`) providing slightly higher RMSE values.
 
 We then predicted the season leaders for the various principal categories of WS, VORP, PER, OBPM, and DBPM. We utilized a logistic regression model for predicting the stat leaders due to its relative simplicity and clarity. We verified that this logistic regression model was appropriate by measuring its RMSE values and plotting predicted end-of-season statistics for each player for every category as well as the actual vs. predicted statistics for each category for the current 2019-20 season data (Figure \ref{fig:pred_stat_plots}). The plots in Figure \ref{fig:pred_stat_plots} indicate the end-of-season statistic value for each category based on a player's current 2019-20 season data for that statistic. The red lines indicate the value that a player can expect to end the season with for every value along the x-axis (which represents the player's current statistic for that category). These plots verify that the predicted stats fall within a very small margin of the actual stats and thus have small residual values (since a majority of this season's games have already been played). Also, there is a very minor shift in some of the data points (i.e. VORP) because the last month of games would likely change some of these player statistics since teams with guaranteed playoff seeding are more likely to rest their star players.
@@ -545,15 +1189,12 @@ ggplot() +
 
 **[Interpret what you found. What are the main lessons we should take away from your report?]**
 
+Congratulations to the `r champion` on hypothetically winning the 2019-2020 NBA season, There were many great teams this year with a lot of tough matchups. Unfortunately, this year it was not the Houston Rockets.
 
 
+## Drawbacks of the Elo Rating Predictions
 
-
-# Shortcomings/Drawbacks
-
-
-
-
+Although elo ratings are simple and intuitive, this is both a blessing and a curse. Given the performance, ELo Rating should be commended, however, this does not mean it should be used to support that addictive sports gambling habit of yours. This method is designed to be effective despite its simplicity. This model does not account for roster changes, injusry updates, or individual player performance as most sports prediction models should. It evaluates the teams as a whole, solely based on win/loss, margin of victory, and home court advantage. Also, the simulations are random, based on a teams probability of winning. This means the results could vary each time you run it, which requires running it a reasonable amount of times (ast least 100) in order to get meaningful results. The results produced above are based on the simulation that ran when this document was created. However, after running it multiple times, the consistent winner of the 2019-2020 season proved to be the Los Angeles Lakers (RIP Kobe Bryant). This can be done by wrapping the script in a do loop that runs it 100 times while keeping track of the winner each season, and counting each teams wins to find who won most often. This method was used to get the result for the Los Angeles Lakers, but is not shown within this report.
 
 
 # Appendix
