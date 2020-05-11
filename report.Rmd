@@ -119,9 +119,13 @@ include_graphics('./logistic.png')
 
 In Figure \ref{fig:logit}, we see an example of a logistic function for win probability by Elo rating difference.
 
-### Calculating Historic Elos
+### Calculating Elo Ratings
 
-### Simulations
+For our project scope, we decided to model our Elo rating system purely off of home court advantage, wins, losses, and point margin differentials. Of course, in the NBA, there is a wide array of different factors to consider, including roster changes, injuries, winning streaks, etc. These are all features that limit the capabilities of our model, but serve as potential targets of investigation for the future. As we mentioned before, one principal task of our project was to explore outcomes of the 2019-20 NBA season if they were to continue. In order to do so, we first needed to develop Elo ratings for each team at their current state of the 2019-20 season. Online resources report that the NBA has historically shown an average Elo rating of 1505, as the league is continually experiencing expansions and contractions that influence the center of the distribution of team ratings. We followed this statistic in our Elo rating calculations. When simulating Elo rating calculations for each team throughout multiple seasons, we preemptively decided to carry over 75% of each team's Elo rating from the previous season, with the other 25% weight carried by the league average of 1505. This proportion was determined through historical league analyses of the NBA.
+
+For the scope of our analysis, we decided to begin our analysis in the 2016-17 NBA season. We chose to start our calculatinos from this season because it was the first 
+
+### Simulations and Predictions
 
 After calculating the elo ratings for each NBA team up until the last game they played (before the season was cancelled), we used these ratings to then perform simulations matching up teams based on the rest of the season that was supposed to happen, as well as the post-season tournaments based on the top performers of the regular season.
 
