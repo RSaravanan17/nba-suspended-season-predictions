@@ -531,7 +531,7 @@ elo_df$Conference = if_else(elo_df$Team %in% western_conf, "West", "East")
 ggplot(elo_df, aes(x=Games.Played, y=Elo.Rating, color=Team)) + geom_line() + facet_grid(elo_df$Conference~.)
 
 nbateams$X = NULL
-nbateams$Conference = if_else(nbateams$team %in% western_conf, "West", "East")
+nbateams$Conference <- if_else(nbateams$Team.Name %in% western_conf, "West", "East")
 names(nbateams)[1] <- paste('Team')
 names(nbateams)[2] <- paste('Elo Rating')
 nbateams  
@@ -539,7 +539,7 @@ nbateams
 
 After calculating the Elo rating as mentioned earlier, we ended up with the Elo ratings of the NBA teams at the beginning of the 2019-20 season. We tracked their progress throughout this year's season and plotted them in the figure below. The plot is facetted by Conferences (East and West), which determines how many times a team plays other teams, as well as who they may contend against in their playoff runs.
 
-```{r, include=FALSE, eval=FALSE}
+```{r, include=FALSE}
 ggplot(elo_df, aes(x=Games.Played, y=Elo.Rating, color=Team)) + geom_line() + facet_grid(elo_df$Conference~.)
 nbateams$X = NULL
 nbateams
@@ -549,7 +549,7 @@ nbateams
 
 After calculating the Elo ratings for each NBA team up until the last game they played (before the season was suspended), we used these ratings to then perform simulations matching up teams based on the rest of the season schedule as well as the post-season tournaments based on the top seeded teams from the regular season.
 
-``` {r simulations, include=FALSE, eval=FALSE, warning=FALSE}
+```{r simulations, include=FALSE, eval=FALSE, warning=FALSE}
 # Running simulations on the remaining regular season schedule, then for playoffs, then for finals
 
 # Remainder of regular season
@@ -563,11 +563,11 @@ reg_season$visitor_team <- as.character(reg_season$visitor_team)
 elos <- nba_elo_rating_19_20
 head(elos, 30)
 
-elos$team <- as.character(elos$team)
+elos$Team.Name <- as.character(elos$Team.Name)
 str(elos)
 
 # DF to store elos after each game for plotting
-elo_history = data.frame(teams = as.character(elos$team))
+elo_history = data.frame(Team.Name = as.character(elos$Team.Name))
 elo_history$elo = elos$elo
 
 # List of winners
@@ -597,7 +597,7 @@ for (row in 1:nrow(matchups)) {
   prob.B <- elo.prob(elo.B, elo.A)
   
   # Sample from distribution of size 1 because if repeated the team with higher score is obviously expected to win. this makes it more "random"
-  winner <- sample(c(home, away), size=1, prob=c(prob.A, prob.B))
+  winner <- sample(c(home, away), size=1, prob=c(home=prob.A, away=prob.B))
   
   # Add winner to list of winners for each matchup
   winners <- c(winners, winner)
@@ -622,9 +622,11 @@ for (row in 1:nrow(matchups)) {
   
   # We then update the ratings for teams A and B
   # and leave the other teams as they were
+  elos
+  
   elos <- elos %>%
-    mutate(elo = if_else(team == home, teamA_new_elo,
-                         if_else(team == away, teamB_new_elo, elo)))
+    mutate(elo = if_else(Team.Name == home, teamA_new_elo,
+                         if_else(Team.Name == away, teamB_new_elo, elo)))
   
   # Add updated elos to elo history (FIX THIS)
   elo_history[, paste(as.character("game"), as.character(row), sep="")] <- elos$elo
@@ -686,14 +688,14 @@ western_conference %>%
 
 # Different Way (TOP 8 TEAMS FROM EACH CONFERENCE)
 WC_teams <- elos %>%
-  filter(team %in% c("Los Angeles Lakers", "Los Angeles Clippers", "Denver Nuggets", "Utah Jazz", "Oklahoma City Thunder", "Houston Rockets", "Dallas Mavericks", "Memphis Grizzlies", 
+  filter(Team.Name %in% c("Los Angeles Lakers", "Los Angeles Clippers", "Denver Nuggets", "Utah Jazz", "Oklahoma City Thunder", "Houston Rockets", "Dallas Mavericks", "Memphis Grizzlies", 
                      "Portland Trail Blazers", "New Orleans Pelicans", "Sacramento Kings", "San Antonio Spurs", "Phoenix Suns", "Minnesota Timberwolves", "Golden State Warriors")) %>%
   arrange(-elo) %>%
   head(8)
 
 
 EC_teams <- elos %>%
-  filter(team %in% c("Milwaukee Bucks", "Toronto Raptors", "Boston Celtics", "Miami Heat", "Indiana Pacers", "Philadelphia 76ers", "Brooklyn Nets", "Orlando Magic", 
+  filter(Team.Name %in% c("Milwaukee Bucks", "Toronto Raptors", "Boston Celtics", "Miami Heat", "Indiana Pacers", "Philadelphia 76ers", "Brooklyn Nets", "Orlando Magic", 
                      "Washington Wizards", "Charlotte Hornets", "Chicago Bulls", "New York Knicks", "Detroit Pistons", "Atlanta HAwks", "Cleveland Cavaliers")) %>%
   arrange(-elo) %>%
   head(8)
@@ -1392,7 +1394,7 @@ Figure \ref{fig:pred_elo} shows how the Elo ratings for each NBA team changed th
 #matplot(t(elo_history[,-c(1)]), type="l")
 ```
 
-```{r final_elo_pred, echo=FALSE, eval=FALSE, warning=FALSE, comment=NA, message=FALSE}
+```{r final_elo_pred, echo=FALSE, warning=FALSE, eval=FALSE, comment=NA, message=FALSE}
 df_melted = melt(elo_history, id.vars='teams')
 
 ggplot(df_melted, aes(x = variable, y = value)) + 
@@ -1579,9 +1581,9 @@ We then predicted the season leaders for the various principal categories of WS,
 
 Using these accumulated season statistics, we determined the end-of-season statistics by updating each players' stat lines based on team, position, schedule matchups, and usage percentage stats as explained in detail in the Methods section. The end-of-season stat leaders for each of the main categories is shown in Table 2. We verified these predictions by limiting the qualifiers for each category and comparing with each player's previous performance history. We narrowed the pool of players down by only considering players with more than 25 games played and 1200 minutes played because this reflects the criteria that the NBA Season Awards use to nominate qualifying players. By inspecting the top five players in each category, we noticed several household names and early season favorites for MVP and DPOY including Giannis Antetokounmpo, James Harden, LeBron James, and Anthony Davis.
 
-In regards to determining the MVP nominees, the categories of WS, VORP, PER, and OBPM are significant because they constitute the most holistic perspective of each player's performance and are oriented around the 3 key factors for MVP: overall team success, value of the player to the team, and on-court presence. These 3 central components are acutely summarized in these statistics, so we used a point-based system to determine the top 3 nominees for MVP by looking at each player's rank within each category. In regards to determining the DPOY nominees, the categories of DBPM, USG%, PER, and VORP are significant because they constitute a comprehensive view of a player's defensive contributions.
+In regards to determining the MVP nominees, the categories of WS, VORP, PER, and OBPM are significant because they constitute the most holistic perspective of each player's performance and are oriented around the 3 key factors for MVP: overall team success, value of the player to the team, and on-court presence. These 3 central components are acutely summarized in these statistics, so we used a point-based system to determine the top 3 nominees for MVP by looking at each player's rank within each category. In regards to determining the DPOY nominees, the categories of DBPM, USG%, PER, and VORP are significant because they constitute a comprehensive view of a player's defensive contributions. A DPOY nominee is typically a leader or near the top of several of these statistics, so these categories are a good representation of who is likely to be nominated for DPOY.
 
-Giannis Antetokounmpo led an overwhelming majority of the statistics (WS, VORP, PER, DBPM)
+Giannis Antetokounmpo led an overwhelming majority of the statistics (WS, VORP, PER, USG%, DBPM). Not only did he lead each of these categories in our end-of-season predictions, he was also in the top three players for the other statistics, including OBPM shown in Table 2.
 
 ```{r echo=FALSE, fig.width = 5, fig.height = 3, fig.align='center', out.width='.49\\linewidth', fig.show='hold', fig.cap="\\label{fig:pred_stat_plots}Predictions of Key Statistics with Logistic Regression Model", fig.pos = "H", comment=NA, warning=FALSE}
 ggplot() +
