@@ -381,6 +381,9 @@ ggplot() +
 
 
 
+
+# Recorded NBA Stats
+
 recorded_stats <- data.frame(colnames(player_stats[,6:27]))
 names(recorded_stats)[1] <- "Statistics"
 recorded_stats["Meaning"] <- c("Num. games played", 
