@@ -408,5 +408,5 @@ recorded_stats["Meaning"] <- c("Num. games played",
                                "Defensive points per 100 possessions above a league-average player", 
                                "Total points per 100 possessions above a league-average player", 
                                "Points per 100 team possessions contributed by a player above a replacement-level player")
-knitr::kable(recorded_stats)
+knitr::kable(recorded_stats, caption="Statistics Recorded by NBA for Every Player")
 

@@ -10,8 +10,8 @@ library(foreach)
 library(rvest)
 library(lubridate)
 
-getwd()
-setwd('/Users/howardyong/Documents/College/School/Spring2020/SDS323_Spring2020')
+#getwd()
+#setwd('/Users/howardyong/Documents/College/School/Spring2020/SDS323_Spring2020')
 
 #(1)==============================================SCRAPING ONLINE BASKETBALL DATA==============================================
 yearList <- c('2020')
@@ -78,7 +78,7 @@ df$home_team_wins <- with(df, ifelse(home_pts > visitor_pts, 1, 0))
 df
 head(df)
 tail(df)
-write.csv(df, 'nba-scrape-data-2019-2020.csv')
+write.csv(df, './data/nba-scrape-data-2019-2020.csv')
 
 
 
@@ -88,10 +88,10 @@ nbateams <- nbateams %>% mutate(elo=1500)
 nbateams$X <- NULL
 nbateams
 
-season2016_2017 = read.csv('data/nba-scrape-data-2016-2017.csv')
-season2017_2018 = read.csv('data/nba-scrape-data-2017-2018.csv')
-season2018_2019 = read.csv('data/nba-scrape-data-2018-2019.csv')
-season2019_2020 = read.csv('data/nba-scrape-data-2019-2020.csv')
+season2016_2017 = read.csv('./data/nba-scrape-data-2016-2017.csv')
+season2017_2018 = read.csv('./data/nba-scrape-data-2017-2018.csv')
+season2018_2019 = read.csv('./data/nba-scrape-data-2018-2019.csv')
+season2019_2020 = read.csv('./data/nba-scrape-data-2019-2020.csv')
 head(season2016_2017)
 tail(season2016_2017)
 
@@ -166,7 +166,7 @@ for (team in nbateams$team) {
   c = c + 1
 }
 tail(elo_2016_2017)
-write.csv(elo_2016_2017, 'elo_2016_2017.csv')
+write.csv(elo_2016_2017, './data/elo_2016_2017.csv')
 
 nbateams <- nbateams %>% mutate(elo=0.75*elo+.25*avg_season_elo)
 nbateams %>%
@@ -237,7 +237,7 @@ for (team in nbateams$team) {
   colnames(elo_2017_2018)[c] = team
   c = c + 1
 }
-write.csv(elo_2017_2018, 'elo_2017_2018.csv')
+write.csv(elo_2017_2018, './data/elo_2017_2018.csv')
 
 nbateams <- nbateams %>% mutate(elo=0.75*elo+.25*avg_season_elo)
 nbateams %>%
@@ -309,7 +309,7 @@ for (team in nbateams$team) {
   colnames(elo_2018_2019)[c] = team
   c = c + 1
 }
-write.csv(elo_2018_2019, 'elo_2018_2019.csv')
+write.csv(elo_2018_2019, './data/elo_2018_2019.csv')
 
 nbateams <- nbateams %>% mutate(elo=0.75*elo+.25*avg_season_elo)
 nbateams %>%
@@ -381,13 +381,13 @@ for (team in nbateams$team) {
   colnames(elo_2019_2020)[c] = team
   c = c + 1
 }
-write.csv(elo_2019_2020, 'elo_2019_2020.csv')
+write.csv(elo_2019_2020, './data/elo_2019_2020.csv')
 
 names(nbateams)[1] <- paste("Team Name")
 names(nbateams)[2] <- paste("Elo Rating")
-write.csv(nbateams, 'nba-elo-current-2019-2020.csv')
-nbateams = read.csv('data/nba-elo-current-2019-2020.csv')
-seasonelo = read.csv('elo_2019_2020.csv')
+write.csv(nbateams, './data/nba-elo-current-2019-2020.csv')
+nbateams = read.csv('./data/nba-elo-current-2019-2020.csv')
+seasonelo = read.csv('./data/elo_2019_2020.csv')
 
 seasonelo$X = NULL
 library(reshape2)
