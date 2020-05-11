@@ -549,7 +549,7 @@ nbateams
 
 After calculating the Elo ratings for each NBA team up until the last game they played (before the season was suspended), we used these ratings to then perform simulations matching up teams based on the rest of the season schedule as well as the post-season tournaments based on the top seeded teams from the regular season.
 
-```{r simulations, include=FALSE, eval=FALSE, warning=FALSE}
+```{r simulations, include=FALSE, warning=FALSE}
 # Running simulations on the remaining regular season schedule, then for playoffs, then for finals
 
 # Remainder of regular season
@@ -568,7 +568,7 @@ str(elos)
 
 # DF to store elos after each game for plotting
 elo_history = data.frame(Team.Name = as.character(elos$Team.Name))
-elo_history$elo = elos$elo
+elo_history$Elo.Rating = elos$Elo.Rating
 
 # List of winners
 winners <- c()
@@ -586,10 +586,10 @@ for (row in 1:nrow(matchups)) {
   away  <- matchups[row, "visitor_team"]
   
   # Pre-match ratings
-  x = subset(elos, team == home)
+  x = subset(elos, Team.Name == home)
   elo.A <- (as.integer(c(x[3])) + as.integer(10)) # plus 10/100 represents HCA
   
-  y = subset(elos, team == away)
+  y = subset(elos, Team.Name == away)
   elo.B <- as.integer(c(y[3]))
   
   # Probability of winning
@@ -622,20 +622,19 @@ for (row in 1:nrow(matchups)) {
   
   # We then update the ratings for teams A and B
   # and leave the other teams as they were
-  elos
   
   elos <- elos %>%
-    mutate(elo = if_else(Team.Name == home, teamA_new_elo,
-                         if_else(Team.Name == away, teamB_new_elo, elo)))
+    mutate(Elo.Rating = if_else(Team.Name == home, teamA_new_elo,
+                         if_else(Team.Name == away, teamB_new_elo, Elo.Rating)))
   
   # Add updated elos to elo history (FIX THIS)
-  elo_history[, paste(as.character("game"), as.character(row), sep="")] <- elos$elo
+  elo_history[, paste(as.character("game"), as.character(row), sep="")] <- elos$Elo.Rating
   
 }
 
 # After a few minutes, you should get a nice teams data.frame, with the most up-to-date international Elo ratings for June 2018
 elos %>%
-  arrange(-elo) %>%
+  arrange(-Elo.Rating) %>%
   head(30)
 
 # Add winners list to the schedule
@@ -690,14 +689,14 @@ western_conference %>%
 WC_teams <- elos %>%
   filter(Team.Name %in% c("Los Angeles Lakers", "Los Angeles Clippers", "Denver Nuggets", "Utah Jazz", "Oklahoma City Thunder", "Houston Rockets", "Dallas Mavericks", "Memphis Grizzlies", 
                      "Portland Trail Blazers", "New Orleans Pelicans", "Sacramento Kings", "San Antonio Spurs", "Phoenix Suns", "Minnesota Timberwolves", "Golden State Warriors")) %>%
-  arrange(-elo) %>%
+  arrange(-Elo.Rating) %>%
   head(8)
 
 
 EC_teams <- elos %>%
   filter(Team.Name %in% c("Milwaukee Bucks", "Toronto Raptors", "Boston Celtics", "Miami Heat", "Indiana Pacers", "Philadelphia 76ers", "Brooklyn Nets", "Orlando Magic", 
                      "Washington Wizards", "Charlotte Hornets", "Chicago Bulls", "New York Knicks", "Detroit Pistons", "Atlanta HAwks", "Cleveland Cavaliers")) %>%
-  arrange(-elo) %>%
+  arrange(-Elo.Rating) %>%
   head(8)
 
 # Each team earns a spot on the playoff bracket, known as a “seed,” which will determine what team they will face off against.
