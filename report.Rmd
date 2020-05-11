@@ -49,7 +49,7 @@ nba_elo_rating_19_20 = read.csv('./data/nba-elo-current-2019-2020.csv', header=T
 
 # Abstract
 
-The COVID-19 pandemic has affected our society in various ways and has changed numerous events on schedule for 2020. One such event that we were looking forward to was the end of the 2019-20 NBA season as well as the 2020 NBA Playoffs. Since a large portion of the 2019-20 NBA regular season games have already been played, we utilized the data collected from these games to run regression prediction models and calculate Elo ratings for each team in order to predict the standings for 2019-20 as well as the matchups and results of the Playoffs and the NBA season awards. Running our analysis by predicting the 7-game playoff series matchups, we predicted that the Western Conference Finals matchup will be between the #1 seed Los Angeles Lakers and the #2 seed Los Angeles Clippers and the Eastern Conference Finals matchup will be between the #1 seed Milwaukee Bucks and the #2 seed Toronto Raptors. **[NEED TO FIX THE MATCHUPS BASED ON BRACKET]** We found that running these simulations predicts the NBA Finals matchup between the Los Angeles Lakers and the Milwaukee Bucks with the Los Angeles Lakers ultimately claiming the Larry O'Brien NBA Championship Trophy. Additionally, we used several types of regression models to best predict end-of-season statistics for every player. We ultimately used a logistic regression model to predict the end-of-season statistics and leaders for each of the major categories and found that our predictions indicate that Giannis Antetokounmpo will claim both the NBA Most Valuable Player (MVP) award as well as the Defensive Player of the Year (DPOY) award. According to our prediction model, this will mark only the third time in NBA history that a player will win MVP and DPOY in the same season with the previous two players being basketball legends Michael Jordan and Hakeem Olajuwon.
+The COVID-19 pandemic has affected our society in various ways and has changed numerous events on schedule for 2020. One such event that we were looking forward to was the end of the 2019-20 NBA season as well as the 2020 NBA Playoffs. Since a large portion of the 2019-20 NBA regular season games have already been played, we utilized the data collected from these games to run regression prediction models and calculate Elo ratings for each team in order to predict the standings for 2019-20 as well as the matchups and results of the Playoffs and the NBA season awards. Using the Elo rating predictions by matchup, we predicted that the Milwaukee Bucks ended with the highest seeding (standing) at the end of the season with the Los Angeles Lakers coming in second. Running our analysis by predicting the 7-game playoff series matchups, we predicted that the Western Conference Finals matchup will be between the #1 seed Los Angeles Lakers and the #2 seed Los Angeles Clippers and the Eastern Conference Finals matchup will be between the #1 seed Milwaukee Bucks and the #2 seed Toronto Raptors. We found that running these simulations predicts the NBA Finals matchup between the Los Angeles Lakers and the Milwaukee Bucks with the Los Angeles Lakers ultimately claiming the Larry O'Brien NBA Championship Trophy. Additionally, we used several types of regression models to best predict end-of-season statistics for every player. We ultimately used a logistic regression model to predict the end-of-season statistics and leaders for each of the major categories and found that our predictions indicate that Giannis Antetokounmpo will claim both the NBA Most Valuable Player (MVP) award as well as the Defensive Player of the Year (DPOY) award. According to our prediction model, this will mark only the third time in NBA history that a player will win MVP and DPOY in the same season with the previous two players being basketball legends Michael Jordan and Hakeem Olajuwon.
 
 
 
@@ -1057,20 +1057,6 @@ matplot(t(elo_history[,-c(1)]), type="l")
 df_melted = melt(elo_history, id.vars='Team.Name')
 ```
 
-```{r, results='hide', include=FALSE, warning=FALSE, eval=FALSE, error=FALSE, message=FALSE}
-ggplot(df_melted, aes(x = variable, y = value)) + 
-  geom_line(aes(color = Team.Name, group = Team.Name)) +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank()) +
-  ggtitle("Elo Rating for End of Regular Season") +
-  xlab("Games") + ylab("Elo Rating")
-
-# Drawbacks
-# Best of 7 series do not account for HCA, too complicated to incorporate
-# Simulation is random and you could get different outcomes (create a list and find most common answer?)
-# Elo is based only off win/loss, HCA, margin, does not account for roster changes, injuries, and other factors
-```
-
 ### The Remaining 2019-2020 Regular Season
 
 Since the 2019-20 season was suspended before the end of the regular season, there were still more games to be played (about a month remained in the regular season). Fortunately, we were able to scrape the remaining schedule for the regular season for every game that was set to take place.
@@ -1129,7 +1115,7 @@ for (i in seq(nrow(season2019_2020))) {
                       elo.B = teamB_elo,
                       k = 20)
   
-  #Results reported as data.frameh
+  #Results reported as data.frame
   #Team A's new rating in row1/column1
   #Team B's new rating in row1/column2
   new_elo
@@ -1275,26 +1261,27 @@ cat("4) LOGISTIC REGRESSION (with interactions) - RMSE:", logm_vals[2])
 ```
 
 
-First, we calculated the Elo ratings for each team for the games played so far in the 2019-20 season. As explained earlier, we incorporated 25% of the previous season's Elo ratings with 75% of this season's current Elo ratings. Table 1 shows the Elo ratings we derived for each team when the NBA season was suspended. To better visualize how each team's Elo rating is updated throughout the season, Figure \ref{fig:current_elo} shows the Elo rating of every team since the opening of the 2019-20 season for all games that have been played (prior to the suspension). This plot shows how the Elo rating can fluctuate over the course of a season and how the better teams tend to have an upward trajectory to build momentum towards clinching a playoff berth. We included a plot faceted by Conference because it better highlights which teams are likely to secure playoff seeding since the Playoffs matchups are organized by Conference.
+First, we calculated the Elo ratings for each team for the games played so far in the 2019-20 season. As explained earlier, we incorporated 25% of the previous season's Elo ratings with 75% of this season's current Elo ratings. To better visualize how each team's Elo rating is updated throughout the season, Figure \ref{fig:current_elo} shows the Elo rating of every team since the opening of the 2019-20 season for all games that have been played (prior to the suspension). This plot shows how the Elo rating can fluctuate over the course of a season and how the better teams tend to have an upward trajectory to build momentum towards clinching a playoff berth. We included a plot faceted by Conference because it better highlights which teams are likely to secure playoff seeding since the Playoffs matchups are organized by Conference.
 
-```{r, echo=FALSE, fig.align='center', eval=FALSE, fig.cap="\\label{fig:current_elo}Elo Rating Over 2019-20 for Each NBA Team by Conference"}
+```{r, echo=FALSE, fig.align='center', fig.cap="\\label{fig:current_elo}Elo Rating Over 2019-20 for Each NBA Team by Conference"}
 ggplot(elo_df, aes(x=Games.Played, y=Elo.Rating, color=Team)) + geom_line() + facet_grid(elo_df$Conference~.)
 ```
 
-
-```{r echo=FALSE, out.width='100%', fig.width = 8, fig.height = 5, fig.align='center', fig.cap="\\label{fig:current_elo}Elo Rating Over 2019-20 for Each NBA Team by Conference", comment=NA, warning=FALSE}
+```{r echo=FALSE, eval=FALSE, out.width='100%', fig.width = 8, fig.height = 5, fig.align='center', fig.cap="\\label{fig:current_elo}Elo Rating Over 2019-20 for Each NBA Team by Conference", comment=NA, warning=FALSE}
 include_graphics('./CurrentEloRating.png')
 ```
 
-Using the method explained above to predict the playoff matchups, we were able to simulate the games for the Playoffs. This is how the first-round playoff matchups turned out:
+We then predicted how the remaining of the regular season would play out and the standings of the teams at the end of the season. Table 1 shows the Elo ratings we predicted for each team at the end of the season. Noticeably, the teams who had already secured Playoff berths before the season suspension have higher Elo rating predictions (as is to be expected).
+
+Using the method explained above to predict the Playoff matchups, we were able to simulate the games for the Playoffs. This is how the first-round playoff matchups turned out:
 
 
 &nbsp;
 
 
-**Eastern Conference:** Milwaukee vs. Orlando, Toronto vs. Brooklyn, Boston vs. Philadelphia, Miami vs. Indiana
+> **Eastern Conference:** Milwaukee vs. Orlando, Toronto vs. Brooklyn, Boston vs. Philadelphia, Miami vs. Indiana
 
-**Western Conference:** LA Lakers vs. Memphis, LA Clippers vs. Dallas, Denver vs. Houston, Utah vs. Oklahoma
+> **Western Conference:** LA Lakers vs. Memphis, LA Clippers vs. Dallas, Denver vs. Houston, Utah vs. Oklahoma
 
 
 &nbsp;
@@ -1304,9 +1291,9 @@ The same process for the regular season was applied to these matchups with a cou
 &nbsp;
 
 
-**Eastern Conference:** Milwaukee, Toronto, Philadelphia, Miami
+> **Eastern Conference:** Milwaukee, Toronto, Philadelphia, Miami
 
-**Western Conference:** LA Lakers, LA Clippers, Houston, Utah
+> **Western Conference:** LA Lakers, LA Clippers, Houston, Utah
 
 
 &nbsp;
@@ -1316,9 +1303,9 @@ The second round is the same process as the first round, except this time, the t
 &nbsp;
 
 
-**Eastern Conference:** Milwaukee vs. Miami, Toronto vs. Philadelphia
+> **Eastern Conference:** Milwaukee vs. Miami, Toronto vs. Philadelphia
 
-**Western Conference:** LA Lakers vs. Utah, LA Clippers vs. Houston
+> **Western Conference:** LA Lakers vs. Utah, LA Clippers vs. Houston
 
 
 &nbsp;
@@ -1328,9 +1315,9 @@ with the winners being:
 &nbsp;
 
 
-**Eastern Conference:** Milwaukee, Toronto
+> **Eastern Conference:** Milwaukee, Toronto
 
-**Western Conference:** LA Lakers, LA Clippers
+> **Western Conference:** LA Lakers, LA Clippers
 
 
 &nbsp;
@@ -1340,9 +1327,9 @@ The last round of the playoffs is the third round, also referred to as the Confe
 &nbsp;
 
 
-**Eastern Conference:** Milwaukee vs. Toronto
+> **Eastern Conference:** Milwaukee vs. Toronto
 
-**Western Conference:** LA Lakers vs. LA Clippers
+> **Western Conference:** LA Lakers vs. LA Clippers
 
 
 &nbsp;
@@ -1352,14 +1339,14 @@ Again, these teams were put through a best-of-7 simulation, in which the followi
 &nbsp;
 
 
-**Eastern Conference:** Milwaukee
+> **Eastern Conference:** Milwaukee
 
-**Western Conference:** LA Lakers
+> **Western Conference:** LA Lakers
 
 
 &nbsp;
 
-Now that we had predicted our initial 16 Playoff teams down to the Conference Champions, we set the stage for the NBA Finals matchup between the Milwaukee Bucks and the Los Angeles Lakers. Both teams featured several superstars and were favored to meet in the NBA Finals by several sports analysts. Simulating this exciting matchup, our simulation predicted that the NBA Championship would be won by the **Los Angeles Lakers**.
+Now that we had predicted our initial 16 Playoff teams down to the Conference Champions, we set the stage for the NBA Finals matchup between the Milwaukee Bucks and the Los Angeles Lakers. Both teams featured several superstars and were favored to meet in the NBA Finals by several sports analysts. **Simulating this exciting matchup, our simulation predicted that the NBA Championship would be won by the Los Angeles Lakers**.
 
 ```{r first_round, eval=FALSE, include=FALSE}
 # First Round
@@ -1393,18 +1380,21 @@ Figure \ref{fig:pred_elo} shows how the Elo ratings for each NBA team changed th
 #matplot(t(elo_history[,-c(1)]), type="l")
 ```
 
-```{r final_elo_pred, echo=FALSE, warning=FALSE, eval=FALSE, comment=NA, message=FALSE}
-df_melted = melt(elo_history, id.vars='Team.Name')
-
+```{r, results='hide', echo=FALSE, warning=FALSE, error=FALSE, message=FALSE, out.width='100%', fig.width = 8, fig.height = 5, fig.align='center', fig.cap="\\label{fig:pred_elo}Elo Rating for End of Regular Season and Playoffs"}
 ggplot(df_melted, aes(x = variable, y = value)) + 
   geom_line(aes(color = Team.Name, group = Team.Name)) +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank()) +
   ggtitle("Elo Rating for End of Regular Season") +
   xlab("Games") + ylab("Elo Rating")
+
+# Drawbacks
+# Best of 7 series do not account for HCA, too complicated to incorporate
+# Simulation is random and you could get different outcomes (create a list and find most common answer?)
+# Elo is based only off win/loss, HCA, margin, does not account for roster changes, injuries, and other factors
 ```
 
-```{r echo=FALSE, out.width='100%', fig.width = 8, fig.height = 5, fig.align='center', fig.cap="\\label{fig:pred_elo}Elo Rating for End of Regular Season and Playoffs", comment=NA, warning=FALSE}
+```{r echo=FALSE, eval=FALSE, out.width='100%', fig.width = 8, fig.height = 5, fig.align='center', fig.cap="\\label{fig:pred_elo}Elo Rating for End of Regular Season and Playoffs", comment=NA, warning=FALSE}
 include_graphics('./EloPredicted.png')
 ```
 
@@ -1576,13 +1566,13 @@ names(predictions_DBPM)[names(predictions_DBPM) == "predicted_DBPM"] <- "Predict
 kable(list(predictions_WS[1:5,], predictions_VORP[1:5,], predictions_PER[1:5,], predictions_USG[1:5,], predictions_OBPM[1:5,], predictions_DBPM[1:5,]), caption = "End-of-Season 2019-20 Predicted Stat Leaders with Logistic Regression Model")
 ```
 
-We then predicted the season leaders for the various principal categories of WS, VORP, PER, OBPM, and DBPM. We utilized a logistic regression model for predicting the stat leaders due to its relative simplicity and clarity. We verified that this logistic regression model was appropriate by measuring its RMSE values and plotting predicted end-of-season statistics for each player for every category as well as the actual vs. predicted statistics for each category for the current 2019-20 season data (Figure \ref{fig:pred_stat_plots}). The plots in Figure \ref{fig:pred_stat_plots} indicate the end-of-season statistic value for each category based on a player's current 2019-20 season data for that statistic. The red lines indicate the value that a player can expect to end the season with for every value along the x-axis (which represents the player's current statistic for that category). These plots verify that the predicted stats fall within a very small margin of the actual stats and thus have small residual values (since a majority of this season's games have already been played). Also, there is a very minor shift in some of the data points (i.e. VORP) because the last month of games would likely change some of these player statistics since teams with guaranteed playoff seeding are more likely to rest their star players.
+We then predicted the season leaders for the various principal categories of WS, VORP, PER, OBPM, and DBPM. We utilized a logistic regression model for predicting the stat leaders due to its relative simplicity and clarity. We verified that this logistic regression model was appropriate by measuring its RMSE values and plotting predicted end-of-season statistics for each player for every category as well as the actual vs. predicted statistics for each category for the current 2019-20 season data (Figure \ref{fig:pred_stat_plots}). The plots in Figure \ref{fig:pred_stat_plots} indicate the end-of-season statistic value for each category based on a player's current 2019-20 season data for that statistic. The red lines indicate the value that a player can expect to end the season with for every value along the $x$-axis (which represents the player's current statistic for that category). These plots verify that the predicted stats fall within a very small margin of the actual stats and thus have small residual values (since a majority of this season's games have already been played). Also, there is a very minor shift in some of the data points (i.e. VORP) because the last month of games would likely change some of these player statistics since teams with guaranteed playoff seeding are more likely to rest their star players.
 
 Using these accumulated season statistics, we determined the end-of-season statistics by updating each players' stat lines based on team, position, schedule matchups, and usage percentage stats as explained in detail in the Methods section. The end-of-season stat leaders for each of the main categories is shown in Table 2. We verified these predictions by limiting the qualifiers for each category and comparing with each player's previous performance history. We narrowed the pool of players down by only considering players with more than 25 games played and 1200 minutes played because this reflects the criteria that the NBA Season Awards use to nominate qualifying players. By inspecting the top five players in each category, we noticed several household names and early season favorites for MVP and DPOY including Giannis Antetokounmpo, James Harden, LeBron James, and Anthony Davis.
 
 In regards to determining the MVP nominees, the categories of WS, VORP, PER, and OBPM are significant because they constitute the most holistic perspective of each player's performance and are oriented around the 3 key factors for MVP: overall team success, value of the player to the team, and on-court presence. These 3 central components are acutely summarized in these statistics, so we used a point-based system to determine the top 3 nominees for MVP by looking at each player's rank within each category. In regards to determining the DPOY nominees, the categories of DBPM, USG%, PER, and VORP are significant because they constitute a comprehensive view of a player's defensive contributions. A DPOY nominee is typically a leader or near the top of several of these statistics, so these categories are a good representation of who is likely to be nominated for DPOY.
 
-Giannis Antetokounmpo led an overwhelming majority of the statistics (WS, VORP, PER, USG%, DBPM). Not only did he lead each of these categories in our end-of-season predictions, he was also in the top three players for the other statistics, including OBPM shown in Table 2.
+Giannis Antetokounmpo led an overwhelming majority of the statistics (WS, VORP, PER, USG%, DBPM). Not only did he lead each of these categories in our end-of-season predictions, he was also in the top three players for the other statistics, including OBPM shown in Table 2. **Due to this dominant stat line, we reasoned that our model predicted that Giannis Antetokounmpo would win both the MVP and DPOY awards.** This is an eye-catching prediction since this feat has only been accomplished twice before in the history of the NBA. From these projections, the reasonable runner-up for MVP was James Harden. For DPOY, these results show that the clear runner-up was Anthony Davis.
 
 ```{r echo=FALSE, fig.width = 5, fig.height = 3, fig.align='center', out.width='.49\\linewidth', fig.show='hold', fig.cap="\\label{fig:pred_stat_plots}Predictions of Key Statistics with Logistic Regression Model", fig.pos = "H", comment=NA, warning=FALSE}
 ggplot() +
@@ -1632,12 +1622,23 @@ ggplot() +
 
 # Conclusion
 
-**[Interpret what you found. What are the main lessons we should take away from your report?]**
+Through our analysis of the 2019-20 NBA season, we were able to analyze and predict several important aspects of the season had it continued as per schedule. We were first able to calculate the Elo rating for each team through the games that had already been played in the 2019-20 season. This was insightful because it showed us how each team performed over the course of the season. This would be interesting to GMs and sports analysts alike because it shows how a team can increase performance as the season goes on, remains at stagnant production (wins and losses about equal), or whether the team was affected by a major, unexpected hurdle in the middle of a season (i.e. injuries to role players, trades, etc.).
+
+Using this understanding, we predicted how the season would end by simulating the remaining games and producing Elo ratings for the end of the season. This would be useful for a team manager or coach to evaluate the team's overall season performance in order to compare to previous seasons data and determine whether any changes need to be implemented, such as trading for certain positional players or releasing players that were ineffective.
+
+In a similar manner, we predicted how the postseason Playoffs would shake out in terms of seeding, matchups, and winners. We ran another comparable prediction model using the end-of-season predicted Elo ratings for each team. We ran these matchups in best-of-7 scenarios using the Elo proability factors explained above to identify which teams advanced. After running our predictions over numerous iterations, we predicted that the Western Conference Finals would feature a matchup between the LA Lakers and the LA Clippers and the Eastern Conference Finals would feature a matchup between the Milwaukee Bucks and the Toronto Raptors. Ultimately, the LA Lakers and Milwaukee Bucks emerged victorious for a Finals clash with the LA Lakers being crowned the predicted NBA Champions for 2019-20.
+
+Not only did we predict how the season would end, we also used regression prediction models (linear, lasso, ridge, and logistic) to predict the end-of-season stat leaders for various crucial categories that are used to determine the MVP and DPOY. We found that the lasso regression model produced the lowest RMSE values when predicting WS based on the current 2019-20 data. Since the logistic regression model is easier to interpret and produced only a slightly higher RMSE value, we used the logistic regression model to predict the remaining key statistics (VORP, PER, USG%, OBPM, DBPM) for the end of the season. The projected leaders at the end of the season for each of these categories is depicted in Table 2. From these predictions, we found that Giannis Antetokounmpo is projected to win both the MVP and the DPOY with James Harden and Anthony Davis coming in second for each category, respectively. This is an noteworthy prediction because winning two of the most prestigious awards in basketball is an amazing testament to the player's performance this season. This information would be useful to GMs, franchise front offices, and the players' agents. For example, the franchise front offices could use this type of prediction to help build the best contract for the star players that would also benefit the team. Additionally, this would be useful to the players' agents because it would help them argue for favorable contract negotiations for their clients.
+
+Overall, these types of predictions of season outcomes, Playoff matchups, and season award winners could immensely help teams with identifying how to improve for upcoming seasons or how to better prepare their players for one-on-one matchups against certain teams. Not only did this project yield entertaining and interesting results for the 2019-20 season, it could be further extended to future seasons when teams are trying to predict how to negotiate contracts for certain players.
+
 
 
 ## Drawbacks of the Elo Rating Predictions
 
-Although elo ratings are simple and intuitive, this is both a blessing and a curse. Given the performance, ELo Rating should be commended, however, this does not mean it should be used to support that addictive sports gambling habit of yours. This method is designed to be effective despite its simplicity. This model does not account for roster changes, injusry updates, or individual player performance as most sports prediction models should. It evaluates the teams as a whole, solely based on win/loss, margin of victory, and home court advantage. Also, the simulations are random, based on a teams probability of winning. This means the results could vary each time you run it, which requires running it a reasonable amount of times (ast least 100) in order to get meaningful results. The results produced above are based on the simulation that ran when this document was created. However, after running it multiple times, the consistent winner of the 2019-2020 season proved to be the Los Angeles Lakers (RIP Kobe Bryant). This can be done by wrapping the script in a do loop that runs it 100 times while keeping track of the winner each season, and counting each teams wins to find who won most often. This method was used to get the result for the Los Angeles Lakers, but is not shown within this report.
+Although Elo ratings are simple and intuitive, this is both a blessing and a curse. Given the performance, Elo rating should be commended, however, this does not mean it should be used to support addictive sports gambling habits because it simply uses previos performance to predict future performance. This method is designed to be effective despite its simplicity. This model does not account for roster changes, injury updates, or individual player performance as most sports prediction models should. It evaluates the teams as a whole, solely based on win/loss, margin of victory, and home court advantage.
+
+Also, the simulations are random, based on a teams probability of winning. This means the results could vary each time you run it, which requires running it a reasonable amount of times (at least 100 iterations) in order to get meaningful results. Since the predictions tend to vary a little with each run, after running it for multiple iterations, the consistent winner of the 2019-20 season proved to be the Los Angeles Lakers. This can be done by wrapping the script in a loop that runs it for a large number of iterations while keeping track of the winners of each season, and counting each team's wins to find who won most often. This method was used to get the result for the Los Angeles Lakers, but is not shown within this report due to its scope.
 
 
 # Appendix
