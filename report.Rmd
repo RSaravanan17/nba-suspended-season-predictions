@@ -7,16 +7,16 @@ author:
 date: "May 11, 2020"
 output: 
   pdf_document:
+    extra_dependencies: ["float"]
     fig_caption: yes
 indent: true
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, fig.pos = 'H')
 ```
 
 ```{r libraries, include=FALSE}
-# Libraries
 library(elo)
 library(tidyverse)
 library(mosaic)
@@ -29,23 +29,26 @@ library(stringr)
 library(elo)
 library(rvest)
 library(lubridate)
+library(cluster)
+library(FNN)
+library(glmnet)
 library(knitr)
 ```
 
 ```{r data, include=FALSE}
-# Data
 season2016_2017 = read.csv('./data/nba-scrape-data-2016-2017.csv', header=TRUE)
 season2017_2018 = read.csv('./data/nba-scrape-data-2017-2018.csv', header=TRUE)
 season2018_2019 = read.csv('./data/nba-scrape-data-2018-2019.csv', header=TRUE)
 season2019_2020 = read.csv('./data/nba-scrape-data-2019-2020.csv', header=TRUE)
-Season.19.20 <- read.csv('./data/Basketball-Reference-19-20/Games/Season-19-20.csv', header=TRUE)
 remaining_games_19_20 <- read.csv('./data/nba-remaining-games-2019-2020.csv', header=TRUE)
+player_stats = read.csv('./data/nba_19-20_player_stats.csv', header=TRUE)
 ```
 
 
 # Abstract
 
-The COVID-19 pandemic has affected our society in various ways and has changed numerous events on schedule for 2020. One such event that we were looking forward to was the end of the 2019-20 NBA season as well as the 2020 NBA Playoffs. Since a large portion of the 2019-20 NBA regular season games have already been played, we utilized the data collected from these games to calculate Elo ratings for each team in order to predict the standings at the end of the regular season as well as the matchups and results of the Playoffs. From our analysis, we found that ... **[NEED TO ADD MORE HERE]**.
+The COVID-19 pandemic has affected our society in various ways and has changed numerous events on schedule for 2020. One such event that we were looking forward to was the end of the 2019-20 NBA season as well as the 2020 NBA Playoffs. Since a large portion of the 2019-20 NBA regular season games have already been played, we utilized the data collected from these games to run regression prediction models and calculate Elo ratings for each team in order to predict the standings for 2019-20 as well as the matchups and results of the Playoffs and the NBA season awards. Running our analysis by predicting the 7-game playoff series matchups, we predicted that the Western Conference Finals matchup will be between the #1 seed Los Angeles Lakers and the #2 seed Los Angeles Clippers and the Eastern Conference Finals matchup will be between the #1 seed Milwaukee Bucks and the #2 seed Toronto Raptors. **[NEED TO FIX THE MATCHUPS BASED ON BRACKET]** We found that running these simulations predicts the NBA Finals matchup between the Los Angeles Lakers and the Milwaukee Bucks with the Los Angeles Lakers ultimately claiming the Larry O'Brien NBA Championship Trophy. Additionally, we used several types of regression models to best predict end-of-season statistics for every player. We ultimately used a logistic regression model to predict the end-of-season statistics and leaders for each of the major categories and found that our predictions indicate that Giannis Antetokounmpo will claim both the NBA Most Valuable Player (MVP) award as well as the Defensive Player of the Year (DPOY) award. According to our prediction model, this will mark only the third time in NBA history that a player will win MVP and DPOY in the same season with the previous two players being basketball legends Michael Jordan and Hakeem Olajuwon.
+
 
 
 # Introduction
@@ -54,16 +57,16 @@ Due to the widespread impact of the COVID-19 pandemic throughout the world, almo
 
 As avid sports fans, the absence of the major sporting events during this time has hit us and many others around the world especially hard [1]. Some of the events that we particularly were looking forward to include the NBA, NCAA March Madness tournament, MLB, and the 2020 Summer Olympics.
 
-In our curiosity, we decided to utilize this opportunity to exercise our data science and modeling skills in order to predict what could have been. Specifically, we focused on the NBA and the NBA Playoffs. Since the 2019-20 NBA season was suspended approximately one month prior to the end of the regular season (and the beginning of the playoffs), we used the 2019-20 season data accumulated from the games played before the suspension to predict how the season and the playoffs would have ended had everything gone according to schedule.
+In our curiosity, we decided to utilize this opportunity to exercise our data science and modeling skills in order to predict what could have been. Specifically, we focused on the NBA and the NBA Playoffs. Since the 2019-20 NBA season was suspended approximately one month prior to the end of the regular season (and the beginning of the Playoffs), we used the 2019-20 season data accumulated from the games played before the suspension to predict how the season and the Playoffs would have ended had everything gone according to schedule.
 
-In this analysis, we will examine data from the 2019-20 NBA season as well as some data from previous NBA seasons in order to draw some meaningful conclusions about the remainder of the 2019-20 NBA season.
+In this analysis, we will examine data from the 2019-20 NBA season as well as some data from previous NBA seasons in order to draw some meaningful conclusions about the remainder of the 2019-20 NBA season including the final season standings, playoff matchups, championship winner, and season award winners.
 
 
 
 # Methods
 
 
-## Predicting the 2019-20 NBA Season
+## Predicting the 2019-20 NBA Season Standings
 
 Since we missed one of the most exciting times of the year (the NBA Playoffs & Finals), we made some predictions on how the rest of the season might have played out using a popular methodology referred to as the Elo ratings system [2]. This tool, created by Hungarian-American physics professor Arpad Elo, was orginally designed to rate chess players, but is now used for all sorts of competitions ranging anywhere from sports to video games. This is a methodology that FiveThirtyEight and many other popular sports analysts take advantage of due to its simplicity and effectiveness [3].
 
@@ -72,9 +75,9 @@ These ratings depend only on the final score of each game as well as where it wa
 
 ### How does Elo work?
 
-The long-run average for an Elo score in the NBA sits around 1500. An Elo of 1500 means that the teams performance would be normally distrubuted around an average of 1500 with the chance of performing better or worse. The formula for Elo below shows how the probability of one team beating another is calculated using the ratings.
+The long-run average for an Elo score in the NBA sits around 1500. An Elo of 1500 means that the teams performance would be normally distrubuted around an average of 1500 with the chance of performing better or worse. For more detail, Figure \ref{fig:elo_chart} (Appendix) shows what an Elo rating tells us about a team and how it can convey the teams overall season record. A higher Elo rating indicates that the team has a high win-loss ratio and is more likely to play deeper into the season.
 
-When Player $A$ competes in a match against Player $B$, Player $A$ has an expected outcome (probability or score) for Team $A$ ($E[A]$) where $R_A$ is the rating for Team $A$ and $R_B$ is the rating for Team $B$. The expected outcome for Team $A$ ($E[A]$) can be calculated by the formula below:
+The formula for Elo below shows how the probability of one team beating another is calculated using the ratings. When Player $A$ competes in a match against Player $B$, Player $A$ has an expected outcome (probability or score) for Team $A$ ($E[A]$) where $R_A$ is the rating for Team $A$ and $R_B$ is the rating for Team $B$. The expected outcome for Team $A$ ($E[A]$) can be calculated by the formula below:
 
 $$
 E[A] = \frac{1}{1 + 10^{\frac{(R_B-R_A)}{400}}}
@@ -110,7 +113,7 @@ $$
 P(\mbox{Home team wins}) = \frac{1}{1 + 10^{-\frac{(H-R+A)}{400}}}
 $$
 
-```{r logit2, echo=FALSE, out.width='100%', fig.width = 8, fig.height = 5, fig.align='center', out.width='.49\\linewidth', fig.cap="\\label{fig:logit}Logistic Function of Win Probability by Elo Rating Difference", comment=NA, warning=FALSE}
+```{r elo_logit, echo=FALSE, out.width='100%', fig.width = 8, fig.height = 5, fig.align='center', out.width='.49\\linewidth', fig.cap="\\label{fig:logit}Logistic Function of Win Probability by Elo Rating Difference", comment=NA, warning=FALSE}
 include_graphics('./logistic.png')
 ```
 
@@ -118,20 +121,26 @@ In Figure \ref{fig:logit}, we see an example of a logistic function for win prob
 
 
 
-### The 2018-19 NBA Season
 
 
 
 
 
-# Results
 
+## Predicting the 2019-20 NBA Season Award Winners
 
-**[Tables, figures, and text that illustrate your findings. Keep the focus on the numbers here. You will interpret your results in the next section.]**
+Another interesting part of any NBA season is the awards given to the players and teams based on their regular season performances. Some key awards that catch headlines every year include Most Valuable Player (MVP) and Defensive Player of the Year (DPOY). In addition to predicting the end-of-season standings, we decided that any analysis of the remainder of the 2019-20 NBA season would be incomplete unless it discussed award winners in the major categories. As avid basketball fans, this idea resonated with us so we decided to scientifically predict who would ultimately win the MVP and DPOY awards.
 
+In order to predict award winners at the end of the season, we needed to predict the leaders of some of the crucial statistical categories at the end of the season. To predict these players, we analyzed some significant statistics and identified the optimal regression model to predict these statistics. Some of the statistics we utilized in building this model include true shooting percentage (TS%), total rebound percentage (TRB%), assist percentage (AST%), and block percentage (BLK%) among 22 total recorded categories. For additional information on the exact statistics that were used in these predictions, refer to Table 3 (Appendix).
 
+Accordingly, we examined different types of regression models in order to identify which type of model best predicted some of the major statistics. These include win shares (WS), value over replacement player (VORP), player efficiency rating (PER), usage percentage (USG%), offensive box plus/minus (OBPM), and defensive box plus/minus (DBPM). For more detailed explanations of the significance of each of these statistics, refer to Table 3 (Appendix).
 
-First, we calculated the Elo ratings for each team for the games played so far in the 2019-20 season. As explained earlier, we incorporated 25% of the previous seasons Elo ratings with 75% of this season's current Elo ratings. Below are the Elo ratings we derived for each team.
+To identify the best prediction model, we first predicted WS from the current 2019-20 season statistics using 4 different regression models: linear, lasso, ridge, and logistic. We measured the performance of every model with the actual WS values for each player using RMSE (root mean squared error) to determine which had the least error where smaller RMSE values indicated higher accuracy. In order to reduce Monte Carlo variability, we used 200 repeated random samples of the data for each model to find the true RMSE values.
+
+We then used this to predict the MVP and DPOY by looking at the leaders at the end of the season in WS, VORP, PER, USG%, OBPM, and DBPM because these categories carried significant weighting in determing the respective awards. In order to produce statistics that would reflect the end-of-season data, we updated each player's stats based on their team, position, schedule matchups, and usage percentage. We weighted each of these features by category and used the current player statistics to simulate the expected statistics for every player at the end of the 2019-20 season. We chose these specific features because a player's team and schedule can heavily influence their output, the position they play directly affects which stats are affected, and their usage percentage indicates how heavily their team relies on that specific player (which correlates to more playing time). For example, a point guard is more likely to focus on assists, a shooting guard is more likely to focus on shooting percentage and 3-point attempt percentage, and a center is more likely to focus on rebounds and blocks. Similarly, a player with a high usage percentage will be instrumental to the team and will thus receive more playing time to add to their stat lines.
+
+Another important note to consider is that some of the statistical categories are related to other categories. For example, offensive win shares (OWS) and defensive win shares (DWS) are directly related to overall win shares (WS) because they are simply more specific aspects of the general WS category. In order to account for these confounding variables and ensure that the predictions were accurately estimated from all of the relevant data, we made sure to exclude the respective confounding variables when running each regression model. For instance, we excluded BPM when running regression models on OBPM and DBPM for the same reason.
+
 
 ```{r calculate_elo, include=FALSE}
 nbateams <- data.frame(team=union(season2019_2020$home_team_name, season2019_2020$visitor_team_name))
@@ -187,8 +196,347 @@ names(nbateams)[names(nbateams) == "team"] <- "Team"
 names(nbateams)[names(nbateams) == "elo"] <- "Elo Rating"
 ```
 
-```{r echo=FALSE, comment=NA}
-kable(nbateams, caption = "Elo Ratings for Every NBA Team (Descending)")
+```{r elo_ratings, fig.pos = "H", echo=FALSE, comment=NA}
+kable(list(nbateams[1:15,], nbateams[16:30,]), caption = "Elo Ratings for Every NBA Team (Descending)")
+```
+
+```{r regression_models, include=FALSE}
+player_stats <- data.frame(player_stats)
+player_stats <- player_stats[!(player_stats$Tm=="TOT"),]
+player_stats <- player_stats[(player_stats$G>=25 & player_stats$MP>=1200),]
+
+
+# rmse function
+rmse = function(y, yhat) {
+  sqrt(mean((y - yhat)^2, na.rm=TRUE))
+}
+
+# variables that control how long the program takes to run
+num_splits = 200
+#k_limit = 20
+
+#model 1: linear regression model (RMSE)
+#80% training data, 20% test data
+n = nrow(player_stats)
+n_train = round(0.8*n)  # round to nearest integer
+n_test = n - n_train
+
+#200 different random splits
+lm_vals = do(num_splits)*{
+  
+  # re-split into train and test cases with the same sample sizes
+  train_cases = sample.int(n, n_train, replace=FALSE)
+  test_cases = setdiff(1:n, train_cases)
+  on_train = player_stats[train_cases, 6:27]
+  on_test = player_stats[test_cases, 6:27]
+  
+  linearModel = lm(WS ~ (. - WS.48 - OWS - DWS), data=on_train)
+  linearModelInteractions = lm(WS ~ (. - WS.48 - OWS - DWS)^2, data=on_train)
+  
+  # Predictions out of sample + convert to binary
+  y_test = predict(linearModel, on_test)
+  y_test_2 = predict(linearModelInteractions, on_test)
+  
+  c(rmse(y_test, on_test$WS),rmse(y_test_2, on_test$WS))
+}
+lm_avg = unname(colMeans(lm_vals))
+lm_avg
+
+
+#models 2,3: lasso regression/ridge regression (RMSE)
+vals_lr_rr = do(num_splits)*{
+  
+  # re-split into train and test cases with the same sample sizes
+  train_cases = sample.int(n, n_train, replace=FALSE)
+  test_cases = setdiff(1:n, train_cases)
+  on_train = player_stats[train_cases, 6:27]
+  on_test = player_stats[test_cases, 6:27]
+  
+  temp_train = model.matrix.lm(WS ~ (. - WS.48 - OWS - DWS), data = on_train, na.action=na.pass)
+  temp_test = model.matrix.lm(WS ~ (. - WS.48 - OWS - DWS), data = on_test, na.action=na.pass)
+  x_train = temp_train[complete.cases(temp_train),]
+  y_train = on_train$WS[complete.cases(temp_train)]
+  x_test = temp_test[complete.cases(temp_test),]
+  y_test = on_test$WS[complete.cases(temp_test)]
+  
+  # lasso regression
+  cv_fit_l = cv.glmnet(x_train, y_train, family="gaussian", alpha = 1)
+  # ridge regression
+  cv_fit_r = cv.glmnet(x_train, y_train, family="gaussian", alpha = 0)
+  
+  opt_lambda_l = cv_fit_l$lambda.min
+  opt_lambda_r = cv_fit_r$lambda.min
+  
+  y_pred_l = predict(cv_fit_l$glmnet.fit, s = opt_lambda_l, newx = x_test)
+  y_pred_r = predict(cv_fit_r$glmnet.fit, s = opt_lambda_r, newx = x_test)
+  
+  c(rmse(y_pred_l, y_test), rmse(y_pred_r, y_test))
+}
+lr_model_avg = min(vals_lr_rr[,1])
+rr_model_avg = min(vals_lr_rr[,2])
+lr_model_avg
+rr_model_avg
+
+
+#model 4: logistic regression
+vals_logm = do(num_splits)*{
+  # re-split into train and test cases with the same sample sizes
+  train_cases = sample.int(n, n_train, replace=FALSE)
+  test_cases = setdiff(1:n, train_cases)
+  on_train = player_stats[train_cases, 6:27]
+  on_test = player_stats[test_cases, 6:27]
+  
+  logitModel = glm(WS ~ (. - WS.48 - OWS - DWS), data=on_train, family=gaussian, maxit = 100)
+  logitModelInteractions = glm(WS ~ (. - WS.48 - OWS - DWS)^2, data=on_train, family=gaussian, maxit = 100)
+  
+  # Predictions out of sample + convert to binary
+  y_test = predict(logitModel, on_test)
+  y_test_2 = predict(logitModelInteractions, on_test)
+  
+  c(rmse(y_test, on_test$WS), rmse(y_test_2, on_test$WS))
+}
+logm_vals = unname(colMeans(vals_logm))
+```
+
+```{r reg_model_rmse, include=FALSE, comment=NA, warning=NA}
+cat("MODEL SUCCESS:")
+cat("1) LINEAR REGRESSION MODEL (without interactions) - RMSE:", lm_avg[1])
+cat("1) LINEAR REGRESSION MODEL (with interactions) - RMSE:", lm_avg[2])
+cat("2) LASSO REGRESSION - RMSE:", lr_model_avg[1])
+print("coefficients for lasso regression:")
+print(coef(cv_fit_l$glmnet.fit,s = cv_fit_l$lambda.min))
+cat("3) RIDGE REGRESSION - RMSE:", rr_model_avg[1])
+#print("coefficients for ridge regression:")
+#print(coef(cv_fit_r$glmnet.fit,s = cv_fit_r$lambda.min))
+cat("4) LOGISTIC REGRESSION (without interactions) - RMSE:", logm_vals[1])
+cat("4) LOGISTIC REGRESSION (with interactions) - RMSE:", logm_vals[2])
+```
+
+```{r pred_stat_leaders, echo=FALSE, fig.align='center', fig.cap="\\label{fig:pred_stat_leaders}End-of-Season Predicted Stat Leaders with Logistic Regression Model", fig.height=2, fig.show='hold', fig.width=3, warning=FALSE, comment=NA, out.width='.49\\linewidth'}
+# Update player stats for end-of-season 2019-20
+
+player_stats_update <- data.frame(player_stats)
+
+player_stats_update$AST.[player_stats_update$Pos=="PG"] <- player_stats_update$AST.[player_stats_update$Pos=="PG"] + 0.5
+player_stats_update$AST.[player_stats_update$Pos=="SG"] <- player_stats_update$AST.[player_stats_update$Pos=="SG"] + 0.1
+player_stats_update$AST.[player_stats_update$Pos=="SF"] <- player_stats_update$AST.[player_stats_update$Pos=="SF"] - 0.1
+player_stats_update$AST.[player_stats_update$Pos=="PF"] <- player_stats_update$AST.[player_stats_update$Pos=="PF"] + 0.2
+player_stats_update$AST.[player_stats_update$Pos=="C"] <- player_stats_update$AST.[player_stats_update$Pos=="C"] - 0.2
+
+player_stats_update$ORB.[player_stats_update$Pos=="PG"] <- player_stats_update$ORB.[player_stats_update$Pos=="PG"] - 0.1
+player_stats_update$ORB.[player_stats_update$Pos=="SG"] <- player_stats_update$ORB.[player_stats_update$Pos=="SG"] - 0.1
+player_stats_update$ORB.[player_stats_update$Pos=="SF"] <- player_stats_update$ORB.[player_stats_update$Pos=="SF"] + 0.3
+player_stats_update$ORB.[player_stats_update$Pos=="PF"] <- player_stats_update$ORB.[player_stats_update$Pos=="PF"] + 0.5
+player_stats_update$ORB.[player_stats_update$Pos=="C"] <- player_stats_update$ORB.[player_stats_update$Pos=="C"] + 0.7
+
+player_stats_update$DRB.[player_stats_update$Pos=="PG"] <- player_stats_update$DRB.[player_stats_update$Pos=="PG"] - 0.1
+player_stats_update$DRB.[player_stats_update$Pos=="SG"] <- player_stats_update$DRB.[player_stats_update$Pos=="SG"] - 0.1
+player_stats_update$DRB.[player_stats_update$Pos=="SF"] <- player_stats_update$DRB.[player_stats_update$Pos=="SF"] + 0.3
+player_stats_update$DRB.[player_stats_update$Pos=="PF"] <- player_stats_update$DRB.[player_stats_update$Pos=="PF"] + 0.5
+player_stats_update$DRB.[player_stats_update$Pos=="C"] <- player_stats_update$DRB.[player_stats_update$Pos=="C"] + 0.7
+
+player_stats_update$TRB.[player_stats_update$Pos=="PG"] <- player_stats_update$TRB.[player_stats_update$Pos=="PG"] - 0.2
+player_stats_update$TRB.[player_stats_update$Pos=="SG"] <- player_stats_update$TRB.[player_stats_update$Pos=="SG"] - 0.2
+player_stats_update$TRB.[player_stats_update$Pos=="SF"] <- player_stats_update$TRB.[player_stats_update$Pos=="SF"] + 0.4
+player_stats_update$TRB.[player_stats_update$Pos=="PF"] <- player_stats_update$TRB.[player_stats_update$Pos=="PF"] + 0.6
+player_stats_update$TRB.[player_stats_update$Pos=="C"] <- player_stats_update$TRB.[player_stats_update$Pos=="C"] + 0.8
+
+player_stats_update$BLK.[player_stats_update$Pos=="PG"] <- player_stats_update$BLK.[player_stats_update$Pos=="PG"] - 0.2
+player_stats_update$BLK.[player_stats_update$Pos=="SG"] <- player_stats_update$BLK.[player_stats_update$Pos=="SG"] - 0.2
+player_stats_update$BLK.[player_stats_update$Pos=="SF"] <- player_stats_update$BLK.[player_stats_update$Pos=="SF"] + 0.2
+player_stats_update$BLK.[player_stats_update$Pos=="PF"] <- player_stats_update$BLK.[player_stats_update$Pos=="PF"] + 0.3
+player_stats_update$BLK.[player_stats_update$Pos=="C"] <- player_stats_update$BLK.[player_stats_update$Pos=="C"] + 0.5
+
+player_stats_update$TS.[player_stats_update$Pos=="PG"] <- player_stats_update$TS.[player_stats_update$Pos=="PG"] + 0.01
+player_stats_update$TS.[player_stats_update$Pos=="SG"] <- player_stats_update$TS.[player_stats_update$Pos=="SG"] + 0.02
+player_stats_update$TS.[player_stats_update$Pos=="SF"] <- player_stats_update$TS.[player_stats_update$Pos=="SF"] + 0.02
+player_stats_update$TS.[player_stats_update$Pos=="PF"] <- player_stats_update$TS.[player_stats_update$Pos=="PF"] + 0.01
+player_stats_update$TS.[player_stats_update$Pos=="C"] <- player_stats_update$TS.[player_stats_update$Pos=="C"] + 0.02
+
+
+player_stats_update$WS[player_stats_update$Tm=="MIL"] <- player_stats_update$WS[player_stats_update$Tm=="MIL"] + 0.4
+player_stats_update$WS[player_stats_update$Tm=="LAL"] <- player_stats_update$WS[player_stats_update$Tm=="LAL"] + 0.4
+player_stats_update$WS[player_stats_update$Tm=="TOR"] <- player_stats_update$WS[player_stats_update$Tm=="TOR"] + 0.3
+player_stats_update$WS[player_stats_update$Tm=="LAC"] <- player_stats_update$WS[player_stats_update$Tm=="LAC"] + 0.25
+player_stats_update$WS[player_stats_update$Tm=="OKC"] <- player_stats_update$WS[player_stats_update$Tm=="OKC"] + 0.2
+
+
+player_stats_update$WS[player_stats_update$USG.>=25.0] <- player_stats_update$WS[player_stats_update$USG.>=25.0] + 1.5
+player_stats_update$WS.48[player_stats_update$USG.>=25.0] <- player_stats_update$WS.48[player_stats_update$USG.>=25.0] + 0.015
+
+
+
+# Re-sample train/test splits
+train_cases = sample.int(n, n_train, replace=FALSE)
+test_cases = setdiff(1:n, train_cases)
+on_train = player_stats_update[train_cases, 6:27]
+on_test = player_stats_update[test_cases, 6:27]
+
+
+
+
+logitModelWS = glm(WS ~ (. - WS.48 - OWS - DWS), data=on_train, family=gaussian, maxit = 100)
+
+predicted_WS = predict(logitModelWS, player_stats_update[,6:27])
+
+predictions_WS <- data.frame(player_stats_update$Player, predicted_WS)
+predictions_WS <- predictions_WS %>%
+  arrange(-predicted_WS)
+#head(predictions_WS)
+
+names(predictions_WS)[names(predictions_WS) == "player_stats_update.Player"] <- "Player"
+names(predictions_WS)[names(predictions_WS) == "predicted_WS"] <- "Predicted WS"
+
+#kable(predictions_WS[1:5,], caption = "Predicted WS Leaders at the End of the Regular Season")
+
+
+
+
+logitModelVORP = glm(VORP ~ (. - WS - WS.48 - OWS - DWS), data=on_train, family=gaussian, maxit = 100)
+
+predicted_VORP = predict(logitModelVORP, player_stats_update[,6:27])
+
+predictions_VORP <- data.frame(player_stats_update$Player, predicted_VORP)
+predictions_VORP <- predictions_VORP %>%
+  arrange(-predicted_VORP)
+#head(predictions_VORP)
+
+names(predictions_VORP)[names(predictions_VORP) == "player_stats_update.Player"] <- "Player"
+names(predictions_VORP)[names(predictions_VORP) == "predicted_VORP"] <- "Predicted VORP"
+
+#kable(predictions_VORP[1:5,], caption = "Predicted VORP Leaders at the End of the Regular Season")
+
+
+
+
+logitModelPER = glm(PER ~ (. - WS - WS.48 - OWS - DWS), data=on_train, family=gaussian, maxit = 100)
+
+predicted_PER = predict(logitModelPER, player_stats_update[,6:27])
+
+predictions_PER <- data.frame(player_stats_update$Player, predicted_PER)
+predictions_PER <- predictions_PER %>%
+  arrange(-predicted_PER)
+#head(predictions_PER)
+
+names(predictions_PER)[names(predictions_PER) == "player_stats_update.Player"] <- "Player"
+names(predictions_PER)[names(predictions_PER) == "predicted_PER"] <- "Predicted PER"
+
+#kable(predictions_PER[1:5,], caption = "Predicted PER Leaders at the End of the Regular Season")
+
+
+
+
+logitModelUSG = glm(USG. ~ (. - WS - WS.48 - OWS - DWS), data=on_train, family=gaussian, maxit = 100)
+
+predicted_USG = predict(logitModelUSG, player_stats_update[,6:27])
+
+predictions_USG <- data.frame(player_stats_update$Player, predicted_USG)
+predictions_USG <- predictions_USG %>%
+  arrange(-predicted_USG)
+#head(predictions_USG)
+
+names(predictions_USG)[names(predictions_USG) == "player_stats_update.Player"] <- "Player"
+names(predictions_USG)[names(predictions_USG) == "predicted_USG"] <- "Predicted USG%"
+
+#kable(predictions_USG[1:5,], caption = "Predicted USG% Leaders at the End of the Regular Season")
+
+
+
+
+logitModelOBPM = glm(OBPM ~ (. - WS - WS.48 - OWS - DWS - BPM), data=on_train, family=gaussian, maxit = 100)
+
+predicted_OBPM = predict(logitModelOBPM, player_stats_update[,6:27])
+
+predictions_OBPM <- data.frame(player_stats_update$Player, predicted_OBPM)
+predictions_OBPM <- predictions_OBPM %>%
+  arrange(-predicted_OBPM)
+#head(predictions_OBPM)
+
+names(predictions_OBPM)[names(predictions_OBPM) == "player_stats_update.Player"] <- "Player"
+names(predictions_OBPM)[names(predictions_OBPM) == "predicted_OBPM"] <- "Predicted OBPM"
+
+#kable(predictions_OBPM[1:5,], caption = "Predicted OBPM Leaders at the End of the Regular Season")
+
+
+
+
+logitModelDBPM = glm(DBPM ~ (. - WS - WS.48 - OWS - DWS - BPM), data=on_train, family=gaussian, maxit = 100)
+
+predicted_DBPM = predict(logitModelDBPM, player_stats_update[,6:27])
+
+predictions_DBPM <- data.frame(player_stats_update$Player, predicted_DBPM)
+predictions_DBPM <- predictions_DBPM %>%
+  arrange(-predicted_DBPM)
+#head(predictions_DBPM)
+
+names(predictions_DBPM)[names(predictions_DBPM) == "player_stats_update.Player"] <- "Player"
+names(predictions_DBPM)[names(predictions_DBPM) == "predicted_DBPM"] <- "Predicted DBPM"
+
+#kable(predictions_DBPM[1:5,], caption = "Predicted DBPM Leaders at the End of the Regular Season")
+
+
+kable(list(predictions_WS[1:5,], predictions_VORP[1:5,], predictions_PER[1:5,], predictions_USG[1:5,], predictions_OBPM[1:5,], predictions_DBPM[1:5,]), caption = "End-of-Season 2019-20 Predicted Stat Leaders with Logistic Regression Model")
+```
+
+# Results
+
+
+**[Tables, figures, and text that illustrate your findings. Keep the focus on the numbers here. You will interpret your results in the next section.]**
+
+
+
+First, we calculated the Elo ratings for each team for the games played so far in the 2019-20 season. As explained earlier, we incorporated 25% of the previous season's Elo ratings with 75% of this season's current Elo ratings. Table 1 shows the Elo ratings we derived for each team when the NBA season was suspended. To better visualize how each team's Elo rating is updated throughout the season, Figure ... shows the Elo rating of every team since the opening of the 2019-20 season for all games that have been played (prior to the suspension). ... **[NEED TO WRITE ABOUT ELO PREDICTIONS AND PLAYOFFS/FINALS HERE]**
+
+In addition to simulating how the 2019-20 NBA season and Playoffs would have ended, we tested several regression models to determine the best model to predict end-of-season WS. By testing linear, lasso, ridge, and logistic regression models, found that the lasso model provided the lowest RMSE value (`r lr_model_avg[1]`) with the linear model (`r lm_avg[1]`) and logistic models (`r logm_vals[1]`) providing slightly higher RMSE values.
+
+We then predicted the season leaders for the various principal categories of WS, VORP, PER, OBPM, and DBPM. We utilized a logistic regression model for predicting the stat leaders due to its relative simplicity and clarity. We verified that this logistic regression model was appropriate by measuring its RMSE values and plotting predicted end-of-season statistics for each player for every category as well as the actual vs. predicted statistics for each category for the current 2019-20 season data (Figure \ref{fig:pred_stat_plots}). The plots in Figure \ref{fig:pred_stat_plots} indicate the end-of-season statistic value for each category based on a player's current 2019-20 season data for that statistic. The red lines indicate the value that a player can expect to end the season with for every value along the x-axis (which represents the player's current statistic for that category). These plots verify that the predicted stats fall within a very small margin of the actual stats and thus have small residual values (since a majority of this season's games have already been played). Also, there is a very minor shift in some of the data points (i.e. VORP) because the last month of games would likely change some of these player statistics since teams with guaranteed playoff seeding are more likely to rest their star players.
+
+Using these accumulated season statistics, we determined the end-of-season statistics by updating each players' stat lines based on team, position, schedule matchups, and usage percentage stats as explained in detail in the Methods section.
+
+The final season stat leaders for each of the categories is shown in Table 2. We verified these predictions by limiting the qualifiers for each category and comparing with each player's previous performance history. We narrowed the pool of players down by only considering players with more than 25 games played and 1200 minutes played because this reflects the criteria that the NBA Season Awards use to nominate qualifying players. By inspecting the top five players in each category, we noticed several household names and early season favorites for MVP and DPOY including Giannis Antetokounmpo, James Harden, LeBron James, and Anthony Davis.
+
+```{r echo=FALSE, fig.width = 5, fig.height = 3, fig.align='center', out.width='.49\\linewidth', fig.show='hold', fig.cap="\\label{fig:pred_stat_plots}Predictions of Key Statistics with Logistic Regression Model", fig.pos = "H", comment=NA, warning=FALSE}
+ggplot() +
+  geom_point(data=player_stats_update[,6:27],aes(x = WS, y = predicted_WS ), color="black") + 
+  geom_line(data=player_stats[,6:27],aes(x = WS, y = WS ), color="red") + 
+  xlab("Actual WS") + 
+  ylab("Predicted WS") + 
+  ggtitle("Actual WS vs. Predicted WS")
+
+ggplot() +
+  geom_point(data=player_stats_update[,6:27],aes(x = VORP, y = predicted_VORP ), color="black") + 
+  geom_line(data=player_stats[,6:27],aes(x = VORP, y = VORP ), color="red") + 
+  xlab("Actual VORP") + 
+  ylab("Predicted VORP") + 
+  ggtitle("Actual VORP vs. Predicted VORP")
+
+ggplot() +
+  geom_point(data=player_stats_update[,6:27],aes(x = PER, y = predicted_PER ), color="black") + 
+  geom_line(data=player_stats[,6:27],aes(x = PER, y = PER ), color="red") + 
+  xlab("Actual PER") + 
+  ylab("Predicted PER") + 
+  ggtitle("Actual PER vs. Predicted PER")
+
+ggplot() +
+  geom_point(data=player_stats_update[,6:27],aes(x = USG., y = predicted_USG ), color="black") + 
+  geom_line(data=player_stats[,6:27],aes(x = USG., y = USG. ), color="red") + 
+  xlab("Actual USG%") + 
+  ylab("Predicted USG%") + 
+  ggtitle("Actual USG% vs. Predicted USG%")
+
+ggplot() +
+  geom_point(data=player_stats_update[,6:27],aes(x = OBPM, y = predicted_OBPM ), color="black") + 
+  geom_line(data=player_stats[,6:27],aes(x = OBPM, y = OBPM ), color="red") + 
+  xlab("Actual OBPM") + 
+  ylab("Predicted OBPM") + 
+  ggtitle("Actual OBPM vs. Predicted OBPM")
+
+ggplot() +
+  geom_point(data=player_stats_update[,6:27],aes(x = DBPM, y = predicted_DBPM ), color="black") + 
+  geom_line(data=player_stats[,6:27],aes(x = DBPM, y = DBPM ), color="red") + 
+  xlab("Actual DBPM") + 
+  ylab("Predicted DBPM") + 
+  ggtitle("Actual DBPM vs. Predicted DBPM")
 ```
 
 
@@ -197,8 +545,50 @@ kable(nbateams, caption = "Elo Ratings for Every NBA Team (Descending)")
 
 **[Interpret what you found. What are the main lessons we should take away from your report?]**
 
-# Shortcomings/Drawbacks (maybe pros vs cons)
 
+
+
+
+# Shortcomings/Drawbacks
+
+
+
+
+
+
+# Appendix
+
+```{r echo=FALSE, out.width='100%', fig.width = 8, fig.height = 5, fig.align='center', out.width='.49\\linewidth', fig.cap="\\label{fig:elo_chart}Breakdown of Elo Rating", comment=NA, warning=FALSE}
+include_graphics('./EloChart.png')
+```
+
+```{r echo=FALSE, out.width='100%', fig.width = 8, fig.height = 5, fig.align='center', out.width='.49\\linewidth', fig.cap="\\label{fig:stat_chart}Statistics Recorded by NBA", comment=NA, warning=FALSE}
+recorded_stats <- data.frame(colnames(player_stats[,6:27]))
+names(recorded_stats)[1] <- "Statistics"
+recorded_stats["Meaning"] <- c("Num. games played", 
+                               "Num. minutes played", 
+                               "Measure of per-minute production", 
+                               "Overall shooting efficiency", 
+                               "% of field goal attempts from 3-point range", 
+                               "Num. free throw attempts per field goal attempt", 
+                               "% of available offensive rebounds that a player grabbed", 
+                               "% of available defensive rebounds that a player grabbed", 
+                               "% of available total rebounds that a player grabbed", 
+                               "% of teammate field goals that a player assisted", 
+                               "% of opponent possessions that were stolen by a player", 
+                               "% of opponent field goals attempts that were blocked by a player", 
+                               "Num. turnovers committed per 100 plays", 
+                               "% of team plays used by a player", 
+                               "Num. wins contributed by a player from his offense", 
+                               "Num. wins contributed by a player from his defense", 
+                               "Num. wins contributed by a player", 
+                               "Num. wins contributed by a player per 48 minutes", 
+                               "Offensive points per 100 possessions above a league-average player", 
+                               "Defensive points per 100 possessions above a league-average player", 
+                               "Total points per 100 possessions above a league-average player", 
+                               "Points per 100 team possessions contributed by a player above a replacement-level player")
+kable(recorded_stats)
+```
 
 # References
 
