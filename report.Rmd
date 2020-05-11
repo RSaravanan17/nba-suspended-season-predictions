@@ -21,6 +21,7 @@ library(elo)
 library(tidyverse)
 library(mosaic)
 library(ggplot2)
+library(reshape2)
 library(foreach)
 library(data.table)
 library(magrittr)
@@ -42,6 +43,7 @@ season2018_2019 = read.csv('./data/nba-scrape-data-2018-2019.csv', header=TRUE)
 season2019_2020 = read.csv('./data/nba-scrape-data-2019-2020.csv', header=TRUE)
 remaining_games_19_20 <- read.csv('./data/nba-remaining-games-2019-2020.csv', header=TRUE)
 player_stats = read.csv('./data/nba_19-20_player_stats.csv', header=TRUE)
+nba_elo_rating_19_20 = read.csv('./data/nba-elo-current-2019-2020.csv', header=TRUE)
 ```
 
 
@@ -127,22 +129,20 @@ For the scope of our analysis, we decided to begin our analysis in the 2016-17 N
 
 ### Simulations and Predictions
 
-After calculating the elo ratings for each NBA team up until the last game they played (before the season was cancelled), we used these ratings to then perform simulations matching up teams based on the rest of the season that was supposed to happen, as well as the post-season tournaments based on the top performers of the regular season.
+After calculating the Elo ratings for each NBA team up until the last game they played (before the season was suspended), we used these ratings to then perform simulations matching up teams based on the rest of the season schedule as well as the post-season tournaments based on the top seeded teams from the regular season.
 
-```{r, results='hide', echo=FALSE, warning=FALSE, error=FALSE, message=FALSE}
+``` {r simulations, include=FALSE, warning=FALSE}
 # Running simulations on the remaining regular season schedule, then for playoffs, then for finals
-library(elo)
-library(dplyr)
 
 # Remainder of regular season
-reg_season <- nba.remaining.games.2019.2020
+reg_season <- remaining_games_19_20
 str(reg_season)
 head(reg_season)
 
 reg_season$home_team <- as.character(reg_season$home_team)
 reg_season$visitor_team <- as.character(reg_season$visitor_team)
 
-elos <- nba.elo.current.2019.2020
+elos <- nba_elo_rating_19_20
 head(elos, 30)
 
 elos$team <- as.character(elos$team)
@@ -632,13 +632,13 @@ third_round
 champion
 
 # Plot elo_history
-library(reshape2)
-library(ggplot2)
 
 matplot(t(elo_history[,-c(1)]), type="l")
 
 df_melted = melt(elo_history, id.vars='teams')
+```
 
+```{r, results='hide', echo=FALSE, warning=FALSE, error=FALSE, message=FALSE}
 ggplot(df_melted, aes(x = variable, y = value)) + 
   geom_line(aes(color = teams, group = teams)) +
   theme(axis.text.x=element_blank(),
@@ -1119,8 +1119,6 @@ The plot below shows how the Elo Ratings for each NBA team changed throughout th
 
 ```{r, echo=FALSE}
 # Plot elo_history
-library(reshape2)
-library(ggplot2)
 
 #matplot(t(elo_history[,-c(1)]), type="l")
 
